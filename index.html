@@ -797,21 +797,18 @@ input,select{font-family:inherit}
       <div class="eyebrow">Join Us · 함께하기</div>
       <h2 class="join-title">지금, <span class="gold">느린 걸음</span>으로<br>함께 시작하세요</h2>
       <p class="join-sub">은퇴 후의 불안, 빠른 세상에서의 피로감, 내면의 목마름.<br>정민교는 그 모든 것을 함께 안고 걷습니다.</p>
-      <form name="jeongmin-join" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onsubmit="handleJoin(event)" style="width:100%;max-width:480px;margin:0 auto">
-        <input type="hidden" name="form-name" value="jeongmin-join">
-        <input type="hidden" name="bot-field" style="display:none">
-        <div class="form-row">
-          <input class="form-input" type="text" name="이름" id="joinName" placeholder="이름을 입력해 주세요" required>
-          <input class="form-input" type="email" name="이메일" id="joinEmail" placeholder="이메일 주소" required>
+      <div style="width:100%;max-width:480px;margin:0 auto">
+        <p style="font-family:var(--font-serif);font-size:14px;font-weight:300;color:var(--cream);opacity:.55;text-align:center;margin-bottom:24px;line-height:2">
+          아래 버튼을 클릭하면 가입 양식으로 이동합니다.<br>
+          <span style="font-size:12px;opacity:.7">✝ 구글 폼으로 안전하게 가입됩니다</span>
+        </p>
+        <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSc_6EnRTjCQSO68Eyy3QP80OuU_3cqADuuHN91UtzeQEAU7ug/viewform?usp=dialog" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block">정민교 함께하기 ✝</a>
         </div>
-        <div class="privacy-check" style="margin-bottom:20px">
-          <input type="checkbox" id="joinPrivacy" required>
-          <label for="joinPrivacy"><a href="#" onclick="openPrivacyModal(); return false;">개인정보처리방침</a>에 동의하며 공동체에 가입합니다.</label>
-        </div>
-        <div style="display:flex;justify-content:center">
-          <button type="submit" class="btn-primary">정민교 함께하기 ✝</button>
-        </div>
-      </form>
+        <p style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.25;text-align:center;margin-top:16px">
+          가입 정보는 정민교 공동체 운영에만 사용됩니다
+        </p>
+      </div>
       <div class="h-rule" style="max-width:280px;margin:28px auto"><div class="h-rule-line"></div><div class="h-rule-dot"></div><div class="h-rule-line"></div></div>
       <p style="font-family:var(--font-cin);font-size:9px;letter-spacing:3px;color:var(--cream);opacity:.28;text-align:center">SLOWLY · RIGHTEOUSLY · TOGETHER</p>
     </div>
