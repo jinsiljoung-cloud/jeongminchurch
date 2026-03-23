@@ -411,7 +411,7 @@ input,select{font-family:inherit}
   <a href="#about" onclick="closeMobile()">교회 소개</a>
   <a href="#doctrines" onclick="closeMobile()">5대 교리</a>
   <a href="#worship" onclick="closeMobile()">예배</a>
-  <a href="/jeongminchurch/sermon.html" onclick="closeMobile()">말씀</a>
+  <a href="/jeongminchurch/sermons.html" onclick="closeMobile();clearSermonBadge()" style="position:relative">말씀<span id="navBadgeMobile" class="sermon-badge" style="display:none;position:absolute;top:-6px;right:-10px;min-width:16px;height:16px;background:#E05555;border-radius:50%;font-size:10px;font-weight:700;color:#fff;align-items:center;justify-content:center;padding:0 3px;font-family:sans-serif;line-height:1">N</span></a>
   <a href="#donate" onclick="closeMobile()">후원</a>
   <a href="#join" onclick="closeMobile()">함께하기</a>
 </div>
@@ -428,7 +428,7 @@ input,select{font-family:inherit}
     <li><a href="#about">소개</a></li>
     <li><a href="#doctrines">교리</a></li>
     <li><a href="#worship">예배</a></li>
-    <li><a href="/jeongminchurch/sermon.html">말씀</a></li>
+    <li><a href="/jeongminchurch/sermons.html">말씀</a></li>
     <li><a href="#donate">후원</a></li>
     <li><a href="#community">공동체</a></li>
   </ul>
@@ -596,7 +596,9 @@ input,select{font-family:inherit}
       <div class="w-card"><div class="w-icon">🕊️</div><div><div class="w-label">성전</div><div class="w-value">인터넷이 닿는 모든 곳</div></div></div>
       <a href="/jeongminchurch/worship.html" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🌅</div><div><div class="w-label" style="color:var(--gold)">예배 시간 →</div><div class="w-value">알림 없는 아침 30분<br><span style="font-size:11px;color:var(--gold);opacity:.7">30분 예배 가이드 ✝</span></div></div></a>
       <a href="/jeongminchurch/praise.html" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🎵</div><div><div class="w-label" style="color:var(--gold)">찬양 →</div><div class="w-value">자연의 소리 + 묵상 음악<br><span style="font-size:11px;color:var(--gold);opacity:.7">찬양 듣기 ✝</span></div></div></a>
-      <a href="/jeongminchurch/sermon.html" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">📖</div><div><div class="w-label" style="color:var(--gold)">말씀 →</div><div class="w-value">하루 한 구절, 깊이 묵상<br><span style="font-size:11px;color:var(--gold);opacity:.7">창립 설교 보러가기 ✝</span></div></div></a>
+      <a href="/jeongminchurch/sermons.html" class="w-card" onclick="clearSermonBadge()" style="cursor:pointer;text-decoration:none;position:relative">
+    <span id="cardBadge" class="sermon-badge" style="display:none;position:absolute;top:10px;right:10px;min-width:20px;height:20px;background:#E05555;border-radius:50%;font-size:11px;font-weight:700;color:#fff;align-items:center;justify-content:center;padding:0 4px;font-family:sans-serif;animation:badgePulse 1.5s ease-in-out infinite;z-index:10">N</span>
+    <div class="w-icon">📖</div><div><div class="w-label" style="color:var(--gold)">말씀 →</div><div class="w-value">하루 한 구절, 깊이 묵상<br><span style="font-size:11px;color:var(--gold);opacity:.7">창립 설교 보러가기 ✝</span></div></div></a>
       <a href="#donate" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🌿</div><div><div class="w-label" style="color:var(--gold)">헌금 →</div><div class="w-value">시간과 재능의 나눔<br><span style="font-size:11px;color:var(--gold);opacity:.7">후원하러 가기 ✝</span></div></div></a>
       <a href="https://www.youtube.com/@jeongminchurch" target="_blank" rel="noopener" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🤝</div><div><div class="w-label" style="color:var(--gold)">교제 →</div><div class="w-value">느린 대화, 깊은 경청<br><span style="font-size:11px;color:var(--gold);opacity:.7">유튜브 채널 바로가기 ▶</span></div></div></a>
     </div>
@@ -728,7 +730,7 @@ input,select{font-family:inherit}
           <a href="#about">교회 소개</a>
           <a href="#doctrines">5대 교리</a>
           <a href="#worship">예배 방식</a>
-          <a href="/jeongminchurch/sermon.html">말씀</a>
+          <a href="/jeongminchurch/sermons.html">말씀</a>
           <a href="#community">공동체</a>
         </div>
       </div>
@@ -1034,6 +1036,31 @@ function handleJoin(e){
       setTimeout(() => { btn.textContent = '정민교 함께하기 ✝'; btn.style.background = ''; }, 3500);
     });
 }
+
+/* ══ 말씀 알림 뱃지 ══ */
+const BADGE_KEY = 'jm_sermon_badge';
+
+function checkSermonBadge() {
+  const data = JSON.parse(localStorage.getItem(BADGE_KEY) || '{"count":0,"seen":0}');
+  const unread = data.count - data.seen;
+  document.querySelectorAll('.sermon-badge').forEach(b => {
+    if (unread > 0) {
+      b.textContent = unread > 9 ? '9+' : String(unread);
+      b.classList.add('show');
+    } else {
+      b.classList.remove('show');
+    }
+  });
+}
+
+function clearSermonBadge() {
+  const data = JSON.parse(localStorage.getItem(BADGE_KEY) || '{"count":0,"seen":0}');
+  data.seen = data.count;
+  localStorage.setItem(BADGE_KEY, JSON.stringify(data));
+  document.querySelectorAll('.sermon-badge').forEach(b => b.classList.remove('show'));
+}
+
+window.addEventListener('load', checkSermonBadge);
 </script>
 </body>
 </html>
