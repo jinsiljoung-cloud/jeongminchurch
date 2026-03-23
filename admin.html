@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>정민교 — 신도 관리 대시보드</title>
+<title>Jeongmin Church — 신도 관리 대시보드</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700;900&family=Cinzel:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -400,7 +400,7 @@ input{font-family:inherit}
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
     <div class="login-cross">✝</div>
-    <div class="login-title">정민교</div>
+    <div class="login-title">Jeongmin Church</div>
     <div class="login-sub">Admin · 관리자 로그인</div>
     <input class="login-input" type="password" id="pwInput"
       placeholder="비밀번호를 입력하세요"
@@ -426,7 +426,7 @@ input{font-family:inherit}
         <text x="44" y="33" text-anchor="middle" dominant-baseline="middle" font-family="serif" font-size="9" fill="#C9A84C" font-weight="900">正</text>
       </svg>
       <div>
-        <div class="nav-brand-text">정민교</div>
+        <div class="nav-brand-text">Jeongmin Church</div>
         <span class="nav-brand-sub">신도 관리 대시보드</span>
       </div>
     </div>
@@ -497,7 +497,7 @@ input{font-family:inherit}
     <div class="sec-header">
       <div>
         <div class="sec-eyebrow">Member List · 신도 명단</div>
-        <div class="sec-title">✝ 정민교 신도 목록</div>
+        <div class="sec-title">✝ Jeongmin Church 신도 목록</div>
       </div>
       <button class="export-btn" onclick="exportCSV()">📥 CSV 내보내기</button>
     </div>
@@ -614,7 +614,7 @@ input{font-family:inherit}
       <div class="modal-field">
         <label class="modal-label">제목</label>
         <input class="modal-input" id="sendSubject"
-          value="✝ 정민교로부터 드리는 말씀">
+          value="✝ Jeongmin Church로부터 드리는 말씀">
       </div>
       <div class="modal-field">
         <label class="modal-label">내용</label>
@@ -891,9 +891,9 @@ function openEmailModal(name, email) {
   const sc = scriptures[Math.floor(Math.random() * scriptures.length)];
   document.getElementById('sendTo').value = `${name} <${email}>`;
   document.getElementById('sendBody').value =
-`${name} 정민인 님, 안녕하세요.
+`${name} 님, 안녕하세요.
 
-정민교로부터 오늘의 말씀을 전합니다.
+Jeongmin Church로부터 오늘의 말씀을 전합니다.
 
 ✝ 오늘의 말씀
 ${sc.text}
@@ -901,8 +901,8 @@ ${sc.ref}
 
 하나님의 말씀이 오늘 하루 ${name} 님의 발걸음을 인도하시기를 기도합니다.
 
-느리게, 바르게, 함께 🙏
-정민교 드림`;
+Slowly · Righteously · Together 🙏
+Jeongmin Church`;
 
   document.getElementById('emailModal').classList.add('open');
   document.getElementById('emailModal').dataset.email = email;
@@ -958,7 +958,7 @@ function exportCSV() {
   const blob = new Blob(['\uFEFF'+header+rows], {type:'text/csv;charset=utf-8'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `정민교_신도명단_${new Date().toISOString().slice(0,10)}.csv`;
+  a.download = `JeongminChurch_신도명단_${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
 }
 
@@ -1036,7 +1036,7 @@ function exportDonateCSV(){
   const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
   const blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-  a.download='정민교_후원내역_'+new Date().toISOString().split('T')[0]+'.csv'; a.click();
+  a.download='JeongminChurch_후원내역_'+new Date().toISOString().split('T')[0]+'.csv'; a.click();
 }
 
 // 저장된 시트 URL 불러오기
