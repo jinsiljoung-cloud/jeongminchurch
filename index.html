@@ -476,7 +476,7 @@ input,select{font-family:inherit}
     <div class="h-rule" style="max-width:240px;margin:0 auto 34px"><div class="h-rule-line"></div><div class="h-rule-dot"></div><div class="h-rule-line"></div></div>
     <div class="hero-actions">
       <a href="#about" class="btn-primary">교회 알아보기</a>
-      <a href="#donate" class="btn-outline">✝ 후원하기</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfcBwzyAmeG9F26h7-H9HvhMSdNrz1tfODdMasjcVSdQMa2oQ/viewform?usp=sharing&ouid=103364882900686111237" target="_blank" rel="noopener" class="btn-outline">✝ 후원하기</a>
     </div>
   </div>
   <div class="hero-scroll-indicator">
@@ -614,157 +614,55 @@ input,select{font-family:inherit}
       <p class="section-body">여러분의 후원이 디지털 신앙 공동체를 이어갑니다.<br>작은 씨앗이 모여 큰 나무가 됩니다.</p>
     </div>
 
-    <div class="donation-wrap reveal">
-      <div class="donation-card">
-
-        <!-- Success message (hidden initially) -->
-        <div class="donation-success" id="donationSuccess">
-          <div class="success-icon">🙏</div>
-          <div class="success-title">감사합니다, 정민인이여</div>
-          <div class="success-sub">후원 신청이 접수되었습니다.<br>입력하신 이메일로 안내 메일을 보내드립니다.</div>
-          <div class="success-verse">"심는 자와 거두는 자가 함께 즐거워하리라" — 요한복음 4:36</div>
-          <br>
-          <button class="btn-outline" onclick="resetDonation()" style="margin-top:14px">다시 후원하기</button>
-        </div>
-
-        <!-- Donation form -->
-        <div id="donationForm">
+          <div class="donation-wrap reveal">
+        <div class="donation-card">
           <div class="donation-header">
             <div class="donation-icon">✝</div>
-            <div class="donation-title">후원금 선택</div>
-            <div class="donation-sub">정민교의 사역을 함께 지원해 주세요.<br>하나님이 쓰임받는 귀한 씨앗이 됩니다.</div>
+            <div class="donation-title">후원 신청</div>
+            <div class="donation-sub">아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.</div>
           </div>
 
-          <!-- Amount buttons -->
-          <div class="amount-label">후원 금액 선택</div>
-          <div class="amount-grid">
-            <button class="amount-btn" onclick="selectAmount(10000, this)">
-              <span class="amount-krw">1만원</span>
-              <span class="amount-desc">씨앗 후원</span>
-            </button>
-            <button class="amount-btn" onclick="selectAmount(30000, this)">
-              <span class="amount-krw">3만원</span>
-              <span class="amount-desc">새싹 후원</span>
-            </button>
-            <button class="amount-btn" onclick="selectAmount(50000, this)">
-              <span class="amount-krw">5만원</span>
-              <span class="amount-desc">뿌리 후원</span>
-            </button>
-            <button class="amount-btn" onclick="selectAmount(100000, this)">
-              <span class="amount-krw">10만원</span>
-              <span class="amount-desc">나무 후원</span>
-            </button>
-            <button class="amount-btn" onclick="selectAmount(500000, this)">
-              <span class="amount-krw">50만원</span>
-              <span class="amount-desc">숲 후원</span>
-            </button>
-            <button class="amount-btn" onclick="selectAmount(1000000, this)">
-              <span class="amount-krw">100만원</span>
-              <span class="amount-desc">동산 후원</span>
-            </button>
-          </div>
-
-          <!-- Custom amount -->
-          <div class="custom-amount-row">
-            <div class="custom-label">직접입력</div>
-            <div class="custom-input-wrap">
-              <input class="custom-input" type="number" id="customAmount" placeholder="금액을 직접 입력하세요" oninput="onCustomInput(this)">
+          <!-- 계좌 안내 -->
+          <div style="margin:20px 0 24px">
+            <div style="font-family:var(--font-cin);font-size:9px;letter-spacing:4px;color:var(--gold);opacity:.65;text-transform:uppercase;margin-bottom:12px">✝ 계좌 안내</div>
+            <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:18px 22px">
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(201,168,76,.1)">
+                <span style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.45;text-transform:uppercase">은행</span>
+                <span style="font-family:var(--font-serif);font-size:14px;color:var(--cream)">국민은행</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(201,168,76,.1)">
+                <span style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.45;text-transform:uppercase">계좌번호</span>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="font-family:var(--font-serif);font-size:14px;color:var(--cream)" id="bankNum2">835-21-0309-572</span>
+                  <button onclick="navigator.clipboard.writeText('835-21-0309-572').then(()=>{this.textContent='완료!';setTimeout(()=>this.textContent='복사',2000)})" style="font-family:var(--font-cin);font-size:8px;letter-spacing:2px;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:3px 8px;border-radius:2px;background:none;cursor:pointer;text-transform:uppercase">복사</button>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(201,168,76,.1)">
+                <span style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.45;text-transform:uppercase">예금주</span>
+                <span style="font-family:var(--font-serif);font-size:14px;color:var(--cream)">정민교</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0">
+                <span style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.45;text-transform:uppercase">입금 메모</span>
+                <span style="font-family:var(--font-serif);font-size:13px;color:var(--cream);opacity:.6">이름 + 후원</span>
+              </div>
             </div>
           </div>
 
-          <!-- Selected amount display -->
-          <div class="amount-display" id="amountDisplay">
-            <div class="selected-amount" id="selectedAmountText">금액을 선택해 주세요</div>
-            <div class="selected-label" id="selectedAmountSub"></div>
-          </div>
-
-          <div class="h-rule"><div class="h-rule-line"></div><div class="h-rule-dot"></div><div class="h-rule-line"></div></div>
-
-          <!-- Donor info -->
-          <div class="amount-label" style="margin-top:24px">후원자 정보</div>
-          <div class="donor-grid">
-            <div class="form-field"><label>이름</label><input type="text" id="donorName" placeholder="홍길동"></div>
-            <div class="form-field"><label>이메일</label><input type="email" id="donorEmail" placeholder="example@email.com"></div>
-          </div>
-
-          <div class="h-rule"><div class="h-rule-line"></div><div class="h-rule-dot"></div><div class="h-rule-line"></div></div>
-
-          <!-- Payment method -->
-          <div class="pay-label" style="margin-top:24px">결제 방법</div>
-          <div class="pay-methods">
-            <div class="pay-btn" id="pay-bank" onclick="selectPay('bank', this)">
-              <div class="pay-icon">🏦</div>
-              <div class="pay-name">계좌이체</div>
-            </div>
-            <div class="pay-btn" id="pay-kakao" onclick="selectPay('kakao', this)">
-              <div class="pay-icon">💛</div>
-              <div class="pay-name">카카오페이</div>
-            </div>
-            <div class="pay-btn" id="pay-toss" onclick="selectPay('toss', this)">
-              <div class="pay-icon">💙</div>
-              <div class="pay-name">토스</div>
-            </div>
-            <div class="pay-btn" id="pay-naver" onclick="selectPay('naver', this)">
-              <div class="pay-icon">💚</div>
-              <div class="pay-name">네이버페이</div>
-            </div>
-          </div>
-
-          <!-- Hidden Netlify form for donation notifications -->
-          <form name="jeongmin-donation" netlify netlify-honeypot="bot-field" hidden>
-            <input type="text" name="이름">
-            <input type="email" name="후원자이메일">
-            <input type="text" name="후원금액">
-            <input type="text" name="결제방법">
-          </form>
-
-          <!-- Bank info panel -->
-          <div class="bank-info" id="bankInfo">
-            <div class="bank-info-title">✝ 계좌 안내</div>
-            <div class="bank-row">
-              <span class="bank-key">은행</span>
-              <span class="bank-val">국민은행</span>
-              <span></span>
-            </div>
-            <div class="bank-row">
-              <span class="bank-key">계좌번호</span>
-              <span class="bank-val" id="bankNum">835-21-0309-572</span>
-              <span class="bank-copy" onclick="copyBank()">복사</span>
-            </div>
-            <div class="bank-row">
-              <span class="bank-key">예금주</span>
-              <span class="bank-val">정민교</span>
-              <span></span>
-            </div>
-            <div class="bank-row" style="border:none;padding-bottom:0">
-              <span class="bank-key">입금 메모</span>
-              <span class="bank-val" style="font-size:11px;opacity:.65">이름 + 후원</span>
-              <span></span>
-            </div>
-          </div>
-
-          <!-- Privacy agree -->
-          <div class="privacy-check" style="margin-top:20px">
-            <input type="checkbox" id="privacyAgree">
-            <label for="privacyAgree">
-              <a href="#" onclick="openPrivacyModal(); return false;">개인정보처리방침</a>에 동의합니다. 후원 정보(이름, 이메일, 금액)는 후원 처리 및 영수증 발급 목적으로만 사용됩니다.
-            </label>
-          </div>
-
-          <!-- Submit -->
-          <button class="donate-submit" id="donateSubmitBtn" onclick="submitDonation()">
-            후원하기 ✝
-          </button>
+          <!-- 후원 신청 버튼 -->
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfcBwzyAmeG9F26h7-H9HvhMSdNrz1tfODdMasjcVSdQMa2oQ/viewform?usp=sharing&ouid=103364882900686111237" target="_blank" rel="noopener"
+            style="display:block;width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);font-family:var(--font-cin);font-size:12px;letter-spacing:5px;padding:18px 24px;border-radius:6px;text-transform:uppercase;font-weight:700;text-align:center;transition:all .3s;text-decoration:none"
+            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 40px rgba(201,168,76,.25)'"
+            onmouseout="this.style.transform='';this.style.boxShadow=''">
+            ✝ 후원 신청하기
+          </a>
 
           <p style="font-family:var(--font-cin);font-size:8.5px;letter-spacing:2px;color:var(--cream);opacity:.28;text-align:center;margin-top:16px;line-height:2">
-            카카오페이 · 토스 · 네이버페이 선택 시 해당 앱으로 연결됩니다<br>
-            실제 결제 연동은 PG사 계약 후 활성화됩니다
+            신청서 작성 → 계좌 입금 → 이메일 확인<br>후원금은 정민교 공동체 운영에만 사용됩니다
           </p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
 <!-- ══ COMMUNITY ══ -->
 <section class="community" id="community">
@@ -838,7 +736,7 @@ input,select{font-family:inherit}
         <div class="footer-col-title">함께하기</div>
         <div class="footer-links">
           <a href="#join">공동체 가입</a>
-          <a href="#donate">후원하기</a>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfcBwzyAmeG9F26h7-H9HvhMSdNrz1tfODdMasjcVSdQMa2oQ/viewform?usp=sharing&ouid=103364882900686111237" target="_blank" rel="noopener">후원하기</a>
           <a href="#">위클리 레터</a>
           <a href="#">소그룹 신청</a>
         </div>
