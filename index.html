@@ -681,33 +681,10 @@ input,select{font-family:inherit}
             <div class="donation-sub">아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.</div>
           </div>
 
-          <!-- 계좌 안내 -->
-          <div style="margin:20px 0 24px">
-            <div style="font-family:var(--font-cin);font-size:9px;letter-spacing:4px;color:var(--gold);opacity:.65;text-transform:uppercase;margin-bottom:12px">✝ 계좌 안내</div>
-            <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:18px 22px">
-              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(201,168,76,.1)">
-                <span style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.45;text-transform:uppercase">은행</span>
-                <span style="font-family:var(--font-serif);font-size:14px;color:var(--cream)">국민은행</span>
-              </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(201,168,76,.1)">
-                <span style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.45;text-transform:uppercase">계좌번호</span>
-                <div style="display:flex;align-items:center;gap:10px">
-                  <span style="font-family:var(--font-serif);font-size:14px;color:var(--cream)" id="bankNum2">835-21-0309-572</span>
-                  <button onclick="navigator.clipboard.writeText('835-21-0309-572').then(()=>{this.textContent='완료!';setTimeout(()=>this.textContent='복사',2000)})" style="font-family:var(--font-cin);font-size:8px;letter-spacing:2px;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:3px 8px;border-radius:2px;background:none;cursor:pointer;text-transform:uppercase">복사</button>
-                </div>
-              </div>
-              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(201,168,76,.1)">
-                <span style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.45;text-transform:uppercase">예금주</span>
-                <span style="font-family:var(--font-serif);font-size:14px;color:var(--cream)">Jeongmin Church</span>
-              </div>
-              <div style="display:flex;justify-content:space-between;padding:8px 0">
-                <span style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.45;text-transform:uppercase">입금 메모</span>
-                <span style="font-family:var(--font-serif);font-size:13px;color:var(--cream);opacity:.6">이름 + 후원</span>
-              </div>
-            </div>
-          </div>
-
           <!-- 후원 신청 버튼 -->
+          <p style="font-size:13px;font-weight:300;color:var(--cream);opacity:.55;text-align:center;margin-bottom:20px;line-height:2">
+            후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.
+          </p>
           <a href="https://docs.google.com/forms/d/e/1FAIpQLSfcBwzyAmeG9F26h7-H9HvhMSdNrz1tfODdMasjcVSdQMa2oQ/viewform?usp=sharing&ouid=103364882900686111237" target="_blank" rel="noopener"
             style="display:block;width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);font-family:var(--font-cin);font-size:12px;letter-spacing:5px;padding:18px 24px;border-radius:6px;text-transform:uppercase;font-weight:700;text-align:center;transition:all .3s;text-decoration:none"
             onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 40px rgba(201,168,76,.25)'"
