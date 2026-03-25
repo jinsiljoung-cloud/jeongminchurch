@@ -326,7 +326,7 @@ function toggleLyrics(k){
 }
 
 /* 🌿 자연 소리 */
-const NV={rain:{id:'mPZkdNFkNps',title:'빗소리 묵상',icon:'🌧️'},forest:{id:'xNN7iTA57jM',title:'숲속 새소리',icon:'🌲'},ocean:{id:'BHACKCNDMW8',title:'파도 소리',icon:'🌊'},piano:{id:'FXPKJUE86d0',title:'묵상 피아노',icon:'🎹'},fire:{id:'L_LUpnjgPso',title:'장작불 소리',icon:'🔥'},stream:{id:'bgFqEPGMo1k',title:'시냇물 소리',icon:'💧'}};
+const NV={rain:{id:'nMfPqeaykAc',title:'빗소리 묵상',icon:'🌧️'},forest:{id:'q76bMs-tMkI',title:'숲속 새소리',icon:'🌲'},ocean:{id:'bn9F19ZWlGU',title:'파도 소리',icon:'🌊'},piano:{id:'1ZYbU82uUws',title:'묵상 피아노',icon:'🎹'},fire:{id:'L_LUpnjgPso',title:'장작불 소리',icon:'🔥'},stream:{id:'HfwL8VsXuDo',title:'시냇물 소리',icon:'💧'}};
 function playN(t){
   if(curNature===t){stopN();return;}
   Object.keys(NV).forEach(k=>{document.getElementById('nc-'+k)?.classList.remove('playing');document.getElementById('ni-'+k).textContent='▶';});
@@ -346,7 +346,19 @@ function stopN(){
 }
 
 /* 📺 유튜브 찬송 모음 */
-function getYt(){try{return JSON.parse(localStorage.getItem(YT_KEY)||'[]');}catch{return[];}}
+function getYt(){
+  try{
+    const saved = JSON.parse(localStorage.getItem(YT_KEY)||'[]');
+    // 기본 영상 (항상 포함)
+    const defaults = [
+      {title:'Jeongmin Church — 찬양 모음', id:'XpEuEsvuXLQ', date:'2026-03-25', desc:'정민교 찬양'}
+    ];
+    // 저장된 영상 + 기본 영상 (중복 제거)
+    const savedIds = saved.map(v=>v.id);
+    const extra = defaults.filter(v=>!savedIds.includes(v.id));
+    return [...saved, ...extra];
+  }catch{return[];}
+}
 function saveYt(v){localStorage.setItem(YT_KEY,JSON.stringify(v));}
 function renderYt(){
   const vids=getYt(), list=document.getElementById('yt-list'), empty=document.getElementById('yt-empty'), wrap=document.getElementById('yt-player-wrap');

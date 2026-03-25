@@ -138,7 +138,7 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="tts-settings">
       <span style="font-family:var(--font-c);font-size:8px;letter-spacing:2px;color:var(--gold);opacity:.6;text-transform:uppercase">속도</span>
-      <input class="tts-range" type="range" id="ttsRate" min="0.5" max="1.2" step="0.05" value="0.78" oninput="updateRate(this.value)">
+      <input class="tts-range" type="range" id="ttsRate" min="0.5" max="1.2" step="0.05" value="0.85" oninput="updateRate(this.value)">
       <span class="tts-time" id="ttsRateVal">0.78x</span>
       <div class="tts-status" id="ttsStatus">
         <div class="tts-dot" id="ttsDot"></div>
@@ -382,7 +382,7 @@ let isPaused = false;
 let elapsedTime = 0;
 let startTime = 0;
 let timerInterval = null;
-let currentRate = 0.78;
+let currentRate = 0.85;
 const TOTAL_SECS = 600;
 
 // Progress bar
@@ -405,7 +405,12 @@ async function loadVoices() {
   });
 }
 function getBestVoice(voices) {
-  return voices.find(v => v.lang === 'ko-KR' && v.name.includes('Google'))
+  // 가장 자연스러운 목소리 우선순위
+  return voices.find(v => v.lang === 'ko-KR' && v.name.includes('Google 한국의'))
+      || voices.find(v => v.lang === 'ko-KR' && v.name.includes('Google'))
+      || voices.find(v => v.lang === 'ko-KR' && v.name.includes('Yuna'))
+      || voices.find(v => v.lang === 'ko-KR' && v.name.includes('미래'))
+      || voices.find(v => v.lang === 'ko-KR' && !v.name.includes('Male') && !v.name.includes('남성'))
       || voices.find(v => v.lang === 'ko-KR')
       || voices.find(v => v.lang.startsWith('ko'))
       || voices[0] || null;
@@ -430,8 +435,8 @@ async function ttsPlay() {
   if (voice) utterance.voice = voice;
   utterance.lang = 'ko-KR';
   utterance.rate = currentRate;
-  utterance.pitch = 0.85;
-  utterance.volume = 1.0;
+  utterance.pitch = 1.0;
+  utterance.volume = 0.95;
   utterance.onstart = () => {
     isPlaying = true; isPaused = false;
     document.getElementById('playBtn').textContent = '⏸';
