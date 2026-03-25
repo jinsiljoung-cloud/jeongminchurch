@@ -432,7 +432,7 @@ input,select{font-family:inherit}
     <li><a href="#donate" data-key="navDonate">후원</a></li>
     <li><a href="#community" data-key="navCommunity">공동체</a></li>
   </ul>
-  <button id="langToggle" onclick="toggleLang()" style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;padding:7px 14px;border:1px solid rgba(201,168,76,.3);background:rgba(201,168,76,.06);color:var(--gold);border-radius:2px;cursor:pointer;transition:all .3s;margin-right:10px">KO / EN</button><a href="#join" class="nav-cta" id="navCta">함께하기</a>
+  <button id="langToggle" onclick="window.toggleLang()" style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;padding:7px 14px;border:1px solid rgba(201,168,76,.3);background:rgba(201,168,76,.06);color:var(--gold);border-radius:2px;cursor:pointer;transition:all .3s;margin-right:10px">KO / EN</button><a href="#join" class="nav-cta" id="navCta">함께하기</a>
   <div class="nav-hamburger" id="hamburger" onclick="toggleMobile()">
     <span></span><span></span><span></span>
   </div>
@@ -729,7 +729,7 @@ input,select{font-family:inherit}
   <div class="container--narrow">
     <div class="join-inner reveal">
       <div class="eyebrow" id="joinEye">Join Us · 함께하기</div>
-      <h2 class="join-title">지금, <span class="gold">느린 걸음</span>으로<br>함께 시작하세요</h2>
+      <h2 class="join-title" id="joinTitle">지금, <span class="gold">느린 걸음</span>으로<br>함께 시작하세요</h2>
       <p class="join-sub" id="joinSub">스마트폰에 지친 당신, 화면 너머 진짜 세상이 그리운 당신.<br>Jeongmin Church는 이 시대의 디지털 세대를 향한 선교입니다.</p>
       <div style="width:100%;max-width:480px;margin:0 auto">
         <p style="font-family:var(--font-serif);font-size:14px;font-weight:300;color:var(--cream);opacity:.55;text-align:center;margin-bottom:24px;line-height:2">
@@ -740,7 +740,7 @@ input,select{font-family:inherit}
           <a href="https://docs.google.com/forms/d/e/1FAIpQLSc_6EnRTjCQSO68Eyy3QP80OuU_3cqADuuHN91UtzeQEAU7ug/viewform?usp=dialog" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block"><span id="joinBtn">Jeongmin Church 함께하기 ✝</span></a>
         </div>
         <p style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.25;text-align:center;margin-top:16px">
-          가입 정보는 Jeongmin Church 운영에만 사용됩니다
+          <span id="joinPrivacy">가입 정보는 Jeongmin Church 운영에만 사용됩니다</span>
         </p>
       </div>
       <div class="h-rule" style="max-width:280px;margin:28px auto"><div class="h-rule-line"></div><div class="h-rule-dot"></div><div class="h-rule-line"></div></div>
@@ -1097,321 +1097,240 @@ function clearSermonBadge() {
 window.addEventListener('load', checkSermonBadge);
 
 /* ══ 한/영 전환 ══ */
-const TRANSLATIONS = {
+/* ══ 한/영 전환 시스템 ══ */
+var LANG_DATA = {
   ko: {
-    langBtn:'KO | EN',
-    // Nav
-    navAbout:'소개', navValues:'삶의 방식', navWorship:'예배',
-    navSermon:'말씀', navDonate:'후원', navCommunity:'공동체', navCta:'함께하기',
-    // Hero
-    heroEye:'Digital Church · 디지털 교회',
-    heroTagline:'SLOWLY · RIGHTEOUSLY · TOGETHER',
-    heroSubtitle:'디지털 세대를 향한 이 시대의 선교',
-    heroBtnLearn:'교회 알아보기', heroBtnDonate:'✝ 후원하기',
-    heroWords:['느리게✦','바르게✦','함께✦'],
-    // About
-    aboutEye:'About · Jeongmin Church',
-    aboutSub:'정민교 (正民敎) · Jeongmin Church',
-    aboutBadge:'Independent Christian Ministry · Non-Denominational',
-    aboutBody1:'Sharing simple and practical messages from the Bible for everyday life — Sermons, Short reflections, and Faith-based life guidance for the digital generation.',
-    aboutBody2:'스마트폰 앞에 갇힌 디지털 세대에게 성경의 진리와 느린 삶의 가치를 전합니다. 이 사역은 독립적인 비교단 온라인 기독교 사역입니다.',
-    aboutVerse:'"너희는 가만히 있어 내가 하나님 됨을 알지어다"',
-    aboutVerseRef:'— 시편 46:10 —',
-    aboutBtnJoin:'함께 시작하기',
-    aboutProfileSub:'비교단 독립 기독교 사역자 · 온라인 기반 성경 중심 사역',
-    aboutProfileDesc:'본 사역은 특정 교단에 소속되지 않은 독립 신앙 공동체로,<br>성경 말씀을 중심으로 일상 속 믿음과 삶의 방향을 나눕니다.<br>누구나 자유롭게 참여할 수 있으며, 모든 후원은 자율적입니다.',
-    aboutDisclaimer:'본 사역은 비교단 독립 사역으로 운영되며 모든 후원은 자율적으로 이루어지며 강요되지 않습니다',
-    // Values
-    valuesEye:'What We Believe · 우리의 믿음',
-    valuesTitle:'Five Ways of Life',
-    valuesSub:'일상 속에서 실천하는 다섯 가지 삶의 방식입니다.',
-    creedEye:'Confession of Faith · 신앙 고백',
-    creedLabel:'✝ &nbsp; Jeongmin Church 신앙고백 &nbsp; ✝',
-    creedLines:'나는 <span class="creed-accent">바른 길</span>을 걷는 정민인이다.<br><span class="creed-accent">빠름</span>보다 깊음을,<br><span class="creed-accent">소유</span>보다 존재를,<br><span class="creed-accent">성공</span>보다 성품을 추구한다.<br><br>나는 디지털 세계에서도<br><span class="creed-accent">하나님의 사람</span>으로 살며,<br>느린 삶 안에서 <span class="creed-accent">영원</span>을 만난다.',
-    creedAmen:'— Amen · 아멘 —',
-    creedLine1:'나는 바른 길을 걷는 정민인이다.',
-    creedLine2:'빠름보다 깊음을,', creedLine3:'소유보다 존재를,', creedLine4:'성공보다 성품을 추구한다.',
-    creedLine5:'나는 디지털 세계에서도', creedLine6:'하나님의 사람으로 살며,', creedLine7:'느린 삶 안에서 영원을 만난다.',
-    // Worship
-    worshipEye:'Worship Style · 예배 방식',
-    worshipTitle:'예배',
-    worshipDesc:'성전은 건물이 아닙니다. 하나님을 향해 마음을 여는 그 자리가 성전입니다.',
-    wCard1Title:'성전', wCard1Desc:'인터넷이 닿는 모든 곳',
-    wCard2Title:'예배 시간 →', wCard2Desc:'알림 없는 아침 30분', wCard2Sub:'30분 예배 가이드 ✝',
-    wCard3Title:'찬양 →', wCard3Desc:'자연의 소리 + 묵상 음악', wCard3Sub:'찬양 듣기 ✝',
-    wCard4Title:'말씀 →', wCard4Desc:'하루 한 구절, 깊이 묵상', wCard4Sub:'창립 설교 보러가기 ✝',
-    wCard5Title:'헌금 →', wCard5Desc:'시간과 재능의 나눔', wCard5Sub:'후원하러 가기 ✝',
-    wCard6Title:'교제 →', wCard6Desc:'느린 대화, 깊은 경청', wCard6Sub:'유튜브 채널 바로가기 ▶',
-    // Donate
-    donateEye:'Support · 후원',
-    donateTitle:'함께<br>세상을 밝혀주세요',
-    donateSub:'여러분의 후원이 디지털 신앙 공동체를 이어갑니다.',
-    donateGuide:'후원 신청 후 안내된 계좌로 입금해 주시면 됩니다.',
-    donateVoluntary:'모든 후원은 자율적이며 강요되지 않습니다 · All support is voluntary',
-    donateCardTitle:'후원 신청',
-    donateCardDesc:'아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.',
-    donateBtn:'✝ 후원 신청하기',
-    donateNotice:'<span id="donateNotice">신청서 작성 → 계좌 입금 → 이메일 확인<br>후원금은 Jeongmin Church 운영에만 사용됩니다</span>',
-    // Community
-    communityEye:'Community · 공동체',
-    communityTitle:'스마트폰 너머의<br>진짜 세상으로',
-    communitySub:'화면 앞에 갇힌 디지털 세대에게 진짜 삶을 전합니다.<br>느리게, 바르게, 함께 — Jeongmin Church는 이 시대의 선교입니다.',
-    // Join
-    joinEye:'Join Us · 함께하기',
-    joinTitle:'지금, 느린 걸음으로<br>함께 시작하세요',
-    joinSub:'스마트폰에 지친 당신, 화면 너머 진짜 세상이 그리운 당신.<br>Jeongmin Church는 이 시대의 디지털 세대를 향한 선교입니다.',
-    joinNotice:'아래 버튼을 클릭하면 가입 양식으로 이동합니다.',
-    joinSafe:'✝ 구글 폼으로 안전하게 가입됩니다',
-    joinBtn:'Jeongmin Church 함께하기 ✝',
-    joinPrivacy:'가입 정보는 Jeongmin Church 운영에만 사용됩니다',
-    // Footer
-    footerDesc:'Independent Christian Ministry · Non-Denominational<br>디지털 세대를 향한 온라인 선교 사역<br><span style="font-size:10px;opacity:.5">All support is voluntary and not required</span>',
-    footerCol1:'교회 안내',
-    footerL1:'교회 소개', footerL2:'삶의 방식', footerL3:'예배 방식', footerL4:'말씀', footerL5:'공동체',
-    footerCol2:'함께하기',
-    footerL6:'공동체 가입', footerL7:'후원하기', footerL8:'위클리 레터', footerL9:'소그룹 신청',
-    footerCol3:'채널',
-    footerL10:'네이버 블로그', footerL11:'유튜브', footerL12:'인스타그램', footerL13:'카카오 오픈채팅',
-    footerCopy:'개인정보처리방침',
-    // 배지
-    aboutBadgeKr:'비교단 독립 사역',
-    // 교리 하단 카드
-    ddVerse1:'"좁은 문으로 들어가라"', ddRef1:'마태복음 7:13', ddText1:'성공보다 성실, 속도보다 방향.',
-    ddVerse2:'"진리가 너희를 자유롭게 하리라"', ddRef2:'요한복음 8:32', ddText2:'온라인과 오프라인이 같은 사람.',
-    ddVerse3:'"어느 형편에든 자족하기를"', ddRef3:'빌립보서 4:11', ddText3:'어디에 있든 그 곳이 성전.',
-    ddVerse4:'"이웃을 네 자신 같이 사랑하라"', ddRef4:'마가복음 12:31', ddText4:'댓글 하나도 사랑의 언어로.',
-    ddVerse5:'"가만히 있어 내가 하나님임을"', ddRef5:'시편 46:10', ddText5:'느린 삶이 곧 영성입니다.',
-    // 공동체 카드
-    cfTitle1:'매일 묵상 나눔 →', cfDesc1:'하루 한 구절 말씀을 함께 나눕니다.', cfSub1:'묵상 나누러 가기 ✝',
-    cfTitle2:'Jeongmin Church 위클리 레터 →', cfDesc2:'매주 느린 삶과 신앙 이야기를 담은 뉴스레터.', cfSub2:'레터 읽으러 가기 ✝',
-    cfTitle3:'온라인 소그룹', cfDesc3:'전국 어디서든 참여 가능한 소그룹 모임.',
-    cfTitle4:'느린 글쓰기 모임 →', cfDesc4:'신앙 에세이, 묵상 일기를 함께 씁니다.', cfSub4:'글 쓰러 가기 ✝',
-    // 후원 카드
-    donateCardDesc:'아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.',
-    donateNotice:'신청서 작성 → 계좌 입금 → 이메일 확인<br>후원금은 Jeongmin Church 운영에만 사용됩니다',
+    langBtn: "KO | EN",
+    navAbout: "소개", navValues: "삶의 방식", navWorship: "예배",
+    navSermon: "말씀", navDonate: "후원", navCommunity: "공동체", navCta: "함께하기",
+    heroEye: "Digital Church · 디지털 교회",
+    heroSub: "디지털 세대를 향한 이 시대의 선교",
+    valuesEye: "What We Believe · 우리의 믿음",
+    valuesTitle: "Five Ways of Life",
+    valuesSub: "일상 속에서 실천하는 다섯 가지 삶의 방식입니다.",
+    aboutBody1: "Sharing simple and practical messages from the Bible for everyday life — Sermons, Short reflections, and Faith-based life guidance for the digital generation.",
+    aboutBody2: "스마트폰 앞에 갇힌 디지털 세대에게 성경의 진리와 느린 삶의 가치를 전합니다. 이 사역은 독립적인 비교단 온라인 기독교 사역입니다.",
+    aboutVerse: "&quot;너희는 가만히 있어 내가 하나님 됨을 알지어다&quot;",
+    aboutVerseRef: "— 시편 46:10 —",
+    aboutBtnJoin: "함께 시작하기",
+    aboutBadgeKr: "비교단 독립 사역",
+    aboutProfileSub: "비교단 독립 기독교 사역자 · 온라인 기반 성경 중심 사역",
+    creedEye: "Confession of Faith · 신앙 고백",
+    creedLabel: "✝ &nbsp; 정민교 신앙고백 &nbsp; ✝",
+    creedAmen: "— Amen · 아멘 —",
+    worshipEye: "Worship Style · 예배 방식",
+    worshipTitle: "예배",
+    worshipDesc: "성전은 건물이 아닙니다. 하나님을 향해 마음을 여는 그 자리가 성전입니다.",
+    wt1:"성전", wd1:"인터넷이 닿는 모든 곳",
+    wt2:"예배 시간 →", wd2:"알림 없는 아침 30분", ws2:"30분 예배 가이드 ✝",
+    wt3:"찬양 →", wd3:"자연의 소리 + 묵상 음악", ws3:"찬양 듣기 ✝",
+    wt4:"말씀 →", wd4:"하루 한 구절, 깊이 묵상", ws4:"창립 설교 보러가기 ✝",
+    wt5:"헌금 →", wd5:"시간과 재능의 나눔", ws5:"후원하러 가기 ✝",
+    wt6:"교제 →", wd6:"느린 대화, 깊은 경청", ws6:"유튜브 채널 바로가기 ▶",
+    donateEye: "Support · 후원",
+    donateTitle: "함께<br>세상을 밝혀주세요",
+    donateMainSub: "여러분의 후원이 디지털 신앙 공동체를 이어갑니다.",
+    donateCardTitle: "후원 신청",
+    donateCardDesc: "아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.",
+    donateBtn: "✝ 후원 신청하기",
+    donateNotice: "신청서 작성 → 계좌 입금 → 이메일 확인<br>후원금은 Jeongmin Church 운영에만 사용됩니다",
+    communityEye: "Community · 공동체",
+    communityTitle: "스마트폰 너머의<br>진짜 세상으로",
+    communitySub: "화면 앞에 갇힌 디지털 세대에게 진짜 삶을 전합니다.<br>느리게, 바르게, 함께 — Jeongmin Church는 이 시대의 선교입니다.",
+    ct1:"매일 묵상 나눔 →", cd1:"하루 한 구절 말씀을 함께 나눕니다.", cs1:"묵상 나누러 가기 ✝",
+    ct2:"Jeongmin Church 위클리 레터 →", cd2:"매주 느린 삶과 신앙 이야기를 담은 뉴스레터.", cs2:"레터 읽으러 가기 ✝",
+    ct3:"온라인 소그룹", cd3:"전국 어디서든 참여 가능한 소그룹 모임.",
+    ct4:"느린 글쓰기 모임 →", cd4:"신앙 에세이, 묵상 일기를 함께 씁니다.", cs4:"글 쓰러 가기 ✝",
+    joinEye: "Join Us · 함께하기",
+    joinTitle: "지금, <span class=\"gold\">느린 걸음</span>으로<br>함께 시작하세요",
+    joinSub: "스마트폰에 지친 당신, 화면 너머 진짜 세상이 그리운 당신.<br>Jeongmin Church는 이 시대의 디지털 세대를 향한 선교입니다.",
+    joinBtn: "Jeongmin Church 함께하기 ✝",
+    joinPrivacy: "가입 정보는 Jeongmin Church 운영에만 사용됩니다",
+    footerDesc: "Independent Christian Ministry · Non-Denominational<br>디지털 세대를 향한 온라인 선교 사역",
+    footerCol1: "교회 안내", footerCol2: "함께하기", footerCol3: "채널",
+    fl1:"교회 소개", fl2:"삶의 방식", fl3:"예배 방식", fl4:"말씀", fl5:"공동체",
+    fl6:"공동체 가입", fl7:"후원하기", fl8:"위클리 레터", fl9:"소그룹 신청",
+    fl10:"네이버 블로그", fl11:"유튜브", fl12:"인스타그램", fl13:"카카오 오픈채팅",
+    footerCopy: "개인정보처리방침",
+    dv1:'"좁은 문으로 들어가라"', dr1:"마태복음 7:13", dd1:"성공보다 성실, 속도보다 방향.",
+    dv2:'"진리가 너희를 자유롭게 하리라"', dr2:"요한복음 8:32", dd2:"온라인과 오프라인이 같은 사람.",
+    dv3:'"어느 형편에든 자족하기를"', dr3:"빌립보서 4:11", dd3:"어디에 있든 그 곳이 성전.",
+    dv4:'"이웃을 네 자신 같이 사랑하라"', dr4:"마가복음 12:31", dd4:"댓글 하나도 사랑의 언어로.",
+    dv5:'"가만히 있어 내가 하나님임을"', dr5:"시편 46:10", dd5:"느린 삶이 곧 영성입니다."
   },
   en: {
-    langBtn:'EN | KO',
-    // Nav
-    navAbout:'About', navValues:'Our Values', navWorship:'Worship',
-    navSermon:'Sermons', navDonate:'Support', navCommunity:'Community', navCta:'Join Us',
-    // Hero
-    heroEye:'Online Christian Ministry · Non-Denominational',
-    heroTagline:'SLOWLY · RIGHTEOUSLY · TOGETHER',
-    heroSubtitle:'Reaching the Digital Generation with Biblical Truth',
-    heroBtnLearn:'Learn More', heroBtnDonate:'✝ Support Us',
-    heroWords:['Slowly✦','Righteously✦','Together✦'],
-    // About
-    aboutEye:'About · Jeongmin Church',
-    aboutSub:'정민교 (正民敎) · Online Ministry',
-    aboutBadge:'Independent Christian Ministry · Non-Denominational',
-    aboutBody1:'Sharing simple and practical messages from the Bible for everyday life — Sermons, Short reflections, and Faith-based life guidance for the digital generation.',
-    aboutBody2:'We reach those trapped in front of screens with timeless Biblical truth and the value of a slower, more intentional life.',
-    aboutVerse:'"Be still, and know that I am God"',
-    aboutVerseRef:'— Psalm 46:10 —',
-    aboutBtnJoin:'Get Started',
-    aboutProfileSub:'Independent Christian Minister · Online Bible-Based Ministry',
-    aboutProfileDesc:'This ministry operates as an independent, non-denominational faith community,<br>sharing Biblical guidance for everyday faith and life direction.<br>Everyone is welcome, and all support is completely voluntary.',
-    aboutDisclaimer:'This ministry operates independently and all support is voluntary and not required',
-    // Values
-    valuesEye:'What We Believe · Our Values',
-    valuesTitle:'Five Ways of Life',
-    valuesSub:'Five simple principles for living a meaningful, faith-centered life.',
-    creedEye:'Confession of Faith · Our Creed',
-    creedLabel:'✝ &nbsp; Jeongmin Church Creed &nbsp; ✝',
-    creedLines:`I am one who walks <span class="creed-accent">the right path</span>.<br>I choose <span class="creed-accent">depth</span> over speed,<br><span class="creed-accent">being</span> over having,<br><span class="creed-accent">character</span> over success.<br><br>Even in the digital world,<br>I live as <span class="creed-accent">God's person</span>,<br>finding <span class="creed-accent">eternity</span> in a slower life.`,
-    creedAmen:'— Amen —',
-    creedLine1:'I am one who walks the right path.',
-    creedLine2:'I choose depth over speed,', creedLine3:'being over having,', creedLine4:'character over success.',
-    creedLine5:'Even in the digital world,', creedLine6:`I live as God's person,`, creedLine7:'finding eternity in a slower life.',
-    // Worship
-    worshipEye:'Worship Style · How We Worship',
-    worshipTitle:'Worship',
-    worshipDesc:'The sanctuary is not a building. Wherever you open your heart to God — that is holy ground.',
-    wCard1Title:'Sanctuary', wCard1Desc:'Wherever the internet reaches',
-    wCard2Title:'Worship Time →', wCard2Desc:'30 minutes each morning, screens off', wCard2Sub:'30-Min Worship Guide ✝',
-    wCard3Title:'Praise →', wCard3Desc:'Nature sounds + Meditation music', wCard3Sub:'Listen to Praise ✝',
-    wCard4Title:'Word →', wCard4Desc:'One verse a day, deeply meditated', wCard4Sub:'First Sermon ✝',
-    wCard5Title:'Giving →', wCard5Desc:'Sharing your time and talents', wCard5Sub:'Support Us ✝',
-    wCard6Title:'Fellowship →', wCard6Desc:'Slow conversations, deep listening', wCard6Sub:'YouTube Channel ▶',
-    // Donate
-    donateEye:'Support · Our Ministry',
-    donateTitle:"Together, Let's<br>Light Up the World",
-    donateSub:'Your support helps sustain this digital faith community.',
-    donateGuide:'Submit a support request and transfer to the provided account.',
-    donateVoluntary:'All support is completely voluntary and not required',
-    donateCardTitle:'Support Request',
-    donateCardDesc:'Click the button below to fill out a support request form.<br>Transfer to the provided account after submission.',
-    donateBtn:'✝ Support Now',
-    donateNotice:'Fill form → Bank transfer → Email confirmation<br>All funds are used solely for Jeongmin Church ministry',
-    // Community
-    communityEye:'Community · Connect',
-    communityTitle:'Beyond the Screen —<br>Real Life Awaits',
-    communitySub:'We bring the Gospel to those lost in the digital world.<br>Slowly · Righteously · Together — Jeongmin Church is a mission for this generation.',
-    // Join
-    joinEye:'Join Us · Get Started',
-    joinTitle:"Begin the Journey,<br>One Slow Step at a Time",
-    joinSub:'Tired of your screen? Longing for something real?<br>Jeongmin Church is a mission for the digital generation.',
-    joinNotice:'Click the button below to access the sign-up form.',
-    joinSafe:'✝ Secure sign-up via Google Forms',
-    joinBtn:'Join Jeongmin Church ✝',
-    joinPrivacy:'Your information is used solely for Jeongmin Church community purposes',
-    // Footer
-    footerDesc:'Independent Christian Ministry · Non-Denominational<br>Online Christian Mission for the Digital Generation<br><span style="font-size:10px;opacity:.5">All support is voluntary and not required</span>',
-    footerCol1:'Ministry',
-    footerL1:'About', footerL2:'Our Values', footerL3:'Worship', footerL4:'Sermons', footerL5:'Community',
-    footerCol2:'Get Involved',
-    footerL6:'Join Community', footerL7:'Support Us', footerL8:'Weekly Letter', footerL9:'Small Groups',
-    footerCol3:'Channels',
-    footerL10:'Naver Blog', footerL11:'YouTube', footerL12:'Instagram', footerL13:'KakaoTalk Open Chat',
-    footerCopy:'Privacy Policy',
-    // Badge
-    aboutBadgeKr:'Independent Ministry',
-    // Doctrine cards
-    ddVerse1:'"Enter through the narrow gate"', ddRef1:'Matthew 7:13', ddText1:'Character over success, direction over speed.',
-    ddVerse2:'"The truth will set you free"', ddRef2:'John 8:32', ddText2:'The same person online and offline.',
-    ddVerse3:'"I have learned to be content"', ddRef3:'Philippians 4:11', ddText3:'Wherever you are, that place is holy.',
-    ddVerse4:'"Love your neighbor as yourself"', ddRef4:'Mark 12:31', ddText4:'Every comment is a chance to love.',
-    ddVerse5:'"Be still and know that I am God"', ddRef5:'Psalm 46:10', ddText5:'A slow life is a spiritual life.',
-    // Community cards
-    cfTitle1:'Daily Meditation →', cfDesc1:'Share one verse together each day.', cfSub1:'Share Meditation ✝',
-    cfTitle2:'Jeongmin Church Weekly Letter →', cfDesc2:'A weekly newsletter on slow living and faith.', cfSub2:'Read Letter ✝',
-    cfTitle3:'Online Small Groups', cfDesc3:'Small groups you can join from anywhere.',
-    cfTitle4:'Slow Writing Group →', cfDesc4:'Write faith essays and meditation journals together.', cfSub4:'Start Writing ✝',
-    // Donate card
-    donateCardDesc:'Click the button below to fill out a support request form.<br>Transfer to the provided account after submission.',
-    donateNotice:'Fill form → Bank transfer → Email confirmation<br>All funds are used solely for Jeongmin Church ministry',
+    langBtn: "EN | KO",
+    navAbout: "About", navValues: "Our Values", navWorship: "Worship",
+    navSermon: "Sermons", navDonate: "Support", navCommunity: "Community", navCta: "Join Us",
+    heroEye: "Online Christian Ministry · Non-Denominational",
+    heroSub: "Reaching the Digital Generation with Biblical Truth",
+    valuesEye: "What We Believe · Our Values",
+    valuesTitle: "Five Ways of Life",
+    valuesSub: "Five simple principles for living a meaningful, faith-centered life.",
+    aboutBody1: "Sharing simple and practical messages from the Bible for everyday life — Sermons, Short reflections, and Faith-based life guidance for the digital generation.",
+    aboutBody2: "We reach those trapped in front of screens with timeless Biblical truth and the value of a slower, more intentional life.",
+    aboutVerse: "&quot;Be still, and know that I am God&quot;",
+    aboutVerseRef: "— Psalm 46:10 —",
+    aboutBtnJoin: "Get Started",
+    aboutBadgeKr: "Independent Ministry",
+    aboutProfileSub: "Independent Christian Minister · Online Bible-Based Ministry",
+    creedEye: "Confession of Faith · Our Creed",
+    creedLabel: "✝ &nbsp; Jeongmin Church Creed &nbsp; ✝",
+    creedAmen: "— Amen —",
+    worshipEye: "Worship Style · How We Worship",
+    worshipTitle: "Worship",
+    worshipDesc: "The sanctuary is not a building. Wherever you open your heart to God — that is holy ground.",
+    wt1:"Sanctuary", wd1:"Wherever the internet reaches",
+    wt2:"Worship Time →", wd2:"30 minutes each morning, screens off", ws2:"30-Min Worship Guide ✝",
+    wt3:"Praise →", wd3:"Nature sounds + Meditation music", ws3:"Listen to Praise ✝",
+    wt4:"Word →", wd4:"One verse a day, deeply meditated", ws4:"First Sermon ✝",
+    wt5:"Giving →", wd5:"Sharing your time and talents", ws5:"Support Us ✝",
+    wt6:"Fellowship →", wd6:"Slow conversations, deep listening", ws6:"YouTube Channel ▶",
+    donateEye: "Support · Our Ministry",
+    donateTitle: "Together, Let Us<br>Light Up the World",
+    donateMainSub: "Your support helps sustain this digital faith community.",
+    donateCardTitle: "Support Request",
+    donateCardDesc: "Click the button below to fill out a support request form.<br>Transfer to the provided account after submission.",
+    donateBtn: "✝ Support Now",
+    donateNotice: "Fill form → Bank transfer → Email confirmation<br>All funds are used solely for Jeongmin Church ministry",
+    communityEye: "Community · Connect",
+    communityTitle: "Beyond the Screen —<br>Real Life Awaits",
+    communitySub: "We bring the Gospel to those lost in the digital world.<br>Slowly · Righteously · Together — Jeongmin Church is a mission for this generation.",
+    ct1:"Daily Meditation →", cd1:"Share one verse together each day.", cs1:"Share Meditation ✝",
+    ct2:"Jeongmin Church Weekly Letter →", cd2:"A weekly newsletter on slow living and faith.", cs2:"Read Letter ✝",
+    ct3:"Online Small Groups", cd3:"Small groups you can join from anywhere.",
+    ct4:"Slow Writing Group →", cd4:"Write faith essays and meditation journals together.", cs4:"Start Writing ✝",
+    joinEye: "Join Us · Get Started",
+    joinTitle: "Begin the Journey,<br><span class=\"gold\">One Slow Step</span> at a Time",
+    joinSub: "Tired of your screen? Longing for something real?<br>Jeongmin Church is a mission for the digital generation.",
+    joinBtn: "Join Jeongmin Church ✝",
+    joinPrivacy: "Your information is used solely for Jeongmin Church community purposes",
+    footerDesc: "Independent Christian Ministry · Non-Denominational<br>Online Christian Mission for the Digital Generation",
+    footerCol1: "Ministry", footerCol2: "Get Involved", footerCol3: "Channels",
+    fl1:"About", fl2:"Our Values", fl3:"Worship", fl4:"Sermons", fl5:"Community",
+    fl6:"Join Community", fl7:"Support Us", fl8:"Weekly Letter", fl9:"Small Groups",
+    fl10:"Naver Blog", fl11:"YouTube", fl12:"Instagram", fl13:"KakaoTalk Chat",
+    footerCopy: "Privacy Policy",
+    dv1:'"Enter through the narrow gate"', dr1:"Matthew 7:13", dd1:"Character over success, direction over speed.",
+    dv2:'"The truth will set you free"', dr2:"John 8:32", dd2:"The same person online and offline.",
+    dv3:'"I have learned to be content"', dr3:"Philippians 4:11", dd3:"Wherever you are, that place is holy.",
+    dv4:'"Love your neighbor as yourself"', dr4:"Mark 12:31", dd4:"Every comment is a chance to love.",
+    dv5:'"Be still and know that I am God"', dr5:"Psalm 46:10", dd5:"A slow life is a spiritual life."
   }
 };
 
-let currentLang = localStorage.getItem('jm_lang') || 'ko';
+var currentLang = localStorage.getItem("jm_lang") || "ko";
 
 function toggleLang() {
-  currentLang = currentLang === 'ko' ? 'en' : 'ko';
+  currentLang = currentLang === "ko" ? "en" : "ko";
   applyLang(currentLang);
-  localStorage.setItem('jm_lang', currentLang);
+  localStorage.setItem("jm_lang", currentLang);
+}
+window.toggleLang = toggleLang;
+
+function ST(id, val) {
+  var el = document.getElementById(id);
+  if (el && val !== undefined) el.innerHTML = val;
 }
 
 function applyLang(lang) {
-  const t = TRANSLATIONS[lang];
-  document.getElementById('htmlRoot').setAttribute('lang', lang==='ko'?'ko':'en');
+  var t = LANG_DATA[lang];
+  if (!t) return;
+  document.getElementById("htmlRoot").setAttribute("lang", lang === "ko" ? "ko" : "en");
 
-  // 언어 버튼
-  const lb = document.getElementById('langToggle');
-  if(lb) lb.textContent = t.langBtn;
-  const cta = document.getElementById('navCta');
-  if(cta) cta.textContent = t.navCta;
+  ST("langToggle", t.langBtn);
+  var cta = document.getElementById("navCta");
+  if (cta) cta.textContent = t.navCta;
 
-  // 네비 링크 (data-key)
-  document.querySelectorAll('[data-key]').forEach(el=>{
-    const key = el.getAttribute('data-key');
-    if(t[key]) el.textContent = t[key];
+  document.querySelectorAll("[data-key]").forEach(function(el) {
+    var k = el.getAttribute("data-key");
+    if (t[k]) el.textContent = t[k];
   });
 
-  // 모든 번역 적용
-  const map = {
-    heroEyebrow: t.heroEye,
-    heroSubtitle: t.heroSubtitle,
-    valuesTitle: t.valuesTitle,
-    valuesSub: t.valuesSub,
-    communityTitle: t.communityTitle,
-    communitySub: t.communitySub,
-    donateTitle: t.donateTitle,
-    donateSub: t.donateCardTitle,
-    joinBtn: t.joinBtn,
-    footerDesc: t.footerDesc,
-    // 추가 ID들
-    aboutBody1: t.aboutBody1,
-    aboutBody2: t.aboutBody2,
-    aboutVerse: t.aboutVerse,
-    aboutVerseRef: t.aboutVerseRef,
-    aboutBtnJoin: t.aboutBtnJoin,
-    aboutProfileSub: t.aboutProfileSub,
-    aboutProfileDesc: t.aboutProfileDesc,
-    aboutDisclaimer: t.aboutDisclaimer,
-    valuesEyebrow: t.valuesEye,
-    worshipTitle: t.worshipTitle,
-    worshipDesc: t.worshipDesc,
-    donateEye: t.donateEye,
-    donateMainTitle: t.donateTitle,
-    donateMainSub: t.donateSub,
-    donateGuide: t.donateGuide,
-    donateVoluntary: t.donateVoluntary,
-    donateCardDesc: t.donateCardDesc,
-    donateBtn: t.donateBtn,
-    donateNotice: t.donateNotice,
-    communityEye: t.communityEye,
-    joinEye: t.joinEye,
-    joinTitle: t.joinTitle,
-    joinSub: t.joinSub,
-    joinNotice: t.joinNotice,
-    joinSafe: t.joinSafe,
-    joinPrivacy: t.joinPrivacy,
-    creedLabel: t.creedLabel,
-    footerCol1: t.footerCol1,
-    footerCol2: t.footerCol2,
-    footerCol3: t.footerCol3,
-    footerL1: t.footerL1, footerL2: t.footerL2, footerL3: t.footerL3,
-    footerL4: t.footerL4, footerL5: t.footerL5, footerL6: t.footerL6,
-    footerL7: t.footerL7, footerL8: t.footerL8, footerL9: t.footerL9,
-    footerL10: t.footerL10, footerL11: t.footerL11, footerL12: t.footerL12,
-    footerL13: t.footerL13, footerCopy: t.footerCopy,
-  };
+  ST("heroEyebrow", t.heroEye);
+  ST("heroSubtitle", t.heroSub);
+  ST("valuesEyebrow", t.valuesEye);
+  ST("valuesTitle", t.valuesTitle);
+  ST("valuesSub", t.valuesSub);
+  ST("aboutBody1", t.aboutBody1);
+  ST("aboutBody2", t.aboutBody2);
+  ST("aboutVerse", t.aboutVerse);
+  ST("aboutVerseRef", t.aboutVerseRef);
+  ST("aboutBtnJoin", t.aboutBtnJoin);
+  ST("aboutBadgeKr", t.aboutBadgeKr);
+  ST("aboutProfileSub", t.aboutProfileSub);
+  ST("creedEye", t.creedEye);
+  ST("creedLabel", t.creedLabel);
+  ST("creedAmen", t.creedAmen);
+  ST("worshipEye", t.worshipEye);
+  ST("worshipTitle", t.worshipTitle);
+  ST("worshipDesc", t.worshipDesc);
+  ST("communityEye", t.communityEye);
+  ST("communityTitle", t.communityTitle);
+  ST("communitySub", t.communitySub);
+  ST("donateEye", t.donateEye);
+  ST("donateTitle", t.donateTitle);
+  ST("donateMainSub", t.donateMainSub);
+  ST("donateCardTitle", t.donateCardTitle);
+  ST("donateCardDesc", t.donateCardDesc);
+  ST("donateBtn", t.donateBtn);
+  ST("donateNotice", t.donateNotice);
+  ST("joinEye", t.joinEye);
+  ST("joinTitle", t.joinTitle);
+  ST("joinSub", t.joinSub);
+  ST("joinBtn", t.joinBtn);
+  ST("joinPrivacy", t.joinPrivacy);
+  ST("footerDesc", t.footerDesc);
+  ST("footerCol1", t.footerCol1);
+  ST("footerCol2", t.footerCol2);
+  ST("footerCol3", t.footerCol3);
+  ST("footerCopy", t.footerCopy);
 
-  Object.entries(map).forEach(([id, val]) => setT(id, val));
-
-  // 예배 카드
-  const wCards = [
-    {icon:null, title:t.wCard1Title, desc:t.wCard1Desc, sub:null},
-    {icon:null, title:t.wCard2Title, desc:t.wCard2Desc, sub:t.wCard2Sub},
-    {icon:null, title:t.wCard3Title, desc:t.wCard3Desc, sub:t.wCard3Sub},
-    {icon:null, title:t.wCard4Title, desc:t.wCard4Desc, sub:t.wCard4Sub},
-    {icon:null, title:t.wCard5Title, desc:t.wCard5Desc, sub:t.wCard5Sub},
-    {icon:null, title:t.wCard6Title, desc:t.wCard6Desc, sub:t.wCard6Sub},
-  ];
-  wCards.forEach((c,i)=>{
-    setT('wCardTitle'+(i+1), c.title);
-    setT('wCardDesc'+(i+1), c.desc);
-    if(c.sub) setT('wCardSub'+(i+1), c.sub);
-  });
-
-  // 신앙고백
-  ['creedLine1','creedLine2','creedLine3','creedLine4','creedLine5','creedLine6','creedLine7'].forEach(k=>{
-    setT(k, t[k]);
-  });
-
-  // 배지
-  setT('aboutBadgeKr', t.aboutBadgeKr);
-
-  // 교리 하단 카드
-  for(let i=1;i<=5;i++){
-    setT('ddVerse'+i, t['ddVerse'+i]);
-    setT('ddRef'+i, t['ddRef'+i]);
-    setT('ddText'+i, t['ddText'+i]);
+  for (var i = 1; i <= 13; i++) ST("fl" + i, t["fl" + i]);
+  for (var i = 1; i <= 6; i++) {
+    ST("wCardTitle" + i, t["wt" + i]);
+    ST("wCardDesc" + i, t["wd" + i]);
+    if (t["ws" + i]) ST("wCardSub" + i, t["ws" + i]);
   }
-
-  // 예배 카드
-  for(let i=1;i<=6;i++){
-    setT('wCardTitle'+i, t['wCardTitle'+i]);
-    setT('wCardDesc'+i, t['wCardDesc'+i]);
-    if(t['wCardSub'+i]) setT('wCardSub'+i, t['wCardSub'+i]);
+  for (var i = 1; i <= 5; i++) {
+    ST("ddVerse" + i, t["dv" + i]);
+    ST("ddRef" + i, t["dr" + i]);
+    ST("ddText" + i, t["dd" + i]);
   }
+  ST("cfTitle1", t.ct1); ST("cfDesc1", t.cd1); ST("cfSub1", t.cs1);
+  ST("cfTitle2", t.ct2); ST("cfDesc2", t.cd2); ST("cfSub2", t.cs2);
+  ST("cfTitle3", t.ct3); ST("cfDesc3", t.cd3);
+  ST("cfTitle4", t.ct4); ST("cfDesc4", t.cd4); ST("cfSub4", t.cs4);
 
-  // 공동체 카드
-  ['cfTitle1','cfDesc1','cfSub1','cfTitle2','cfDesc2','cfSub2',
-   'cfTitle3','cfDesc3','cfTitle4','cfDesc4','cfSub4'].forEach(k=>{
-    setT(k, t[k]);
-  });
-
-  // 후원 카드
-  setT('donateCardDesc', t.donateCardDesc);
-  setT('donateNotice', t.donateNotice);
+  if (lang === "en") {
+    ST("creedLines",
+      'I am one who walks <span class="creed-accent">the right path</span>.<br>' +
+      'I choose <span class="creed-accent">depth</span> over speed,<br>' +
+      '<span class="creed-accent">being</span> over having,<br>' +
+      '<span class="creed-accent">character</span> over success.<br><br>' +
+      'Even in the digital world,<br>' +
+      'I live as <span class="creed-accent">God\'s person</span>,<br>' +
+      'finding <span class="creed-accent">eternity</span> in a slower life.'
+    );
+  } else {
+    ST("creedLines",
+      '나는 <span class="creed-accent">바른 길</span>을 걷는 정민인이다.<br>' +
+      '<span class="creed-accent">빠름</span>보다 깊음을,<br>' +
+      '<span class="creed-accent">소유</span>보다 존재를,<br>' +
+      '<span class="creed-accent">성공</span>보다 성품을 추구한다.<br><br>' +
+      '나는 디지털 세계에서도<br>' +
+      '<span class="creed-accent">하나님의 사람</span>으로 살며,<br>' +
+      '느린 삶 안에서 <span class="creed-accent">영원</span>을 만난다.'
+    );
+  }
 }
 
-function setT(id, val) {
-  const el = document.getElementById(id);
-  if(el && val) el.innerHTML = val;
-}
+window.addEventListener("DOMContentLoaded", function() {
+  var saved = localStorage.getItem("jm_sheet_url");
+  if (saved && document.getElementById("sheetUrl")) document.getElementById("sheetUrl").value = saved;
+  if (currentLang === "en") applyLang("en");
+});
+
 
 // 저장된 언어 적용
 window.addEventListener('DOMContentLoaded', ()=>{
