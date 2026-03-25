@@ -711,12 +711,15 @@ async function ttsPlay() {
     isPlaying = true; isPaused = false;
     document.getElementById('playBtn').textContent = '⏸';
     document.getElementById('ttsDot').classList.add('active');
+    // 크롬 TTS 15초 끊김 버그 방지
+    startKeepAlive();
     document.getElementById('ttsStatusText').textContent = '낭독 중 ✝';
     startTimer();
   };
 
   utterance.onend = () => {
     isPlaying = false; isPaused = false;
+    stopKeepAlive();
     document.getElementById('playBtn').textContent = '▶';
     document.getElementById('ttsDot').classList.remove('active');
     document.getElementById('ttsStatusText').textContent = '낭독 완료 🙏';
@@ -753,6 +756,20 @@ function ttsResume() {
   document.getElementById('ttsDot').classList.add('active');
   document.getElementById('ttsStatusText').textContent = '낭독 중 ✝';
   startTimer();
+}
+
+// 크롬 TTS 15초 끊김 버그 방지
+let keepAliveInterval = null;
+function startKeepAlive() {
+  stopKeepAlive();
+  keepAliveInterval = setInterval(() => {
+    if (isPlaying && !synth.speaking) {
+      synth.resume();
+    }
+  }, 10000);
+}
+function stopKeepAlive() {
+  if (keepAliveInterval) { clearInterval(keepAliveInterval); keepAliveInterval = null; }
 }
 
 function ttsStop() {

@@ -441,6 +441,7 @@ async function ttsPlay() {
     document.getElementById('ttsDot').classList.add('on');
     document.getElementById('ttsStatusText').textContent = '낭독 중 ✝';
     startTimer();
+    startKeepAlive();
   };
   utterance.onend = () => {
     isPlaying = false; isPaused = false;
@@ -448,7 +449,7 @@ async function ttsPlay() {
     document.getElementById('ttsDot').classList.remove('on');
     document.getElementById('ttsStatusText').textContent = '낭독 완료 🙏';
     document.getElementById('ttsProgressFill').style.width = '100%';
-    stopTimer();
+    stopTimer(); stopKeepAlive();
   };
   utterance.onerror = (e) => {
     if (e.error === 'interrupted') return;
@@ -462,6 +463,16 @@ async function ttsPlay() {
 }
 function ttsPause() { synth.pause(); isPlaying=false; isPaused=true; document.getElementById('playBtn').textContent='▶'; document.getElementById('ttsDot').classList.remove('on'); document.getElementById('ttsStatusText').textContent='일시정지'; stopTimer(); }
 function ttsResume() { synth.resume(); isPlaying=true; isPaused=false; document.getElementById('playBtn').textContent='⏸'; document.getElementById('ttsDot').classList.add('on'); document.getElementById('ttsStatusText').textContent='낭독 중 ✝'; startTimer(); }
+let keepAliveInterval = null;
+function startKeepAlive() {
+  stopKeepAlive();
+  keepAliveInterval = setInterval(() => {
+    if (isPlaying && !synth.speaking) synth.resume();
+  }, 10000);
+}
+function stopKeepAlive() {
+  if (keepAliveInterval) { clearInterval(keepAliveInterval); keepAliveInterval = null; }
+}
 function ttsStop() { synth.cancel(); isPlaying=false; isPaused=false; elapsedTime=0; document.getElementById('playBtn').textContent='▶'; document.getElementById('ttsDot').classList.remove('on'); document.getElementById('ttsStatusText').textContent='재생 준비 ✅'; document.getElementById('ttsProgressFill').style.width='0%'; document.getElementById('ttsCurrentTime').textContent='0:00'; stopTimer(); }
 function ttsRestart() { ttsStop(); setTimeout(()=>ttsPlay(),300); }
 function startTimer() {

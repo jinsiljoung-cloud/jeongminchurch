@@ -217,7 +217,7 @@ Jeongmin Church 우리 공동체 주 안에 하나 되네</span></div>
     <div><div style="font-family:var(--font-c);font-size:8px;letter-spacing:3px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:3px">NOW PLAYING</div><div style="font-family:var(--font-s);font-size:14px;font-weight:700" id="n-title">빗소리 묵상</div></div>
     <button onclick="stopN()" style="margin-left:auto;background:rgba(224,85,85,.08);border:1px solid rgba(224,85,85,.18);border-radius:4px;padding:6px 14px;color:var(--red);font-family:var(--font-c);font-size:8px;letter-spacing:2px;text-transform:uppercase">■ 정지</button>
   </div>
-  <iframe id="n-yt" width="0" height="0" style="position:absolute;visibility:hidden" frameborder="0" allow="autoplay"></iframe>
+  <iframe id="n-yt" width="1" height="1" style="position:fixed;opacity:0;pointer-events:none;top:0;left:0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
 </div>
 
 <!-- 📺 찬송 모음 탭 -->
@@ -290,7 +290,12 @@ AF.addEventListener('ended',()=>{ stopUI('f'); setTimeout(()=>playAudio('m'),500
 AM.addEventListener('ended',()=>stopUI('m'));
 
 /* 페이지 로드 시 여자 버전 자동 재생 */
-window.addEventListener('load',()=>{ setTimeout(()=>playAudio('f'),600); });
+// 자동재생 제거 - 사용자 클릭 후 재생
+window.addEventListener('load',()=>{
+  // 오디오 파일 미리 로드만
+  audios.f.load();
+  audios.m.load();
+});
 
 function toggleAudio(k){
   const a=audios[k];
@@ -333,7 +338,8 @@ function playN(t){
   curNature=t; const v=NV[t];
   document.getElementById('nc-'+t).classList.add('playing');
   document.getElementById('ni-'+t).textContent='■';
-  document.getElementById('n-yt').src=`https://www.youtube.com/embed/${v.id}?autoplay=1&loop=1&playlist=${v.id}&controls=0`;
+  // embed 자동재생 차단 우회 - nocookie 도메인 + 파라미터
+  document.getElementById('n-yt').src=`https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&loop=1&playlist=${v.id}&controls=1&rel=0&modestbranding=1`;
   const n=document.getElementById('nature-now'); n.classList.add('show');
   document.getElementById('n-icon').textContent=v.icon;
   document.getElementById('n-title').textContent=v.title;
@@ -346,26 +352,14 @@ function stopN(){
 }
 
 /* 📺 유튜브 찬송 모음 */
-function getYt(){
-  try{
-    const saved = JSON.parse(localStorage.getItem(YT_KEY)||'[]');
-    // 기본 영상 (항상 포함)
-    const defaults = [
-      {title:'Jeongmin Church — 찬양 모음', id:'XpEuEsvuXLQ', date:'2026-03-25', desc:'정민교 찬양'}
-    ];
-    // 저장된 영상 + 기본 영상 (중복 제거)
-    const savedIds = saved.map(v=>v.id);
-    const extra = defaults.filter(v=>!savedIds.includes(v.id));
-    return [...saved, ...extra];
-  }catch{return[];}
-}
+function getYt(){try{return JSON.parse(localStorage.getItem(YT_KEY)||'[]');}catch{return[];}}
 function saveYt(v){localStorage.setItem(YT_KEY,JSON.stringify(v));}
 function renderYt(){
   const vids=getYt(), list=document.getElementById('yt-list'), empty=document.getElementById('yt-empty'), wrap=document.getElementById('yt-player-wrap');
   if(!vids.length){list.innerHTML='';empty.style.display='block';wrap.style.display='none';return;}
   empty.style.display='none';wrap.style.display='block';
   if(document.getElementById('yt-player').src==='about:blank')playYt(vids[0],0);
-  list.innerHTML=vids.map((v,i)=>`<div class="yt-item" id="yi-${i}" onclick="playYt(${JSON.stringify(v).replace(/"/g,'&quot;')},${i})"><div class="yt-ph">🎵</div><div style="flex:1;min-width:0"><div style="font-family:var(--font-s);font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px">${v.title}</div><div style="font-family:var(--font-c);font-size:8px;letter-spacing:2px;opacity:.3;text-transform:uppercase">${v.date?new Date(v.date).toLocaleDateString('ko-KR',{month:'long',day:'numeric'}):''}</div></div><div class="yt-play">▶</div>${isAdmin?`<button onclick="event.stopPropagation();delYt(${i})" style="background:rgba(224,85,85,.08);border:1px solid rgba(224,85,85,.15);border-radius:4px;padding:4px 8px;color:var(--red);font-size:11px;margin-left:4px">✕</button>`:''}</div>`).join('');
+  list.innerHTML=vids.map((v,i)=>`<div class="yt-item" id="yi-${i}" onclick="playYt(${JSON.stringify(v).replace(/"/g,'&quot;')},${i})"><div class="yt-ph">🎵</div><div style="flex:1;min-width:0"><div style="font-family:var(--font-s);font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px">${v.title}</div><div style="font-family:var(--font-c);font-size:8px;letter-spacing:2px;opacity:.3;text-transform:uppercase">${v.date?new Date(v.date).toLocaleDateString('ko-KR',{month:'long',day:'numeric'}):''}</div></div><div class="yt-play">▶</div>${isAdmin?`<button onclick="event.preventDefault();event.stopPropagation();delYt(${i})" style="background:rgba(224,85,85,.08);border:1px solid rgba(224,85,85,.15);border-radius:4px;padding:4px 8px;color:var(--red);font-size:11px;margin-left:4px">✕</button>`:''}</div>`).join('');
 }
 function playYt(v,idx){
   document.getElementById('yt-player').src=`https://www.youtube.com/embed/${v.id}?autoplay=1&rel=0`;
