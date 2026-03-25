@@ -547,7 +547,7 @@ input,select{font-family:inherit}
               <span style="font-family:var(--font-cin);font-size:7px;letter-spacing:2px;padding:3px 9px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.22);border-radius:10px;color:var(--gold);text-transform:uppercase">Non-Denominational</span>
               <span style="font-family:var(--font-cin);font-size:7px;letter-spacing:2px;padding:3px 9px;background:rgba(122,158,126,.1);border:1px solid rgba(122,158,126,.22);border-radius:10px;color:var(--sage);text-transform:uppercase">Online Ministry</span>
               <span style="font-family:var(--font-cin);font-size:7px;letter-spacing:2px;padding:3px 9px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.22);border-radius:10px;color:var(--gold);text-transform:uppercase">Bible Teaching</span>
-              <span style="font-family:var(--font-cin);font-size:7px;letter-spacing:2px;padding:3px 9px;background:rgba(122,158,126,.1);border:1px solid rgba(122,158,126,.22);border-radius:10px;color:var(--sage);text-transform:uppercase">비교단 독립 사역</span>
+              <span style="font-family:var(--font-cin);font-size:7px;letter-spacing:2px;padding:3px 9px;background:rgba(122,158,126,.1);border:1px solid rgba(122,158,126,.22);border-radius:10px;color:var(--sage);text-transform:uppercase" id="aboutBadgeKr">비교단 독립 사역</span>
             </div>
           </div>
         </div>
@@ -607,11 +607,11 @@ input,select{font-family:inherit}
     </div>
     <div class="doctrine-detail reveal">
       <div class="doctrine-detail-inner">
-        <div class="dd-item"><div class="dd-verse">"좁은 문으로 들어가라"</div><span class="dd-verse-ref">마태복음 7:13</span><div class="dd-text">성공보다 성실, 속도보다 방향.</div></div>
-        <div class="dd-item"><div class="dd-verse">"진리가 너희를 자유롭게 하리라"</div><span class="dd-verse-ref">요한복음 8:32</span><div class="dd-text">온라인과 오프라인이 같은 사람.</div></div>
-        <div class="dd-item"><div class="dd-verse">"어느 형편에든 자족하기를"</div><span class="dd-verse-ref">빌립보서 4:11</span><div class="dd-text">어디에 있든 그 곳이 성전.</div></div>
-        <div class="dd-item"><div class="dd-verse">"이웃을 네 자신 같이 사랑하라"</div><span class="dd-verse-ref">마가복음 12:31</span><div class="dd-text">댓글 하나도 사랑의 언어로.</div></div>
-        <div class="dd-item"><div class="dd-verse">"가만히 있어 내가 하나님임을"</div><span class="dd-verse-ref">시편 46:10</span><div class="dd-text">느린 삶이 곧 영성입니다.</div></div>
+        <div class="dd-item"><div class="dd-verse">"좁은 문으로 들어가라"</div><span class="dd-verse-ref" id="ddRef1">마태복음 7:13</span><div class="dd-text" id="ddText1">성공보다 성실, 속도보다 방향.</div></div>
+        <div class="dd-item"><div class="dd-verse">"진리가 너희를 자유롭게 하리라"</div><span class="dd-verse-ref" id="ddRef2">요한복음 8:32</span><div class="dd-text" id="ddText2">온라인과 오프라인이 같은 사람.</div></div>
+        <div class="dd-item"><div class="dd-verse">"어느 형편에든 자족하기를"</div><span class="dd-verse-ref" id="ddRef3">빌립보서 4:11</span><div class="dd-text" id="ddText3">어디에 있든 그 곳이 성전.</div></div>
+        <div class="dd-item"><div class="dd-verse">"이웃을 네 자신 같이 사랑하라"</div><span class="dd-verse-ref" id="ddRef4">마가복음 12:31</span><div class="dd-text" id="ddText4">댓글 하나도 사랑의 언어로.</div></div>
+        <div class="dd-item"><div class="dd-verse">"가만히 있어 내가 하나님임을"</div><span class="dd-verse-ref" id="ddRef5">시편 46:10</span><div class="dd-text" id="ddText5">느린 삶이 곧 영성입니다.</div></div>
       </div>
     </div>
   </div>
@@ -621,10 +621,10 @@ input,select{font-family:inherit}
 <section class="creed-section" id="creed">
   <div class="container--narrow">
     <div class="reveal">
-      <div class="eyebrow" style="text-align:center">Confession of Faith · 신앙 고백</div>
+      <div class="eyebrow" style="text-align:center" id="creedEye">Confession of Faith · 신앙 고백</div>
       <div class="creed-box">
-        <div class="creed-title-label">✝ &nbsp; 정민교 신앙고백 &nbsp; ✝</div>
-        <div class="creed-lines">
+        <div class="creed-title-label" id="creedLabel">✝ &nbsp; 정민교 신앙고백 &nbsp; ✝</div>
+        <div class="creed-lines" id="creedLines">
           나는 <span class="creed-accent">바른 길</span>을 걷는 정민인이다.<br>
           <span class="creed-accent">빠름</span>보다 깊음을,<br>
           <span class="creed-accent">소유</span>보다 존재를,<br>
@@ -633,7 +633,7 @@ input,select{font-family:inherit}
           <span class="creed-accent">하나님의 사람</span>으로 살며,<br>
           느린 삶 안에서 <span class="creed-accent">영원</span>을 만난다.
         </div>
-        <div class="creed-amen">— Amen · 아멘 —</div>
+        <div class="creed-amen" id="creedAmen">— Amen · 아멘 —</div>
       </div>
     </div>
   </div>
@@ -648,14 +648,14 @@ input,select{font-family:inherit}
       <p class="section-body" id="worshipDesc">성전은 건물이 아닙니다. 하나님을 향해 마음을 여는 그 자리가 성전입니다.</p>
     </div>
     <div class="worship-grid reveal">
-      <div class="w-card"><div class="w-icon">🕊️</div><div><div class="w-label">성전</div><div class="w-value">인터넷이 닿는 모든 곳</div></div></div>
-      <a href="/jeongminchurch/worship.html" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🌅</div><div><div class="w-label" style="color:var(--gold)">예배 시간 →</div><div class="w-value">알림 없는 아침 30분<br><span style="font-size:11px;color:var(--gold);opacity:.7">30분 예배 가이드 ✝</span></div></div></a>
-      <a href="/jeongminchurch/praise.html" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🎵</div><div><div class="w-label" style="color:var(--gold)">찬양 →</div><div class="w-value">자연의 소리 + 묵상 음악<br><span style="font-size:11px;color:var(--gold);opacity:.7">찬양 듣기 ✝</span></div></div></a>
+      <div class="w-card"><div class="w-icon">🕊️</div><div><div class="w-label" id="wCardTitle1">성전</div><div class="w-value" id="wCardDesc1">인터넷이 닿는 모든 곳</div></div></div>
+      <a href="/jeongminchurch/worship.html" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🌅</div><div><div class="w-label" style="color:var(--gold)" id="wCardTitle2">예배 시간 →</div><div class="w-value">알림 없는 아침 30분<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="wCardSub2">30분 예배 가이드 ✝</span></div></div></a>
+      <a href="/jeongminchurch/praise.html" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🎵</div><div><div class="w-label" style="color:var(--gold)" id="wCardTitle3">찬양 →</div><div class="w-value">자연의 소리 + 묵상 음악<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="wCardSub3">찬양 듣기 ✝</span></div></div></a>
       <a href="/jeongminchurch/sermons.html" class="w-card" onclick="clearSermonBadge()" style="cursor:pointer;text-decoration:none;position:relative">
     <span id="cardBadge" class="sermon-badge" style="display:none;position:absolute;top:10px;right:10px;min-width:20px;height:20px;background:#E05555;border-radius:50%;font-size:11px;font-weight:700;color:#fff;align-items:center;justify-content:center;padding:0 4px;font-family:sans-serif;animation:badgePulse 1.5s ease-in-out infinite;z-index:10">N</span>
-    <div class="w-icon">📖</div><div><div class="w-label" style="color:var(--gold)">말씀 →</div><div class="w-value">하루 한 구절, 깊이 묵상<br><span style="font-size:11px;color:var(--gold);opacity:.7">창립 설교 보러가기 ✝</span></div></div></a>
-      <a href="#donate" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🌿</div><div><div class="w-label" style="color:var(--gold)">헌금 →</div><div class="w-value">시간과 재능의 나눔<br><span style="font-size:11px;color:var(--gold);opacity:.7">후원하러 가기 ✝</span></div></div></a>
-      <a href="https://www.youtube.com/@jeongminchurch" target="_blank" rel="noopener" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🤝</div><div><div class="w-label" style="color:var(--gold)">교제 →</div><div class="w-value">느린 대화, 깊은 경청<br><span style="font-size:11px;color:var(--gold);opacity:.7">유튜브 채널 바로가기 ▶</span></div></div></a>
+    <div class="w-icon">📖</div><div><div class="w-label" style="color:var(--gold)" id="wCardTitle4">말씀 →</div><div class="w-value">하루 한 구절, 깊이 묵상<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="wCardSub4">창립 설교 보러가기 ✝</span></div></div></a>
+      <a href="#donate" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🌿</div><div><div class="w-label" style="color:var(--gold)" id="wCardTitle5">헌금 →</div><div class="w-value">시간과 재능의 나눔<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="wCardSub5">후원하러 가기 ✝</span></div></div></a>
+      <a href="https://www.youtube.com/@jeongminchurch" target="_blank" rel="noopener" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🤝</div><div><div class="w-label" style="color:var(--gold)" id="wCardTitle6">교제 →</div><div class="w-value">느린 대화, 깊은 경청<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="wCardSub6">유튜브 채널 바로가기 ▶</span></div></div></a>
     </div>
   </div>
 </section>
@@ -678,7 +678,7 @@ input,select{font-family:inherit}
           <div class="donation-header">
             <div class="donation-icon">✝</div>
             <div class="donation-title" id="donateCardTitle">후원 신청</div>
-            <div class="donation-sub">아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.</div>
+            <div class="donation-sub" id="donateCardDesc">아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.</div>
           </div>
 
           <!-- 후원 신청 버튼 -->
@@ -693,7 +693,7 @@ input,select{font-family:inherit}
           </a>
 
           <p style="font-family:var(--font-cin);font-size:8.5px;letter-spacing:2px;color:var(--cream);opacity:.28;text-align:center;margin-top:16px;line-height:2">
-            신청서 작성 → 계좌 입금 → 이메일 확인<br>후원금은 Jeongmin Church 운영에만 사용됩니다
+            <span id="donateNotice">신청서 작성 → 계좌 입금 → 이메일 확인<br>후원금은 Jeongmin Church 운영에만 사용됩니다</span>
           </p>
         </div>
       </div>
@@ -715,10 +715,10 @@ input,select{font-family:inherit}
       <div class="stat-cell"><div class="stat-num">∅</div><div class="stat-label">Notification</div></div>
     </div>
     <div class="community-features reveal">
-      <a href="/jeongminchurch/community.html#meditation" class="cf-item" style="text-decoration:none"><div class="cf-icon">📿</div><div><div class="cf-title" style="color:var(--gold)">매일 묵상 나눔 →</div><div class="cf-desc">하루 한 구절 말씀을 함께 나눕니다.<br><span style="font-size:11px;color:var(--gold);opacity:.7">묵상 나누러 가기 ✝</span></div></div></a>
-      <a href="/jeongminchurch/community.html#letter" class="cf-item" style="text-decoration:none"><div class="cf-icon">✉️</div><div><div class="cf-title" style="color:var(--gold)">Jeongmin Church 위클리 레터 →</div><div class="cf-desc">매주 느린 삶과 신앙 이야기를 담은 뉴스레터.<br><span style="font-size:11px;color:var(--gold);opacity:.7">레터 읽으러 가기 ✝</span></div></div></a>
-      <div class="cf-item"><div class="cf-icon">🌐</div><div><div class="cf-title">온라인 소그룹</div><div class="cf-desc">전국 어디서든 참여 가능한 소그룹 모임.</div></div></div>
-      <a href="/jeongminchurch/community.html#writing" class="cf-item" style="text-decoration:none"><div class="cf-icon">✍️</div><div><div class="cf-title" style="color:var(--gold)">느린 글쓰기 모임 →</div><div class="cf-desc">신앙 에세이, 묵상 일기를 함께 씁니다.<br><span style="font-size:11px;color:var(--gold);opacity:.7">글 쓰러 가기 ✝</span></div></div></a>
+      <a href="/jeongminchurch/community.html#meditation" class="cf-item" style="text-decoration:none"><div class="cf-icon">📿</div><div><div class="cf-title" style="color:var(--gold)" id="cfTitle1">매일 묵상 나눔 →</div><div class="cf-desc" id="cfDesc1">하루 한 구절 말씀을 함께 나눕니다.<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="cfSub1">묵상 나누러 가기 ✝</span></div></div></a>
+      <a href="/jeongminchurch/community.html#letter" class="cf-item" style="text-decoration:none"><div class="cf-icon">✉️</div><div><div class="cf-title" style="color:var(--gold)" id="cfTitle2">Jeongmin Church 위클리 레터 →</div><div class="cf-desc" id="cfDesc2">매주 느린 삶과 신앙 이야기를 담은 뉴스레터.<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="cfSub2">레터 읽으러 가기 ✝</span></div></div></a>
+      <div class="cf-item"><div class="cf-icon">🌐</div><div><div class="cf-title" id="cfTitle3">온라인 소그룹</div><div class="cf-desc" id="cfDesc3">전국 어디서든 참여 가능한 소그룹 모임.</div></div></div>
+      <a href="/jeongminchurch/community.html#writing" class="cf-item" style="text-decoration:none"><div class="cf-icon">✍️</div><div><div class="cf-title" style="color:var(--gold)" id="cfTitle4">느린 글쓰기 모임 →</div><div class="cf-desc" id="cfDesc4">신앙 에세이, 묵상 일기를 함께 씁니다.<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="cfSub4">글 쓰러 가기 ✝</span></div></div></a>
     </div>
   </div>
 </section>
@@ -1125,7 +1125,10 @@ const TRANSLATIONS = {
     valuesEye:'What We Believe · 우리의 믿음',
     valuesTitle:'Five Ways of Life',
     valuesSub:'일상 속에서 실천하는 다섯 가지 삶의 방식입니다.',
+    creedEye:'Confession of Faith · 신앙 고백',
     creedLabel:'✝ &nbsp; Jeongmin Church 신앙고백 &nbsp; ✝',
+    creedLines:'나는 <span class="creed-accent">바른 길</span>을 걷는 정민인이다.<br><span class="creed-accent">빠름</span>보다 깊음을,<br><span class="creed-accent">소유</span>보다 존재를,<br><span class="creed-accent">성공</span>보다 성품을 추구한다.<br><br>나는 디지털 세계에서도<br><span class="creed-accent">하나님의 사람</span>으로 살며,<br>느린 삶 안에서 <span class="creed-accent">영원</span>을 만난다.',
+    creedAmen:'— Amen · 아멘 —',
     creedLine1:'나는 바른 길을 걷는 정민인이다.',
     creedLine2:'빠름보다 깊음을,', creedLine3:'소유보다 존재를,', creedLine4:'성공보다 성품을 추구한다.',
     creedLine5:'나는 디지털 세계에서도', creedLine6:'하나님의 사람으로 살며,', creedLine7:'느린 삶 안에서 영원을 만난다.',
@@ -1148,7 +1151,7 @@ const TRANSLATIONS = {
     donateCardTitle:'후원 신청',
     donateCardDesc:'아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.',
     donateBtn:'✝ 후원 신청하기',
-    donateNotice:'신청서 작성 → 계좌 입금 → 이메일 확인<br>후원금은 Jeongmin Church 운영에만 사용됩니다',
+    donateNotice:'<span id="donateNotice">신청서 작성 → 계좌 입금 → 이메일 확인<br>후원금은 Jeongmin Church 운영에만 사용됩니다</span>',
     // Community
     communityEye:'Community · 공동체',
     communityTitle:'스마트폰 너머의<br>진짜 세상으로',
@@ -1170,6 +1173,22 @@ const TRANSLATIONS = {
     footerCol3:'채널',
     footerL10:'네이버 블로그', footerL11:'유튜브', footerL12:'인스타그램', footerL13:'카카오 오픈채팅',
     footerCopy:'개인정보처리방침',
+    // 배지
+    aboutBadgeKr:'비교단 독립 사역',
+    // 교리 하단 카드
+    ddVerse1:'"좁은 문으로 들어가라"', ddRef1:'마태복음 7:13', ddText1:'성공보다 성실, 속도보다 방향.',
+    ddVerse2:'"진리가 너희를 자유롭게 하리라"', ddRef2:'요한복음 8:32', ddText2:'온라인과 오프라인이 같은 사람.',
+    ddVerse3:'"어느 형편에든 자족하기를"', ddRef3:'빌립보서 4:11', ddText3:'어디에 있든 그 곳이 성전.',
+    ddVerse4:'"이웃을 네 자신 같이 사랑하라"', ddRef4:'마가복음 12:31', ddText4:'댓글 하나도 사랑의 언어로.',
+    ddVerse5:'"가만히 있어 내가 하나님임을"', ddRef5:'시편 46:10', ddText5:'느린 삶이 곧 영성입니다.',
+    // 공동체 카드
+    cfTitle1:'매일 묵상 나눔 →', cfDesc1:'하루 한 구절 말씀을 함께 나눕니다.', cfSub1:'묵상 나누러 가기 ✝',
+    cfTitle2:'Jeongmin Church 위클리 레터 →', cfDesc2:'매주 느린 삶과 신앙 이야기를 담은 뉴스레터.', cfSub2:'레터 읽으러 가기 ✝',
+    cfTitle3:'온라인 소그룹', cfDesc3:'전국 어디서든 참여 가능한 소그룹 모임.',
+    cfTitle4:'느린 글쓰기 모임 →', cfDesc4:'신앙 에세이, 묵상 일기를 함께 씁니다.', cfSub4:'글 쓰러 가기 ✝',
+    // 후원 카드
+    donateCardDesc:'아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.',
+    donateNotice:'신청서 작성 → 계좌 입금 → 이메일 확인<br>후원금은 Jeongmin Church 운영에만 사용됩니다',
   },
   en: {
     langBtn:'EN | KO',
@@ -1198,10 +1217,13 @@ const TRANSLATIONS = {
     valuesEye:'What We Believe · Our Values',
     valuesTitle:'Five Ways of Life',
     valuesSub:'Five simple principles for living a meaningful, faith-centered life.',
+    creedEye:'Confession of Faith · Our Creed',
     creedLabel:'✝ &nbsp; Jeongmin Church Creed &nbsp; ✝',
+    creedLines:`I am one who walks <span class="creed-accent">the right path</span>.<br>I choose <span class="creed-accent">depth</span> over speed,<br><span class="creed-accent">being</span> over having,<br><span class="creed-accent">character</span> over success.<br><br>Even in the digital world,<br>I live as <span class="creed-accent">God's person</span>,<br>finding <span class="creed-accent">eternity</span> in a slower life.`,
+    creedAmen:'— Amen —',
     creedLine1:'I am one who walks the right path.',
     creedLine2:'I choose depth over speed,', creedLine3:'being over having,', creedLine4:'character over success.',
-    creedLine5:'Even in the digital world,', creedLine6:"I live as God's person,", creedLine7:'finding eternity in a slower life.',
+    creedLine5:'Even in the digital world,', creedLine6:`I live as God's person,`, creedLine7:'finding eternity in a slower life.',
     // Worship
     worshipEye:'Worship Style · How We Worship',
     worshipTitle:'Worship',
@@ -1243,6 +1265,22 @@ const TRANSLATIONS = {
     footerCol3:'Channels',
     footerL10:'Naver Blog', footerL11:'YouTube', footerL12:'Instagram', footerL13:'KakaoTalk Open Chat',
     footerCopy:'Privacy Policy',
+    // Badge
+    aboutBadgeKr:'Independent Ministry',
+    // Doctrine cards
+    ddVerse1:'"Enter through the narrow gate"', ddRef1:'Matthew 7:13', ddText1:'Character over success, direction over speed.',
+    ddVerse2:'"The truth will set you free"', ddRef2:'John 8:32', ddText2:'The same person online and offline.',
+    ddVerse3:'"I have learned to be content"', ddRef3:'Philippians 4:11', ddText3:'Wherever you are, that place is holy.',
+    ddVerse4:'"Love your neighbor as yourself"', ddRef4:'Mark 12:31', ddText4:'Every comment is a chance to love.',
+    ddVerse5:'"Be still and know that I am God"', ddRef5:'Psalm 46:10', ddText5:'A slow life is a spiritual life.',
+    // Community cards
+    cfTitle1:'Daily Meditation →', cfDesc1:'Share one verse together each day.', cfSub1:'Share Meditation ✝',
+    cfTitle2:'Jeongmin Church Weekly Letter →', cfDesc2:'A weekly newsletter on slow living and faith.', cfSub2:'Read Letter ✝',
+    cfTitle3:'Online Small Groups', cfDesc3:'Small groups you can join from anywhere.',
+    cfTitle4:'Slow Writing Group →', cfDesc4:'Write faith essays and meditation journals together.', cfSub4:'Start Writing ✝',
+    // Donate card
+    donateCardDesc:'Click the button below to fill out a support request form.<br>Transfer to the provided account after submission.',
+    donateNotice:'Fill form → Bank transfer → Email confirmation<br>All funds are used solely for Jeongmin Church ministry',
   }
 };
 
@@ -1341,6 +1379,33 @@ function applyLang(lang) {
   ['creedLine1','creedLine2','creedLine3','creedLine4','creedLine5','creedLine6','creedLine7'].forEach(k=>{
     setT(k, t[k]);
   });
+
+  // 배지
+  setT('aboutBadgeKr', t.aboutBadgeKr);
+
+  // 교리 하단 카드
+  for(let i=1;i<=5;i++){
+    setT('ddVerse'+i, t['ddVerse'+i]);
+    setT('ddRef'+i, t['ddRef'+i]);
+    setT('ddText'+i, t['ddText'+i]);
+  }
+
+  // 예배 카드
+  for(let i=1;i<=6;i++){
+    setT('wCardTitle'+i, t['wCardTitle'+i]);
+    setT('wCardDesc'+i, t['wCardDesc'+i]);
+    if(t['wCardSub'+i]) setT('wCardSub'+i, t['wCardSub'+i]);
+  }
+
+  // 공동체 카드
+  ['cfTitle1','cfDesc1','cfSub1','cfTitle2','cfDesc2','cfSub2',
+   'cfTitle3','cfDesc3','cfTitle4','cfDesc4','cfSub4'].forEach(k=>{
+    setT(k, t[k]);
+  });
+
+  // 후원 카드
+  setT('donateCardDesc', t.donateCardDesc);
+  setT('donateNotice', t.donateNotice);
 }
 
 function setT(id, val) {
