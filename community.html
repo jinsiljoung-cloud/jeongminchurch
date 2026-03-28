@@ -459,6 +459,8 @@ function switchTab(tab, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderAll();
+  // 탭 위치로 부드럽게 스크롤
+  document.querySelector('.tabs').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 /* ══════════════════════
