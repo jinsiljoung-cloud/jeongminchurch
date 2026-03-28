@@ -66,7 +66,7 @@ input,textarea{font-family:inherit}
 /* ── TABS ── */
 .tabs{display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 32px;overflow-x:auto;scrollbar-width:none;position:sticky;top:64px;z-index:100;background:var(--navy);}
 .tabs::-webkit-scrollbar{display:none}
-.tab-btn{font-family:var(--font-c);font-size:10px;letter-spacing:3px;color:var(--cream);opacity:.45;padding:18px 24px;text-transform:uppercase;border-bottom:2px solid transparent;white-space:nowrap;transition:all .3s;background:none}
+.tab-btn{font-family:var(--font-c);font-size:10px;letter-spacing:3px;color:var(--cream);opacity:.45;padding:18px 24px;text-transform:uppercase;border:none;border-bottom:2px solid transparent;white-space:nowrap;transition:all .3s;background:none;cursor:pointer;-webkit-tap-highlight-color:rgba(201,168,76,.2)}
 .tab-btn:hover{opacity:.8}
 .tab-btn.active{opacity:1;color:var(--gold);border-bottom-color:var(--gold)}
 
@@ -234,10 +234,10 @@ input,textarea{font-family:inherit}
 </div>
 
 <!-- ── TABS ── -->
-<div class="tabs">
-  <button class="tab-btn active" onclick="switchTab('meditation', this)">📿 매일 묵상</button>
-  <button class="tab-btn" onclick="switchTab('writing', this)">✍️ 느린 글쓰기</button>
-  <button class="tab-btn" onclick="switchTab('letter', this)">✉️ 위클리 레터</button>
+<div class="tabs" id="tabsContainer">
+  <button class="tab-btn active" data-tab="meditation">📿 매일 묵상</button>
+  <button class="tab-btn" data-tab="writing">✍️ 느린 글쓰기</button>
+  <button class="tab-btn" data-tab="letter">✉️ 위클리 레터</button>
 </div>
 
 <!-- ══════════════════════════════
@@ -246,7 +246,7 @@ input,textarea{font-family:inherit}
 <div class="content">
 
   <!-- ── 매일 묵상 ── -->
-  <div id="tab-meditation">
+  <div id="tab-meditation" style="display:block">
     <div class="verse-of-day">
       <div class="vod-label">✝ 오늘의 말씀</div>
       <div class="vod-text" id="todayVerse">"여호와는 나의 목자시니 내게 부족함이 없으리로다"</div>
@@ -452,7 +452,7 @@ function savePosts(posts) {
 /* ══════════════════════
    TABS
 ══════════════════════ */
-function switchTab(tab, btn) {
+window.switchTab = function switchTab(tab, btn) {
   ['meditation','writing','letter'].forEach(t => {
     document.getElementById('tab-'+t).style.display = t === tab ? 'block' : 'none';
   });
@@ -464,7 +464,7 @@ function switchTab(tab, btn) {
 /* ══════════════════════
    WRITE FORM
 ══════════════════════ */
-function toggleForm(type) {
+window.toggleForm = function toggleForm(type) {
   if (!currentUser) { openLogin(); return; }
   if (type === 'letter' && !currentUser.isAdmin) {
     alert('위클리 레터는 관리자만 작성할 수 있습니다 🙏');
@@ -474,7 +474,7 @@ function toggleForm(type) {
   form.classList.toggle('show');
 }
 
-function submitPost(type) {
+window.submitPost = function submitPost(type) {
   if (!currentUser) { openLogin(); return; }
 
   const titles = { meditation:'med-title', writing:'wri-title', letter:'let-title' };
@@ -635,11 +635,32 @@ function openLetter(id) {
   document.getElementById('letterModalBody').textContent  = post.body;
   document.getElementById('letterOverlay').classList.add('open');
 }
-function closeLetterFull()  { document.getElementById('letterOverlay').classList.remove('open'); }
+window.closeLetterFull = function closeLetterFull()  { document.getElementById('letterOverlay').classList.remove('open'); }
 function closeLetterModal(e){ if(e.target===document.getElementById('letterOverlay')) closeLetterFull(); }
 
 // Init
 document.addEventListener('keydown', e => { if(e.key==='Escape') { closeLogin(); closeLetterFull(); } });
+
+// 탭 클릭 이벤트 - 안정적인 이벤트리스너 방식
+document.addEventListener('DOMContentLoaded', function() {
+  var tabBtns = document.querySelectorAll('.tab-btn');
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var tab = this.getAttribute('data-tab');
+      if (!tab) return;
+      // 탭 콘텐츠 전환
+      ['meditation','writing','letter'].forEach(function(t) {
+        var el = document.getElementById('tab-'+t);
+        if (el) el.style.display = t === tab ? 'block' : 'none';
+      });
+      // 활성 버튼 표시
+      tabBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      renderAll();
+    });
+  });
+});
+
 updateUI();
 renderAll();
 </script>
