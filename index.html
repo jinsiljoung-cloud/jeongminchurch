@@ -3,1341 +3,564 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jeongmin Church — Slowly · Righteously · Together</title>
-<meta name="description" content="Jeongmin Church — Independent Christian Ministry. Slowly · Righteously · Together.">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700;900&family=Cinzel:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<title>Jeongmin Church — 언제 어디서든, 딱 10분이면 충분합니다</title>
+<meta name="description" content="믿음은 있지만 교회 가기 힘드신가요? 인터넷만 있으면 어디서든 딱 10분, 하나님께 예배드릴 수 있습니다. Jeongmin Church 온라인 예배.">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700;900&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy:       #0B1622;
-  --navy2:      #0F1D2E;
-  --navy3:      #162638;
-  --gold:       #C9A84C;
-  --gold-light: #E8C96A;
-  --gold-pale:  #F0DFAA;
-  --sage:       #7A9E7E;
-  --cream:      #F5EDD6;
-  --ivory:      #FAF6EE;
-  --border:     rgba(201,168,76,0.14);
-  --border-h:   rgba(201,168,76,0.38);
-  --font-serif: 'Noto Serif KR', serif;
-  --font-cin:   'Cinzel', serif;
-  --font-sans:  'Noto Sans KR', sans-serif;
-  --ease:       cubic-bezier(0.4,0,0.2,1);
-  --ease-out:   cubic-bezier(0,0,0.2,1);
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--navy);color:var(--cream);font-family:var(--font-serif);line-height:1.8;overflow-x:hidden}
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9000;opacity:.45}
-a{color:inherit;text-decoration:none}
-button{cursor:pointer;border:none;background:none;font-family:inherit}
-input,select{font-family:inherit}
+:root{--navy:#0B1622;--navy2:#0F1D2E;--navy3:#162638;--gold:#C9A84C;--gold-l:#E8C96A;--gold-p:#F0DFAA;--sage:#7A9E7E;--cream:#F5EDD6;--border:rgba(201,168,76,.14);--border-h:rgba(201,168,76,.38);--fs:'Noto Serif KR',serif;--fc:'Cinzel',serif;--ease:cubic-bezier(.16,1,.3,1)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{background:var(--navy);color:var(--cream);font-family:var(--fs);overflow-x:hidden}
 
-/* ── UTILS ── */
-.container{max-width:1100px;margin:0 auto;padding:0 32px}
-.container--narrow{max-width:780px;margin:0 auto;padding:0 32px}
-.eyebrow{font-family:var(--font-cin);font-size:10px;letter-spacing:5px;color:var(--gold);opacity:.65;text-transform:uppercase;margin-bottom:12px}
-.section-title{font-family:var(--font-serif);font-size:clamp(26px,4vw,38px);font-weight:700;color:var(--cream);line-height:1.3;margin-bottom:20px}
-.section-body{font-size:15px;font-weight:300;color:var(--cream);opacity:.65;line-height:2.2;margin-bottom:16px}
-.h-rule{display:flex;align-items:center;gap:12px;margin:20px 0}
-.h-rule-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent)}
-.h-rule-dot{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);opacity:.5;flex-shrink:0}
-.btn-primary{font-family:var(--font-cin);font-size:10px;letter-spacing:4px;padding:14px 36px;background:var(--gold);color:var(--navy);border-radius:2px;text-transform:uppercase;transition:background .3s,transform .2s;display:inline-block;cursor:pointer}
-.btn-primary:hover{background:var(--gold-light);transform:translateY(-2px)}
-.btn-outline{font-family:var(--font-cin);font-size:10px;letter-spacing:4px;padding:13px 34px;border:1px solid rgba(201,168,76,.4);color:var(--gold);border-radius:2px;text-transform:uppercase;transition:border-color .3s,background .3s,transform .2s;display:inline-block}
-.btn-outline:hover{border-color:var(--gold);background:rgba(201,168,76,.08);transform:translateY(-2px)}
-.reveal{opacity:1;transform:translateY(0);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-.reveal.animate{opacity:0;transform:translateY(28px)}
-.reveal.animate.visible{opacity:1;transform:translateY(0)}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(11,22,34,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:all .3s}
+.nav.scrolled{height:54px;background:rgba(11,22,34,.98)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-cross{position:relative;width:26px;height:26px;display:flex;align-items:center;justify-content:center}
+.nav-cross::before{content:'';position:absolute;width:3px;height:20px;background:var(--gold);border-radius:2px}
+.nav-cross::after{content:'';position:absolute;width:13px;height:3px;background:var(--gold);border-radius:2px;margin-top:-5px}
+.nav-logo-text{font-family:var(--fc);font-size:13px;letter-spacing:2px;color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:22px;list-style:none}
+.nav-links a{font-family:var(--fc);font-size:8px;letter-spacing:3px;color:var(--cream);opacity:.5;text-decoration:none;transition:opacity .3s;text-transform:uppercase}
+.nav-links a:hover{opacity:1}
+.nav-right{display:flex;align-items:center;gap:10px}
+.btn-lang{font-family:var(--fc);font-size:8px;letter-spacing:2px;padding:6px 12px;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--gold);border-radius:2px;cursor:pointer;transition:all .3s}
+.btn-lang:hover{background:rgba(201,168,76,.1)}
+.btn-nav-cta{font-family:var(--fc);font-size:8.5px;letter-spacing:2px;padding:9px 20px;background:var(--gold);color:var(--navy);border:none;border-radius:2px;cursor:pointer;text-decoration:none;font-weight:700;transition:all .3s}
+.btn-nav-cta:hover{background:var(--gold-l);transform:translateY(-1px)}
+@media(max-width:768px){.nav{padding:0 20px}.nav-links{display:none}}
 
-/* ── NAV ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 40px;height:68px;display:flex;align-items:center;justify-content:space-between;background:rgba(11,22,34,.7);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:background .4s}
-.nav.scrolled{background:rgba(11,22,34,.96)}
-.nav-logo{display:flex;align-items:center;gap:12px}
-.nav-logo-text{font-family:var(--font-serif);font-size:20px;font-weight:700;letter-spacing:4px;color:var(--cream)}
-.nav-logo-sub{font-family:var(--font-cin);font-size:8px;letter-spacing:3px;color:var(--gold);opacity:.6;display:block;margin-top:-3px}
-.nav-links{display:flex;align-items:center;gap:30px;list-style:none}
-.nav-links a{font-family:var(--font-cin);font-size:10px;letter-spacing:3px;color:var(--cream);opacity:.55;text-transform:uppercase;transition:opacity .3s;position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1px;background:var(--gold);transform:scaleX(0);transition:transform .3s}
-.nav-links a:hover{opacity:.9}
-.nav-links a:hover::after{transform:scaleX(1)}
-.nav-cta{font-family:var(--font-cin);font-size:10px;letter-spacing:3px;padding:9px 22px;border:1px solid rgba(201,168,76,.45);color:var(--gold);border-radius:2px;transition:background .3s,color .3s;text-transform:uppercase}
-.nav-cta:hover{background:var(--gold);color:var(--navy)}
-.nav-hamburger{display:none;flex-direction:column;gap:5px;width:26px;cursor:pointer}
-.nav-hamburger span{width:100%;height:1px;background:var(--cream);opacity:.7;transition:transform .3s,opacity .3s;display:block}
-.mobile-menu{position:fixed;inset:0;z-index:199;background:rgba(11,22,34,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:36px;transform:translateY(-100%);transition:transform .5s var(--ease)}
-.mobile-menu.open{transform:translateY(0)}
-.mobile-menu a{font-family:var(--font-serif);font-size:28px;font-weight:700;letter-spacing:6px;color:var(--cream);opacity:.7;transition:opacity .3s}
-.mobile-menu a:hover{opacity:1;color:var(--gold)}
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding:80px 20px 60px}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 100% 80% at 50% 30%,#0f2440 0%,#0B1622 70%)}
+.hero-gl{position:absolute;left:-10%;top:20%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,76,.06) 0%,transparent 70%);pointer-events:none}
+.hero-gr{position:absolute;right:-10%;bottom:10%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(122,158,126,.05) 0%,transparent 70%);pointer-events:none}
+.hero-cross-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);opacity:.03;pointer-events:none}
+.hero-cross-bg svg{width:min(600px,90vw)}
+.hero-pts{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.pt{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--gold);animation:ptFloat linear infinite}
+@keyframes ptFloat{0%{transform:translateY(110vh);opacity:0}5%{opacity:.7}90%{opacity:.2}100%{transform:translateY(-10vh);opacity:0}}
+.hero-content{position:relative;z-index:2;max-width:780px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--fc);font-size:8.5px;letter-spacing:4px;color:var(--gold);opacity:.75;margin-bottom:36px;padding:7px 18px;border:1px solid rgba(201,168,76,.2);border-radius:20px;animation:fadeUp .6s var(--ease) .1s both}
+.hero-timer{display:inline-flex;align-items:center;gap:0;background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.22);border-radius:10px;padding:14px 28px;margin-bottom:36px;animation:fadeUp .6s var(--ease) .2s both}
+.timer-n{font-family:var(--fc);font-size:52px;font-weight:700;color:var(--gold);line-height:1;letter-spacing:-2px;text-align:center}
+.timer-l{font-family:var(--fc);font-size:8px;letter-spacing:3px;color:var(--cream);opacity:.45;margin-top:3px;text-align:center}
+.timer-div{width:1px;height:48px;background:rgba(201,168,76,.2);margin:0 18px}
+.timer-info{text-align:left}
+.timer-title-t{font-family:var(--fc);font-size:9px;letter-spacing:2px;color:var(--gold);opacity:.7;margin-bottom:6px}
+.timer-steps-t{font-size:11px;color:var(--cream);opacity:.45;line-height:1.7;font-weight:300}
+.hero-title{font-family:var(--fs);font-size:clamp(28px,5.5vw,58px);font-weight:900;color:var(--cream);line-height:1.3;letter-spacing:-1px;margin-bottom:20px;animation:fadeUp .7s var(--ease) .3s both}
+.hero-title .hl{color:var(--gold-l)}
+.h-rule{display:flex;align-items:center;gap:10px;justify-content:center;margin:24px 0}
+.h-rl{height:1px;width:80px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.35))}
+.h-rl.r{background:linear-gradient(90deg,rgba(201,168,76,.35),transparent)}
+.h-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:.6}
+.hero-sub{font-size:clamp(13px,1.8vw,16px);font-weight:300;color:var(--cream);opacity:.55;line-height:2;margin-bottom:40px;animation:fadeUp .7s var(--ease) .4s both}
+.hero-sub strong{color:var(--gold-p);font-weight:500;opacity:1}
+.hero-cta{display:flex;flex-direction:column;align-items:center;gap:14px;animation:fadeUp .7s var(--ease) .5s both}
+.btn-main{display:inline-flex;align-items:center;gap:10px;font-family:var(--fc);font-size:10px;letter-spacing:3px;padding:17px 44px;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;border-radius:3px;cursor:pointer;text-decoration:none;font-weight:700;transition:all .3s;box-shadow:0 8px 32px rgba(201,168,76,.2)}
+.btn-main:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(201,168,76,.35)}
+.btn-sec{font-family:var(--fc);font-size:8.5px;letter-spacing:2px;color:var(--cream);opacity:.4;text-decoration:none;transition:opacity .3s;padding:8px 0}
+.btn-sec:hover{opacity:.8}
+.hero-note{font-family:var(--fc);font-size:8px;letter-spacing:2px;color:var(--cream);opacity:.28;margin-top:4px}
+.scroll-hint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;animation:fadeUp .6s var(--ease) 1s both}
+.scroll-hint span{font-family:var(--fc);font-size:7px;letter-spacing:4px;color:var(--cream);opacity:.3}
+.scroll-line{width:1px;height:36px;background:linear-gradient(180deg,rgba(201,168,76,.5),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(.7)}50%{opacity:.9;transform:scaleY(1)}}
 
-/* ── HERO ── */
-.hero{min-height:100vh;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:120px 30px 80px}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 40%,rgba(201,168,76,.07) 0%,transparent 65%),radial-gradient(ellipse 40% 60% at 20% 70%,rgba(122,158,126,.05) 0%,transparent 60%)}
-#particles{position:absolute;inset:0;pointer-events:none}
-.hero-ring{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);width:min(700px,90vw);height:min(700px,90vw);border:1px solid rgba(201,168,76,.06);border-radius:50%;animation:spin 60s linear infinite}
-.hero-ring-2{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);width:min(500px,70vw);height:min(500px,70vw);border:1px solid rgba(201,168,76,.04);border-radius:50%;animation:spin 40s linear infinite reverse}
-@keyframes spin{to{transform:translate(-50%,-52%) rotate(360deg)}}
-.hero-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center}
-.hero-emblem{margin-bottom:32px;opacity:0;transform:translateY(24px);animation:rise .9s var(--ease-out) .2s forwards}
-.hero-kicker{font-family:var(--font-cin);font-size:10px;letter-spacing:7px;color:var(--gold);opacity:0;text-transform:uppercase;margin-bottom:20px;animation:rise .9s var(--ease-out) .4s forwards}
-.hero-title{font-family:var(--font-serif);font-size:clamp(56px,10vw,96px);font-weight:900;letter-spacing:clamp(14px,3vw,28px);color:var(--cream);line-height:.95;text-shadow:0 0 100px rgba(201,168,76,.12);margin-bottom:10px;opacity:0;animation:rise .9s var(--ease-out) .55s forwards}
-.hero-subtitle{font-family:var(--font-cin);font-size:11px;letter-spacing:5px;color:var(--gold);opacity:0;margin-bottom:24px;animation:rise .9s var(--ease-out) .7s forwards}
-.hero-tagline{font-family:var(--font-serif);font-size:clamp(14px,2.5vw,18px);font-weight:300;letter-spacing:6px;color:var(--cream);opacity:0;margin-bottom:44px;animation:rise .9s var(--ease-out) .85s forwards}
-.hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;opacity:0;animation:rise .9s var(--ease-out) 1s forwards}
-.hero-scroll-indicator{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:.3;animation:float 2.5s ease-in-out infinite}
-.hero-scroll-indicator span{font-family:var(--font-cin);font-size:8px;letter-spacing:4px;color:var(--gold)}
-@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
-@keyframes rise{to{opacity:1;transform:translateY(0)}}
+/* SECTIONS */
+.section{padding:100px 20px}
+.container{max-width:960px;margin:0 auto}
+.container-sm{max-width:700px;margin:0 auto}
+.tc{text-align:center}
+.s-eye{font-family:var(--fc);font-size:8.5px;letter-spacing:5px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:14px}
+.s-title{font-size:clamp(26px,4vw,44px);font-weight:700;color:var(--cream);line-height:1.3;margin-bottom:16px}
+.s-sub{font-size:13.5px;font-weight:300;color:var(--cream);opacity:.5;line-height:2;max-width:540px;margin:0 auto 52px}
 
-/* ── TICKER ── */
-.ticker{background:var(--navy3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:14px 0;white-space:nowrap}
-.ticker-inner{display:inline-flex;animation:ticker 30s linear infinite}
-.ticker-item{font-family:var(--font-cin);font-size:10px;letter-spacing:4px;color:var(--gold);opacity:.5;padding:0 36px;text-transform:uppercase}
-.ticker-sep{color:var(--gold);opacity:.25;font-size:8px}
-@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* 예배 순서 */
+.steps-flow{display:flex;align-items:stretch;gap:0;margin-bottom:52px;flex-wrap:wrap;justify-content:center}
+.step{flex:1;min-width:130px;max-width:188px;padding:32px 14px 28px;background:rgba(255,255,255,.02);border:1px solid var(--border);position:relative;text-align:center;transition:all .35s}
+.step:not(:last-child)::after{content:'›';position:absolute;right:-12px;top:50%;transform:translateY(-50%);font-family:var(--fc);font-size:14px;color:var(--gold);opacity:.35;z-index:1}
+.step:hover{background:rgba(201,168,76,.06);border-color:var(--border-h);transform:translateY(-4px)}
+.step-num{font-family:var(--fc);font-size:8px;letter-spacing:3px;color:var(--gold);opacity:.4;margin-bottom:10px}
+.step-ic{font-size:26px;margin-bottom:10px;display:block}
+.step-nm{font-family:var(--fs);font-size:14px;font-weight:700;color:var(--cream);margin-bottom:5px}
+.step-tm{font-family:var(--fc);font-size:9px;letter-spacing:2px;color:var(--gold);opacity:.65;margin-bottom:6px}
+.step-ds{font-size:10.5px;font-weight:300;color:var(--cream);opacity:.38;line-height:1.7}
+@media(max-width:640px){.steps-flow{flex-direction:column;align-items:center}.step::after{display:none}.step{min-width:260px;max-width:100%;width:100%}}
 
-/* ── ABOUT ── */
-.about{padding:120px 0}
-.about-grid{display:grid;grid-template-columns:1fr;gap:0;align-items:center;max-width:760px;margin:0 auto}
-.about-name-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%}
-.about-name-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:4px;padding:28px 14px;text-align:center;transition:border-color .3s,transform .3s;position:relative;overflow:hidden}
-.about-name-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s}
-.about-name-card:hover{border-color:var(--border-h);transform:translateY(-4px)}
-.about-name-card:hover::before{transform:scaleX(1)}
-.name-hanja{font-family:var(--font-serif);font-size:44px;font-weight:900;color:var(--gold);line-height:1;text-shadow:0 0 40px rgba(201,168,76,.2);margin-bottom:8px}
-.name-kor{font-size:12px;font-weight:500;letter-spacing:2px;margin-bottom:5px}
-.name-mean{font-size:11px;font-weight:300;opacity:.5;line-height:1.7}
-.about-verse{border-left:2px solid rgba(201,168,76,.4);padding:18px 24px;background:rgba(201,168,76,.03);border-radius:0 4px 4px 0;margin:12px 0}
-.about-verse-text{font-style:italic;font-size:15px;color:var(--gold-pale);line-height:2;margin-bottom:6px}
-.about-verse-ref{font-family:var(--font-cin);font-size:9px;letter-spacing:3px;color:var(--gold);opacity:.55}
+/* 왜 온라인 */
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:52px}
+@media(max-width:768px){.why-grid{grid-template-columns:1fr}}
+.why-card{padding:40px 28px;border-left:2px solid rgba(201,168,76,.1);transition:all .35s}
+.why-card:hover{border-left-color:var(--gold);background:rgba(201,168,76,.03)}
+.why-ic{font-size:32px;margin-bottom:18px;display:block}
+.why-t{font-family:var(--fs);font-size:16px;font-weight:700;color:var(--gold-p);margin-bottom:12px;line-height:1.4}
+.why-d{font-size:13px;font-weight:300;color:var(--cream);opacity:.5;line-height:2.1}
+.why-d strong{color:var(--gold-p);font-weight:500;opacity:.9}
 
-/* ── DOCTRINES ── */
-.doctrines{padding:100px 0;background:var(--navy2);position:relative;overflow:hidden}
-.doctrines::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(201,168,76,.04) 0%,transparent 60%);pointer-events:none}
-.doctrine-intro{text-align:center;max-width:560px;margin:0 auto 60px}
-.doctrine-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:50px}
-.d-card{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;padding:28px 16px 24px;text-align:center;transition:border-color .3s,background .3s,transform .3s;position:relative;overflow:hidden}
-.d-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--sage),var(--gold),var(--sage));transform:scaleX(0);transition:transform .5s}
-.d-card:hover{border-color:var(--border-h);background:rgba(201,168,76,.035);transform:translateY(-5px)}
-.d-card:hover::after{transform:scaleX(1)}
-.d-num{font-family:var(--font-cin);font-size:8px;letter-spacing:2px;color:var(--gold);opacity:.45;margin-bottom:8px}
-.d-hanja{font-family:var(--font-serif);font-size:38px;font-weight:900;color:var(--gold);line-height:1;margin-bottom:10px;text-shadow:0 0 30px rgba(201,168,76,.15)}
-.d-name{font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:4px}
-.d-name-sub{font-family:var(--font-cin);font-size:8px;letter-spacing:2px;color:var(--gold);opacity:.5;text-transform:uppercase;margin-bottom:10px}
-.d-desc{font-size:11.5px;font-weight:300;color:var(--cream);opacity:.5;line-height:1.8}
-.doctrine-detail{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.doctrine-detail-inner{display:grid;grid-template-columns:repeat(5,1fr)}
-.dd-item{padding:28px 20px;border-right:1px solid var(--border);transition:background .3s}
-.dd-item:last-child{border-right:none}
-.dd-item:hover{background:rgba(201,168,76,.03)}
-.dd-verse{font-size:11.5px;font-style:italic;color:var(--gold-pale);opacity:.6;line-height:1.9;margin-bottom:10px}
-.dd-verse-ref{font-family:var(--font-cin);font-size:8.5px;letter-spacing:2px;color:var(--gold);opacity:.45;margin-bottom:12px;display:block}
-.dd-text{font-size:11.5px;font-weight:300;color:var(--cream);opacity:.55;line-height:2}
+/* 말씀 카드 */
+.word-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;padding:40px 44px;max-width:640px;margin:0 auto;text-align:center;position:relative;overflow:hidden}
+.word-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.word-label{font-family:var(--fc);font-size:8px;letter-spacing:4px;color:var(--gold);opacity:.55;margin-bottom:20px}
+.word-text{font-family:var(--fs);font-size:clamp(16px,2.5vw,22px);font-weight:300;color:var(--cream);opacity:.85;font-style:italic;line-height:1.85;margin-bottom:14px}
+.word-ref{font-family:var(--fc);font-size:9.5px;letter-spacing:3px;color:var(--gold);opacity:.55}
 
-/* ── CREED ── */
-.creed-section{padding:100px 0;text-align:center;position:relative;overflow:hidden}
-.creed-section::before{content:'✝';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:400px;color:rgba(201,168,76,.025);pointer-events:none;font-family:serif;line-height:1}
-.creed-box{background:linear-gradient(160deg,rgba(201,168,76,.06),rgba(201,168,76,.02));border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:clamp(40px,6vw,70px) clamp(30px,6vw,80px);max-width:640px;margin:0 auto;position:relative;overflow:hidden}
-.creed-box::before{content:'';position:absolute;top:-1px;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-.creed-box::after{content:'';position:absolute;bottom:-1px;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-.creed-title-label{font-family:var(--font-cin);font-size:9px;letter-spacing:6px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:28px}
-.creed-lines{font-family:var(--font-serif);font-size:clamp(15px,2.5vw,19px);font-weight:400;color:var(--cream);line-height:3;letter-spacing:.5px}
-.creed-accent{color:var(--gold-light);font-weight:700}
-.creed-amen{font-family:var(--font-cin);font-size:16px;letter-spacing:10px;color:var(--gold);opacity:.75;margin-top:28px}
+/* 소개 */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+@media(max-width:768px){.about-grid{grid-template-columns:1fr;gap:40px}}
+.about-desc{font-size:13.5px;font-weight:300;color:var(--cream);opacity:.5;line-height:2.2;margin-bottom:14px}
+.about-links{display:flex;flex-direction:column;gap:0;margin-top:28px}
+.about-link{display:flex;align-items:center;justify-content:space-between;font-family:var(--fc);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.45;text-decoration:none;padding:13px 0;border-bottom:1px solid var(--border);transition:all .3s}
+.about-link:hover{opacity:1;color:var(--gold);padding-left:6px}
+.ab-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ab-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:6px;padding:22px 18px;transition:border-color .3s}
+.ab-card:hover{border-color:var(--border-h)}
+.ab-ic{font-size:20px;margin-bottom:8px}
+.ab-lb{font-family:var(--fc);font-size:8px;letter-spacing:2px;color:var(--gold);opacity:.6;margin-bottom:4px}
+.ab-vl{font-size:12px;color:var(--cream);opacity:.45;font-weight:300;line-height:1.7}
 
-/* ── WORSHIP ── */
-.worship{padding:100px 0;background:var(--navy2)}
-.worship-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:50px}
-.w-card{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;padding:28px 24px;display:flex;gap:16px;align-items:flex-start;transition:border-color .3s,transform .3s}
-.w-card:hover{border-color:var(--border-h);transform:translateY(-4px)}
-.w-icon{font-size:24px;flex-shrink:0;width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:rgba(201,168,76,.06);border-radius:4px;border:1px solid var(--border)}
-.w-label{font-family:var(--font-serif);font-size:13px;font-weight:700;color:var(--gold);letter-spacing:1px;margin-bottom:4px}
-.w-value{font-size:13px;font-weight:300;color:var(--cream);opacity:.58;line-height:1.8}
+/* Values */
+.d-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:10px}
+@media(max-width:768px){.d-grid{grid-template-columns:repeat(2,1fr)}}
+.d-card{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;padding:26px 12px;text-align:center;transition:all .35s;position:relative;overflow:hidden}
+.d-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s}
+.d-card:hover{border-color:var(--border-h);transform:translateY(-4px)}.d-card:hover::after{transform:scaleX(1)}
+.d-num{font-family:var(--fc);font-size:8px;letter-spacing:3px;color:var(--gold);opacity:.4;margin-bottom:8px}
+.d-eng{font-family:var(--fc);font-size:clamp(9px,1.1vw,11px);letter-spacing:2px;color:var(--gold);font-weight:600;margin-bottom:5px}
+.d-kor{font-size:11px;opacity:.4;margin-bottom:5px}
+.d-desc{font-size:10px;opacity:.32;line-height:1.6;font-weight:300}
+.d-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media(max-width:768px){.d-row{grid-template-columns:repeat(2,1fr)}}
+.d-verse{background:rgba(255,255,255,.015);border:1px solid var(--border);border-radius:5px;padding:16px 12px;text-align:center}
+.dv-t{font-size:10px;font-style:italic;color:var(--cream);opacity:.5;line-height:1.7;margin-bottom:4px}
+.dv-r{font-family:var(--fc);font-size:7.5px;letter-spacing:2px;color:var(--gold);opacity:.4}
+.dv-d{font-size:10px;opacity:.33;margin-top:5px;line-height:1.6;font-weight:300}
 
-/* ══════════════════════════════
-   💛 DONATION SECTION
-══════════════════════════════ */
-.donation-section{padding:110px 0;position:relative;overflow:hidden}
-.donation-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(201,168,76,.06) 0%,transparent 65%);pointer-events:none}
+/* 신앙고백 */
+.creed-box{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:10px;padding:56px 40px;max-width:640px;margin:0 auto;text-align:center;position:relative;overflow:hidden}
+.creed-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.creed-label{font-family:var(--fc);font-size:9px;letter-spacing:4px;color:var(--gold);opacity:.55;margin-bottom:32px}
+.creed-lines{font-family:var(--fs);font-size:clamp(14px,2.2vw,18px);font-weight:400;color:var(--cream);line-height:3;letter-spacing:.3px}
+.creed-accent{color:var(--gold-l);font-weight:700}
+.creed-amen{font-family:var(--fc);font-size:14px;letter-spacing:8px;color:var(--gold);opacity:.65;margin-top:28px}
 
-.donation-wrap{max-width:720px;margin:0 auto;position:relative;z-index:2}
+/* 사역 페이지 카드 */
+.pages-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
+@media(max-width:768px){.pages-grid{grid-template-columns:1fr}}
+.pg-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:8px;padding:32px 26px;text-decoration:none;transition:all .35s;display:block;position:relative;overflow:hidden}
+.pg-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);transform:scaleX(0);transition:transform .4s}
+.pg-card:hover{border-color:var(--border-h);transform:translateY(-5px)}.pg-card:hover::before{transform:scaleX(1)}
+.pg-ic{font-size:28px;margin-bottom:14px;display:block}
+.pg-t{font-family:var(--fs);font-size:17px;font-weight:700;color:var(--gold-p);margin-bottom:8px}
+.pg-d{font-size:12.5px;font-weight:300;color:var(--cream);opacity:.42;line-height:1.9}
+.pg-l{font-family:var(--fc);font-size:8.5px;letter-spacing:2px;color:var(--gold);opacity:.55;margin-top:14px;display:block}
 
-.donation-card{background:linear-gradient(160deg,rgba(201,168,76,.07) 0%,rgba(15,29,46,.95) 60%);border:1px solid rgba(201,168,76,.28);border-radius:12px;padding:clamp(36px,6vw,60px) clamp(28px,6vw,60px);position:relative;overflow:hidden}
-.donation-card::before{content:'';position:absolute;top:-1px;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+/* 후원 */
+.donate-inner{max-width:560px;margin:0 auto;text-align:center}
+.donate-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;padding:44px 36px;position:relative;overflow:hidden;margin-top:44px}
+.donate-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.donate-card-title{font-family:var(--fc);font-size:9px;letter-spacing:4px;color:var(--gold);opacity:.6;margin-bottom:14px}
+.donate-card-desc{font-size:13px;font-weight:300;color:var(--cream);opacity:.48;line-height:2;margin-bottom:26px}
+.donate-vol{font-family:var(--fc);font-size:8px;letter-spacing:2px;color:var(--gold);opacity:.38;margin-top:16px}
 
-.donation-header{text-align:center;margin-bottom:36px}
-.donation-icon{font-size:36px;margin-bottom:12px}
-.donation-title{font-family:var(--font-serif);font-size:clamp(22px,4vw,30px);font-weight:700;color:var(--cream);margin-bottom:10px;line-height:1.3}
-.donation-sub{font-size:13.5px;font-weight:300;color:var(--cream);opacity:.55;line-height:2}
+/* 공동체 */
+.cf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:48px}
+@media(max-width:600px){.cf-grid{grid-template-columns:1fr}}
+.cf-card{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:7px;padding:26px 22px;transition:all .35s}
+.cf-card:hover{border-color:var(--border-h);transform:translateY(-3px)}
+.cf-ic{font-size:22px;margin-bottom:10px;display:block}
+.cf-t{font-size:13.5px;font-weight:700;color:var(--gold-p);margin-bottom:6px}
+.cf-d{font-size:11.5px;font-weight:300;color:var(--cream);opacity:.38;line-height:1.8}
+.cf-s{font-family:var(--fc);font-size:8px;letter-spacing:2px;color:var(--gold);opacity:.5;margin-top:8px;display:block}
 
-/* Amount buttons */
-.amount-label{font-family:var(--font-cin);font-size:9px;letter-spacing:4px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:14px;text-align:center}
-.amount-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
-.amount-btn{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:16px 10px;text-align:center;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
-.amount-btn::before{content:'';position:absolute;inset:0;background:var(--gold);opacity:0;transition:opacity .25s}
-.amount-btn:hover{border-color:rgba(201,168,76,.5);transform:translateY(-2px)}
-.amount-btn.selected{border-color:var(--gold);background:rgba(201,168,76,.12)}
-.amount-btn.selected::before{opacity:.08}
-.amount-btn .amount-krw{font-family:var(--font-serif);font-size:17px;font-weight:700;color:var(--cream);display:block;position:relative;z-index:1}
-.amount-btn .amount-desc{font-family:var(--font-cin);font-size:8px;letter-spacing:2px;color:var(--gold);opacity:.55;display:block;margin-top:4px;position:relative;z-index:1;text-transform:uppercase}
-.amount-btn.selected .amount-krw{color:var(--gold-light)}
+/* 함께하기 */
+.join-section{padding:120px 20px;background:var(--navy);text-align:center;position:relative;overflow:hidden}
+.join-section::before{content:'✝';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:500px;color:var(--gold);opacity:.018;font-family:var(--fc);pointer-events:none}
+.join-title{font-size:clamp(28px,5vw,52px);font-weight:900;color:var(--cream);line-height:1.3;margin-bottom:14px}
+.join-sub{font-size:14px;font-weight:300;color:var(--cream);opacity:.42;line-height:2;margin-bottom:44px;max-width:520px;margin-left:auto;margin-right:auto}
+.join-note{font-family:var(--fc);font-size:8px;letter-spacing:2px;color:var(--cream);opacity:.28;margin-top:12px}
+.join-privacy{font-size:10px;color:var(--cream);opacity:.22;margin-top:8px}
 
-/* Custom amount */
-.custom-amount-row{display:flex;gap:10px;align-items:stretch;margin-bottom:28px}
-.custom-label{font-family:var(--font-cin);font-size:9px;letter-spacing:3px;color:var(--gold);opacity:.5;flex-shrink:0;display:flex;align-items:center;text-transform:uppercase}
-.custom-input-wrap{flex:1;position:relative}
-.custom-input-wrap::before{content:'₩';position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:var(--font-serif);font-size:15px;color:var(--gold);opacity:.6;pointer-events:none}
-.custom-input{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;padding:13px 14px 13px 34px;color:var(--cream);font-family:var(--font-serif);font-size:16px;font-weight:500;transition:border-color .3s;appearance:none}
-.custom-input:focus{outline:none;border-color:rgba(201,168,76,.55)}
-.custom-input::placeholder{color:var(--cream);opacity:.25;font-size:13px}
+/* 푸터 */
+footer{background:#060d16;padding:64px 40px 36px;border-top:1px solid var(--border)}
+.ft-inner{max-width:960px;margin:0 auto}
+.ft-top{display:grid;grid-template-columns:auto 1fr;gap:60px;margin-bottom:44px;align-items:start}
+@media(max-width:768px){.ft-top{grid-template-columns:1fr;gap:32px}}
+.ft-brand-name{font-family:var(--fc);font-size:16px;color:var(--gold);letter-spacing:2px;margin-bottom:5px}
+.ft-tagline{font-family:var(--fc);font-size:7.5px;letter-spacing:4px;color:var(--gold);opacity:.4;margin-bottom:10px}
+.ft-brand-desc{font-size:11px;color:var(--cream);opacity:.26;line-height:2;max-width:220px}
+.ft-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+@media(max-width:480px){.ft-cols{grid-template-columns:1fr 1fr}}
+.ft-col-title{font-family:var(--fc);font-size:8px;letter-spacing:4px;color:var(--gold);opacity:.5;margin-bottom:12px}
+.ft-col a{display:block;font-size:11px;color:var(--cream);opacity:.3;text-decoration:none;margin-bottom:8px;transition:opacity .3s}
+.ft-col a:hover{opacity:.65}
+.ft-bottom{border-top:1px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.ft-copy{font-family:var(--fc);font-size:7.5px;letter-spacing:2px;color:var(--cream);opacity:.2}
+.ft-disc{font-size:9px;color:var(--cream);opacity:.16;text-align:right;line-height:1.8}
 
-/* Donor info */
-.donor-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
-.form-field{display:flex;flex-direction:column;gap:6px}
-.form-field label{font-family:var(--font-cin);font-size:9px;letter-spacing:3px;color:var(--gold);opacity:.55;text-transform:uppercase}
-.form-field input{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;padding:12px 16px;color:var(--cream);font-family:var(--font-serif);font-size:13px;transition:border-color .3s}
-.form-field input:focus{outline:none;border-color:rgba(201,168,76,.5)}
-.form-field input::placeholder{color:var(--cream);opacity:.25}
-
-/* Payment methods */
-.pay-label{font-family:var(--font-cin);font-size:9px;letter-spacing:4px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:12px}
-.pay-methods{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px}
-.pay-btn{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;padding:12px 8px;text-align:center;cursor:pointer;transition:all .25s;display:flex;flex-direction:column;align-items:center;gap:5px}
-.pay-btn:hover{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.05)}
-.pay-btn.selected{border-color:var(--gold);background:rgba(201,168,76,.1)}
-.pay-btn .pay-icon{font-size:18px}
-.pay-btn .pay-name{font-family:var(--font-cin);font-size:8px;letter-spacing:1px;color:var(--cream);opacity:.6;text-transform:uppercase}
-.pay-btn.selected .pay-name{color:var(--gold);opacity:.9}
-
-/* Bank transfer info */
-.bank-info{background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:20px 24px;margin-bottom:22px;display:none}
-.bank-info.show{display:block}
-.bank-info-title{font-family:var(--font-cin);font-size:9px;letter-spacing:3px;color:var(--gold);opacity:.7;text-transform:uppercase;margin-bottom:14px}
-.bank-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(201,168,76,.1)}
-.bank-row:last-child{border-bottom:none}
-.bank-key{font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.45;text-transform:uppercase}
-.bank-val{font-family:var(--font-serif);font-size:13px;font-weight:500;color:var(--cream)}
-.bank-copy{font-family:var(--font-cin);font-size:8px;letter-spacing:2px;color:var(--gold);cursor:pointer;border:1px solid rgba(201,168,76,.3);padding:3px 8px;border-radius:2px;transition:background .2s;text-transform:uppercase}
-.bank-copy:hover{background:rgba(201,168,76,.12)}
-
-/* Privacy checkbox */
-.privacy-check{display:flex;align-items:flex-start;gap:10px;margin-bottom:22px}
-.privacy-check input[type="checkbox"]{width:16px;height:16px;flex-shrink:0;margin-top:3px;accent-color:var(--gold);cursor:pointer}
-.privacy-check label{font-size:11.5px;font-weight:300;color:var(--cream);opacity:.55;line-height:1.8;cursor:pointer}
-.privacy-check a{color:var(--gold);opacity:.8;text-decoration:underline;text-underline-offset:2px}
-
-/* Submit btn */
-.donate-submit{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);font-family:var(--font-cin);font-size:12px;letter-spacing:5px;padding:18px 24px;border-radius:6px;text-transform:uppercase;font-weight:700;transition:all .3s;position:relative;overflow:hidden}
-.donate-submit:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(201,168,76,.25)}
-.donate-submit:disabled{opacity:.4;cursor:not-allowed;transform:none}
-
-/* Amount display */
-.amount-display{text-align:center;margin-bottom:24px;min-height:40px}
-.amount-display .selected-amount{font-family:var(--font-serif);font-size:32px;font-weight:900;color:var(--gold-light);text-shadow:0 0 30px rgba(201,168,76,.3);letter-spacing:2px}
-.amount-display .selected-label{font-family:var(--font-cin);font-size:9px;letter-spacing:4px;color:var(--cream);opacity:.35;text-transform:uppercase;margin-top:4px}
-
-/* Success state */
-.donation-success{display:none;text-align:center;padding:30px 0}
-.donation-success.show{display:block}
-.success-icon{font-size:48px;margin-bottom:16px;animation:popIn .5s var(--ease-out)}
-@keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
-.success-title{font-family:var(--font-serif);font-size:24px;font-weight:700;color:var(--cream);margin-bottom:10px}
-.success-sub{font-size:14px;font-weight:300;color:var(--cream);opacity:.55;line-height:2}
-.success-verse{font-style:italic;color:var(--gold-pale);opacity:.7;margin-top:16px;font-size:13px;line-height:2}
-
-/* ── COMMUNITY ── */
-.community{padding:100px 0}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin:60px 0;background:var(--border);border:1px solid var(--border);border-radius:6px;overflow:hidden}
-.stat-cell{background:var(--navy);padding:36px 24px;text-align:center;transition:background .3s}
-.stat-cell:hover{background:rgba(201,168,76,.04)}
-.stat-num{font-family:var(--font-serif);font-size:38px;font-weight:900;color:var(--gold);line-height:1;margin-bottom:8px;text-shadow:0 0 30px rgba(201,168,76,.2)}
-.stat-label{font-family:var(--font-cin);font-size:9px;letter-spacing:3px;color:var(--cream);opacity:.4;text-transform:uppercase}
-.community-features{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.cf-item{background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:6px;padding:30px;display:grid;grid-template-columns:40px 1fr;gap:18px;align-items:start;transition:border-color .3s,transform .3s}
-.cf-item:hover{border-color:var(--border-h);transform:translateY(-3px)}
-.cf-icon{font-size:22px;margin-top:2px}
-.cf-title{font-family:var(--font-serif);font-size:15px;font-weight:700;color:var(--cream);margin-bottom:8px}
-.cf-desc{font-size:13px;font-weight:300;color:var(--cream);opacity:.52;line-height:2}
-
-/* ── JOIN ── */
-.join-section{padding:110px 0;background:var(--navy2);text-align:center;position:relative;overflow:hidden}
-.join-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent)}
-.join-section::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent)}
-.join-bg{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(201,168,76,.05) 0%,transparent 60%);pointer-events:none}
-.join-inner{position:relative;z-index:2}
-.join-title{font-family:var(--font-serif);font-size:clamp(28px,5vw,48px);font-weight:900;color:var(--cream);line-height:1.3;margin-bottom:18px}
-.join-title .gold{color:var(--gold)}
-.join-sub{font-size:15px;font-weight:300;color:var(--cream);opacity:.55;line-height:2.2;max-width:520px;margin:0 auto 36px}
-.form-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:480px;margin:0 auto 16px}
-.form-input{flex:1;min-width:190px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:2px;padding:13px 18px;color:var(--cream);font-family:var(--font-serif);font-size:13px;transition:border-color .3s}
-.form-input:focus{outline:none;border-color:rgba(201,168,76,.5)}
-.form-input::placeholder{color:var(--cream);opacity:.3}
-
-/* ══════════════════════════════
-   PRIVACY MODAL
-══════════════════════════════ */
-.privacy-modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(5,12,22,.85);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .35s}
-.privacy-modal-overlay.open{opacity:1;pointer-events:all}
-.privacy-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-48%) scale(.97);z-index:501;width:min(720px,94vw);max-height:85vh;background:var(--navy2);border:1px solid rgba(201,168,76,.2);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;transition:transform .35s var(--ease-out),opacity .35s;opacity:0;pointer-events:none}
-.privacy-modal-overlay.open .privacy-modal{transform:translate(-50%,-50%) scale(1);opacity:1;pointer-events:all}
-.privacy-modal-header{padding:24px 32px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
-.privacy-modal-title{font-family:var(--font-serif);font-size:18px;font-weight:700;color:var(--cream);letter-spacing:2px}
-.privacy-modal-close{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--cream);opacity:.4;cursor:pointer;transition:opacity .2s,background .2s;background:rgba(255,255,255,.05)}
-.privacy-modal-close:hover{opacity:.9;background:rgba(201,168,76,.12)}
-.privacy-modal-body{padding:28px 32px;overflow-y:auto;flex:1}
-.privacy-modal-body::-webkit-scrollbar{width:4px}
-.privacy-modal-body::-webkit-scrollbar-track{background:rgba(255,255,255,.03)}
-.privacy-modal-body::-webkit-scrollbar-thumb{background:rgba(201,168,76,.3);border-radius:2px}
-.pm-section{margin-bottom:28px}
-.pm-title{font-family:var(--font-cin);font-size:10px;letter-spacing:4px;color:var(--gold);opacity:.75;text-transform:uppercase;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(201,168,76,.12)}
-.pm-text{font-size:13px;font-weight:300;color:var(--cream);opacity:.6;line-height:2.1}
-.pm-text strong{color:var(--gold-pale);opacity:.9;font-weight:500}
-.pm-table{width:100%;border-collapse:collapse;margin-top:12px}
-.pm-table th{font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--gold);opacity:.65;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid rgba(201,168,76,.15)}
-.pm-table td{font-size:12.5px;font-weight:300;color:var(--cream);opacity:.55;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.04);line-height:1.9}
-
-/* ── FOOTER ── */
-.footer{padding:60px 0 40px;border-top:1px solid var(--border)}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
-.footer-logo{font-family:var(--font-serif);font-size:22px;font-weight:900;letter-spacing:6px;color:var(--cream);margin-bottom:8px}
-.footer-tagline{font-family:var(--font-cin);font-size:9px;letter-spacing:4px;color:var(--gold);opacity:.5;margin-bottom:14px}
-.footer-desc{font-size:12px;font-weight:300;color:var(--cream);opacity:.38;line-height:2}
-.footer-col-title{font-family:var(--font-cin);font-size:9px;letter-spacing:4px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:18px}
-.footer-links{display:flex;flex-direction:column;gap:10px}
-.footer-links a{font-size:12.5px;font-weight:300;color:var(--cream);opacity:.42;transition:opacity .3s;letter-spacing:.5px}
-.footer-links a:hover{opacity:.8}
-.footer-bottom{border-top:1px solid var(--border);padding-top:26px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
-.footer-copy{font-family:var(--font-cin);font-size:9px;letter-spacing:3px;color:var(--cream);opacity:.28}
-.footer-privacy-btn{font-family:var(--font-cin);font-size:9px;letter-spacing:3px;color:var(--gold);opacity:.5;cursor:pointer;border:1px solid rgba(201,168,76,.2);padding:5px 14px;border-radius:2px;transition:opacity .2s,border-color .2s;text-transform:uppercase}
-.footer-privacy-btn:hover{opacity:.9;border-color:rgba(201,168,76,.45)}
-
-@media(max-width:960px){
-  .about-grid{grid-template-columns:1fr;gap:50px}
-  .doctrine-cards{grid-template-columns:repeat(3,1fr)}
-  .doctrine-detail-inner{grid-template-columns:1fr}
-  .dd-item{border-right:none;border-bottom:1px solid var(--border)}
-  .stats-row{grid-template-columns:repeat(2,1fr)}
-  .community-features{grid-template-columns:1fr}
-  .worship-grid{grid-template-columns:repeat(2,1fr)}
-  .footer-grid{grid-template-columns:1fr 1fr}
-  .amount-grid{grid-template-columns:repeat(2,1fr)}
-  .pay-methods{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:640px){
-  .nav-links,.nav-cta{display:none}
-  .nav-hamburger{display:flex}
-  .container,.container--narrow{padding:0 18px}
-  .doctrine-cards{grid-template-columns:repeat(2,1fr)}
-  .worship-grid{grid-template-columns:1fr}
-  .stats-row{grid-template-columns:1fr 1fr}
-  .footer-grid{grid-template-columns:1fr}
-  .about-name-grid{grid-template-columns:1fr}
-  .hero-ring,.hero-ring-2{display:none}
-  .donor-grid{grid-template-columns:1fr}
-  .custom-amount-row{flex-direction:column}
-  .donation-card{padding:32px 22px}
-}
+/* 공통 */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.reveal.on{opacity:1;transform:none}
+.reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}.reveal.d4{transition-delay:.4s}
 </style>
 </head>
 <body>
 
-<!-- ══ PRIVACY MODAL ══ -->
-<div class="privacy-modal-overlay" id="privacyOverlay" onclick="closePrivacy(event)">
-  <div class="privacy-modal" id="privacyModal">
-    <div class="privacy-modal-header">
-      <div class="privacy-modal-title">개인정보처리방침</div>
-      <div class="privacy-modal-close" onclick="closePrivacyModal()">✕</div>
-    </div>
-    <div class="privacy-modal-body">
-      <div class="pm-section">
-        <div class="pm-title">제1조 — 총칙</div>
-        <p class="pm-text">Jeongmin Church(이하 "본 교회")는 「개인정보 보호법」 제30조에 따라 정보주체의 개인정보를 보호하고 이와 관련한 고충을 신속하고 원활하게 처리할 수 있도록 다음과 같이 개인정보처리방침을 수립·공개합니다.</p>
-      </div>
-      <div class="pm-section">
-        <div class="pm-title">제2조 — 개인정보 수집 항목 및 목적</div>
-        <p class="pm-text" style="margin-bottom:12px">본 교회는 아래의 목적으로 개인정보를 수집·이용합니다.</p>
-        <table class="pm-table">
-          <tr><th>수집 목적</th><th>수집 항목</th><th>보유 기간</th></tr>
-          <tr><td>공동체 가입 및 연락</td><td>이름, 이메일</td><td>탈퇴 시 즉시 삭제</td></tr>
-          <tr><td>후원금 처리</td><td>이름, 이메일, 후원 금액</td><td>5년 (세법 기준)</td></tr>
-          <tr><td>뉴스레터 발송</td><td>이름, 이메일</td><td>구독 해지 시 삭제</td></tr>
-        </table>
-      </div>
-      <div class="pm-section">
-        <div class="pm-title">제3조 — 개인정보 수집 방법</div>
-        <p class="pm-text">본 교회는 다음의 방법으로 개인정보를 수집합니다.<br><strong>①</strong> 홈페이지 가입 및 후원 신청 시 입력 &nbsp; <strong>②</strong> 이메일을 통한 문의</p>
-      </div>
-      <div class="pm-section">
-        <div class="pm-title">제4조 — 제3자 제공</div>
-        <p class="pm-text">본 교회는 정보주체의 개인정보를 <strong>제3자에게 제공하지 않습니다.</strong> 단, 법령에 의한 요청이 있는 경우는 예외로 합니다.</p>
-      </div>
-      <div class="pm-section">
-        <div class="pm-title">제5조 — 개인정보의 파기</div>
-        <p class="pm-text">본 교회는 개인정보 보유기간의 경과 또는 처리목적 달성 후에는 지체 없이 해당 정보를 파기합니다. 전자적 파일 형태의 정보는 복구 불가능한 방법으로 영구 삭제합니다.</p>
-      </div>
-      <div class="pm-section">
-        <div class="pm-title">제6조 — 정보주체의 권리·의무</div>
-        <p class="pm-text">정보주체는 언제든지 개인정보 <strong>열람·정정·삭제·처리정지</strong>를 요청할 수 있습니다. 요청은 아래 개인정보 담당자에게 이메일로 접수하시기 바랍니다.</p>
-      </div>
-      <div class="pm-section">
-        <div class="pm-title">제7조 — 쿠키 사용</div>
-        <p class="pm-text">본 교회 홈페이지는 이용자 편의를 위해 쿠키(Cookie)를 사용하지 않으며 별도의 방문 로그도 수집하지 않습니다.</p>
-      </div>
-      <div class="pm-section">
-        <div class="pm-title">제8조 — 개인정보 보호책임자</div>
-        <p class="pm-text">
-          <strong>성명:</strong> Jeongmin Church 운영자<br>
-          <strong>이메일:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="046e616b6a63696d6a676c7176676c446369656d682a676b69">[email&#160;protected]</a><br>
-          <strong>처리 기간:</strong> 접수 후 10일 이내 회신
-        </p>
-      </div>
-      <div class="pm-section">
-        <div class="pm-title">제9조 — 권익침해 구제방법</div>
-        <p class="pm-text">개인정보 관련 침해 신고 및 상담은 아래 기관에 문의하실 수 있습니다.<br>
-        <strong>개인정보 침해신고센터:</strong> privacy.kisa.or.kr / 전화 118<br>
-        <strong>개인정보 분쟁조정위원회:</strong> www.kopico.go.kr / 전화 1833-6972</p>
-      </div>
-      <div class="pm-section">
-        <div class="pm-title">부칙</div>
-        <p class="pm-text">본 방침은 <strong>2025년 1월 1일</strong>부터 시행합니다.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ MOBILE MENU ══ -->
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#about" onclick="closeMobile()">교회 소개</a>
-  <a href="#doctrines" onclick="closeMobile()">삶의 방식</a>
-  <a href="#worship" onclick="closeMobile()">예배</a>
-  <a href="/jeongminchurch/sermons.html" onclick="closeMobile();clearSermonBadge()" style="position:relative">말씀<span id="navBadgeMobile" class="sermon-badge" style="display:none;position:absolute;top:-6px;right:-10px;min-width:16px;height:16px;background:#E05555;border-radius:50%;font-size:10px;font-weight:700;color:#fff;align-items:center;justify-content:center;padding:0 3px;font-family:sans-serif;line-height:1">N</span></a>
-  <a href="#donate" onclick="closeMobile()">후원</a>
-  <a href="#join" onclick="closeMobile()">함께하기</a>
-</div>
-
-<!-- ══ NAV ══ -->
-<nav class="nav" id="nav">
+<!-- NAV -->
+<nav class="nav" id="mainNav">
   <a href="#" class="nav-logo">
-    <div>
-      <div class="nav-logo-text" style="font-family:var(--font-cin);color:var(--gold);letter-spacing:3px;font-size:17px">Jeongmin Church</div>
-      <span class="nav-logo-sub">JEONGMIN CHURCH · ONLINE MINISTRY</span>
-    </div>
+    <div class="nav-cross"></div>
+    <span class="nav-logo-text">Jeongmin Church</span>
   </a>
-  <ul class="nav-links" id="navLinks">
+  <ul class="nav-links">
+    <li><a href="#worship-steps" data-key="navSteps">10분 예배</a></li>
     <li><a href="#about" data-key="navAbout">소개</a></li>
-    <li><a href="#doctrines" data-key="navValues">삶의 방식</a></li>
-    <li><a href="#worship" data-key="navWorship">예배</a></li>
-    <li><a href="/jeongminchurch/sermons.html" data-key="navSermon">말씀</a></li>
+    <li><a href="#values" data-key="navValues">삶의 방식</a></li>
+    <li><a href="/jeongminchurch/sermons.html" data-key="navSermons">말씀</a></li>
     <li><a href="#donate" data-key="navDonate">후원</a></li>
     <li><a href="#community" data-key="navCommunity">공동체</a></li>
   </ul>
-  <button id="langToggle" onclick="window.toggleLang()" style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;padding:7px 14px;border:1px solid rgba(201,168,76,.3);background:rgba(201,168,76,.06);color:var(--gold);border-radius:2px;cursor:pointer;transition:all .3s;margin-right:10px">KO / EN</button><a href="#join" class="nav-cta" id="navCta">함께하기</a>
-  <div class="nav-hamburger" id="hamburger" onclick="toggleMobile()">
-    <span></span><span></span><span></span>
+  <div class="nav-right">
+    <button class="btn-lang" id="langBtn" onclick="window.toggleLang()">KO | EN</button>
+    <a href="/jeongminchurch/worship.html" class="btn-nav-cta" id="navCta">✝ 예배 시작</a>
   </div>
 </nav>
 
-<!-- ══ HERO ══ -->
-<section class="hero" id="hero">
+<!-- HERO -->
+<section class="hero" id="home">
   <div class="hero-bg"></div>
-  <div class="hero-ring"></div>
-  <div class="hero-ring-2"></div>
-  <canvas id="particles"></canvas>
+  <div class="hero-gl"></div><div class="hero-gr"></div>
+  <div class="hero-cross-bg">
+    <svg viewBox="0 0 200 280" fill="none"><rect x="90" y="0" width="20" height="280" rx="10" fill="#C9A84C"/><rect x="0" y="85" width="200" height="20" rx="10" fill="#C9A84C"/></svg>
+  </div>
+  <div class="hero-pts" id="heroPts"></div>
   <div class="hero-content">
-    <div class="hero-emblem">
-      <svg width="120" height="138" viewBox="0 0 180 200" fill="none">
-        <defs>
-          <radialGradient id="gH" cx="50%" cy="45%" r="50%"><stop offset="0%" stop-color="#C9A84C" stop-opacity="0.18"/><stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/></radialGradient>
-          <filter id="gF"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        <circle cx="90" cy="92" r="78" stroke="#C9A84C" stroke-width=".6" opacity=".18"/>
-        <circle cx="90" cy="92" r="70" stroke="#C9A84C" stroke-width=".4" stroke-dasharray="2 5" opacity=".25"/>
-        <ellipse cx="90" cy="70" rx="60" ry="55" fill="url(#gH)"/>
-        <rect x="85.5" y="16" width="9" height="108" rx="4.5" fill="#C9A84C" filter="url(#gF)"/>
-        <rect x="42" y="48" width="96" height="9" rx="4.5" fill="#C9A84C" filter="url(#gF)"/>
-        <rect x="81" y="44" width="18" height="18" fill="#0B1622"/>
-        <text x="90" y="57" text-anchor="middle" dominant-baseline="middle" font-family="Noto Serif KR,serif" font-size="13" fill="#C9A84C" font-weight="900">正</text>
-        <path d="M90 124 Q68 144 50 166" stroke="#C9A84C" stroke-width="1.8" opacity=".28" fill="none" stroke-linecap="round"/>
-        <path d="M90 124 Q90 148 90 170" stroke="#C9A84C" stroke-width="1.8" opacity=".28" fill="none" stroke-linecap="round"/>
-        <path d="M90 124 Q112 144 130 166" stroke="#C9A84C" stroke-width="1.8" opacity=".28" fill="none" stroke-linecap="round"/>
-        <path d="M42 52 Q24 36 14 22" stroke="#7A9E7E" stroke-width="1.4" opacity=".55" fill="none"/>
-        <ellipse cx="28" cy="38" rx="9" ry="4.5" fill="#7A9E7E" opacity=".5" transform="rotate(-38 28 38)"/>
-        <path d="M138 52 Q156 36 166 22" stroke="#7A9E7E" stroke-width="1.4" opacity=".55" fill="none"/>
-        <ellipse cx="152" cy="38" rx="9" ry="4.5" fill="#7A9E7E" opacity=".5" transform="rotate(38 152 38)"/>
-        <circle cx="90" cy="12" r="3" fill="#C9A84C" opacity=".9" filter="url(#gF)"/>
-      </svg>
+    <div class="hero-badge" id="heroBadge">✝ &nbsp; JEONGMIN CHURCH · 온라인 예배</div>
+    <div class="hero-timer">
+      <div><div class="timer-n">10</div><div class="timer-l" id="timerLabel">분</div></div>
+      <div class="timer-div"></div>
+      <div class="timer-info">
+        <div class="timer-title-t" id="timerTitle">완전한 예배</div>
+        <div class="timer-steps-t" id="timerSteps">찬양 · 말씀 · 기도 · 신앙고백 · 축도</div>
+      </div>
     </div>
-    <div class="hero-kicker" id="heroEyebrow">Digital Church · 디지털 교회</div>
-    <div class="h-rule" style="max-width:300px;margin:0 auto 18px"><div class="h-rule-line"></div><div class="h-rule-dot"></div><div class="h-rule-line"></div></div>
-    <h1 class="hero-title" style="font-size:clamp(42px,8vw,82px);letter-spacing:clamp(4px,1.5vw,12px)">Jeongmin Church</h1>
-    <div class="hero-subtitle" style="font-size:clamp(12px,2vw,16px);letter-spacing:3px;opacity:.6">Jeongmin Church (正民敎)</div>
-    <p class="hero-tagline">SLOWLY · RIGHTEOUSLY · TOGETHER</p>
-    <p id="heroSubtitle" style="font-family:var(--font-cin);font-size:10px;letter-spacing:3px;color:var(--cream);opacity:.35;margin-top:8px;line-height:2;text-transform:uppercase">Independent Christian Ministry · Non-Denominational · Online</p>
-    <div class="h-rule" style="max-width:240px;margin:0 auto 34px"><div class="h-rule-line"></div><div class="h-rule-dot"></div><div class="h-rule-line"></div></div>
-    <div class="hero-actions">
-      <a href="#about" class="btn-primary">교회 알아보기</a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfcBwzyAmeG9F26h7-H9HvhMSdNrz1tfODdMasjcVSdQMa2oQ/viewform?usp=sharing&ouid=103364882900686111237" target="_blank" rel="noopener" class="btn-outline"><span id="heroBtnDonate">✝ 후원하기</span></a>
+    <h1 class="hero-title">
+      <span id="heroLine1">언제 어디서든,</span><br>
+      <span class="hl" id="heroLine2">딱 10분이면 충분합니다</span>
+    </h1>
+    <div class="h-rule"><div class="h-rl"></div><div class="h-dot"></div><div class="h-rl r"></div></div>
+    <p class="hero-sub" id="heroSub">믿음은 있지만 교회 가기 힘드신가요?<br><strong>인터넷만 있으면 어디서든</strong> — 출근길, 집에서, 점심시간 —<br>하나님께 예배드릴 수 있습니다.</p>
+    <div class="hero-cta">
+      <a href="/jeongminchurch/worship.html" class="btn-main"><span>✝</span><span id="heroBtnMain">지금 예배 시작하기</span></a>
+      <a href="#worship-steps" class="btn-sec" id="heroBtnSub">예배 순서 보기 ↓</a>
+      <span class="hero-note" id="heroNote">소요시간 약 10분 · 인터넷만 있으면 가능</span>
     </div>
   </div>
-  <div class="hero-scroll-indicator">
-    <span>SCROLL</span>
-    <svg width="12" height="18" viewBox="0 0 12 18" fill="none"><path d="M6 1v16M1 12l5 5 5-5" stroke="#C9A84C" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="scroll-hint"><span>SCROLL</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- 10분 예배 순서 -->
+<section class="section" id="worship-steps" style="background:var(--navy2)">
+  <div class="container">
+    <div class="tc reveal">
+      <div class="s-eye" id="stepsEye">10분 예배 순서 · Worship Order</div>
+      <h2 class="s-title" id="stepsTitle">짧지만, 완전한 예배입니다</h2>
+      <p class="s-sub" id="stepsSub">형식보다 마음이 먼저입니다. 찬양에서 축도까지, 10분 안에 진심으로 예배드릴 수 있습니다.</p>
+    </div>
+    <div class="steps-flow reveal d1">
+      <div class="step"><div class="step-num">01</div><span class="step-ic">🎵</span><div class="step-nm" id="sn1">찬양</div><div class="step-tm">2분</div><div class="step-ds" id="sd1">자연 소리와 함께<br>찬송가 한 곡</div></div>
+      <div class="step"><div class="step-num">02</div><span class="step-ic">📖</span><div class="step-nm" id="sn2">말씀</div><div class="step-tm">3분</div><div class="step-ds" id="sd2">오늘의 성경 한 구절<br>짧은 묵상</div></div>
+      <div class="step"><div class="step-num">03</div><span class="step-ic">🙏</span><div class="step-nm" id="sn3">기도</div><div class="step-tm">2분</div><div class="step-ds" id="sd3">대표기도<br>오늘 하루를 드림</div></div>
+      <div class="step"><div class="step-num">04</div><span class="step-ic">✝</span><div class="step-nm" id="sn4">신앙고백</div><div class="step-tm">2분</div><div class="step-ds" id="sd4">믿음을 고백하고<br>다짐하는 시간</div></div>
+      <div class="step"><div class="step-num">05</div><span class="step-ic">🕊️</span><div class="step-nm" id="sn5">축도</div><div class="step-tm">1분</div><div class="step-ds" id="sd5">하나님의 은혜로<br>하루를 시작</div></div>
+    </div>
+    <div class="tc reveal d2">
+      <a href="/jeongminchurch/worship.html" class="btn-main"><span>✝</span><span id="stepsBtnText">10분 예배 지금 시작하기</span></a>
+    </div>
   </div>
 </section>
 
-<!-- ══ TICKER ══ -->
-<div class="ticker">
-  <div class="ticker-inner" id="tickerInner">
-    <span class="ticker-item">느리게</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">바르게</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">함께</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">正道</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">正直</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">定着</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">正民</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">靜止</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Slowly · Righteously · Together</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">느리게</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">바르게</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">함께</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">正道</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">正直</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">定着</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">正民</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">靜止</span><span class="ticker-sep">✦</span>
-    <span class="ticker-item">Slowly · Righteously · Together</span><span class="ticker-sep">✦</span>
+<!-- 왜 온라인 예배 -->
+<section class="section" id="why" style="background:var(--navy3)">
+  <div class="container">
+    <div class="tc reveal">
+      <div class="s-eye" id="whyEye">Why Online Worship · 온라인 예배</div>
+      <h2 class="s-title" id="whyTitle">교회는 건물이 아닙니다</h2>
+      <p class="s-sub" id="whySub">성전은 하나님을 향해 마음을 여는 그 자리입니다.<br>인터넷이 닿는 곳, 그곳이 성전입니다.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal"><span class="why-ic">📱</span><div class="why-t" id="why1t">스마트폰에 갇힌 세대를 위해</div><p class="why-d" id="why1d">화면 앞에서 하루를 시작하는 디지털 세대에게 — 같은 화면으로 하나님을 만날 수 있습니다. 기술을 피하지 않고, <strong>기술 안에서 예배드립니다.</strong></p></div>
+      <div class="why-card reveal d1"><span class="why-ic">⏰</span><div class="why-t" id="why2t">바쁜 일상 속에서도</div><p class="why-d" id="why2d">출근길 지하철, 점심시간, 잠들기 전 침대에서. <strong>언제 어디서든</strong> 장소와 시간의 제약 없이 하나님께 예배드릴 수 있습니다.</p></div>
+      <div class="why-card reveal d2"><span class="why-ic">💛</span><div class="why-t" id="why3t">마음의 불편함을 평안으로</div><p class="why-d" id="why3d">믿음이 있기에 예배를 드리지 않으면 마음이 불편합니다. 딱 10분, 그 <strong>불편함을 평안으로</strong> 바꿔드립니다.</p></div>
+    </div>
   </div>
-</div>
+</section>
 
-<!-- ══ ABOUT ══ -->
-<section class="about" id="about">
+<!-- 오늘의 말씀 -->
+<section class="section" id="word" style="background:var(--navy2)">
+  <div class="container-sm">
+    <div class="tc reveal"><div class="s-eye" id="wordEye">오늘의 말씀 · Word of the Day</div><h2 class="s-title" id="wordTitle">말씀이 힘이 됩니다</h2></div>
+    <div class="word-card reveal d1">
+      <div class="word-label" id="wordLabel">✝ 오늘의 말씀</div>
+      <p class="word-text" id="wordText">"너희는 가만히 있어 내가 하나님 됨을 알지어다"</p>
+      <div class="word-ref" id="wordRef">— 시편 46:10 —</div>
+    </div>
+    <div class="tc" style="margin-top:32px"><a href="/jeongminchurch/sermons.html" class="btn-sec" id="wordBtn">모든 말씀 보기 →</a></div>
+  </div>
+</section>
+
+<!-- 소개 -->
+<section class="section" id="about" style="background:var(--navy)">
   <div class="container">
     <div class="about-grid">
-      
-      <div class="reveal" style="display:flex;flex-direction:column;gap:20px;align-items:center;text-align:center">
-        <div class="eyebrow">About · Jeongmin Church</div>
-        <h2 class="section-title">Jeongmin Church<br><span style="font-size:clamp(16px,2.5vw,22px);font-weight:400;opacity:.7;letter-spacing:2px">정민교 (正民敎) · Jeongmin Church</span></h2>
-        <p class="section-body" style="font-family:var(--font-cin);font-size:11px;letter-spacing:2px;color:var(--gold);opacity:.7;text-transform:uppercase;margin-bottom:16px">Independent Christian Ministry · Non-Denominational</p>
-        <p class="section-body" id="aboutBody1">Sharing simple and practical messages from the Bible for everyday life — Sermons, Short reflections, and Faith-based life guidance for the digital generation.</p>
-        <p class="section-body" style="margin-top:12px" id="aboutBody2">스마트폰 앞에 갇힌 디지털 세대에게 성경의 진리와 느린 삶의 가치를 전합니다.<br>이 사역은 독립적인 비교단 온라인 기독교 사역입니다.</p>
-        <div class="about-verse" style="text-align:center;border-left:none;border:1px solid rgba(201,168,76,.25);border-radius:6px;padding:20px 28px">
-          <div class="about-verse-text" id="aboutVerse">"너희는 가만히 있어 내가 하나님 됨을 알지어다"</div>
-          <div class="about-verse-ref" id="aboutVerseRef">— 시편 46:10 —</div>
+      <div class="reveal">
+        <div class="s-eye" id="aboutEye">About · Jeongmin Church</div>
+        <h2 class="s-title" id="aboutTitle">디지털 세대를 위한<br>온라인 신앙 공동체</h2>
+        <p class="about-desc" id="aboutDesc1">스마트폰과 PC 화면 앞에 갇혀 진짜 세상을 보지 못하는 디지털 세대에게 하나님의 말씀과 느린 삶의 가치를 전합니다.</p>
+        <p class="about-desc" id="aboutDesc2">비교단 독립 온라인 기독교 사역 · Independent Christian Ministry<br>모든 후원은 자율적이며 강요되지 않습니다.</p>
+        <div class="about-links">
+          <a href="/jeongminchurch/worship.html" class="about-link"><span id="al1">✝ 10분 예배 바로가기</span><span>→</span></a>
+          <a href="/jeongminchurch/sermons.html" class="about-link"><span id="al2">📖 말씀 · Sermons</span><span>→</span></a>
+          <a href="/jeongminchurch/praise.html" class="about-link"><span id="al3">🎵 찬양 · Praise</span><span>→</span></a>
+          <a href="/jeongminchurch/community.html" class="about-link"><span id="al4">🤝 공동체 · Community</span><span>→</span></a>
         </div>
-        <a href="#join" class="btn-primary" style="align-self:center" id="aboutBtnJoin">함께 시작하기</a>
-
-        <!-- 목사 프로필 카드 -->
-        <div style="margin-top:28px;background:rgba(255,255,255,.025);border:1px solid rgba(201,168,76,.18);border-radius:10px;padding:22px 26px;display:flex;align-items:flex-start;gap:18px;flex-wrap:wrap;width:100%;max-width:680px">
-          <div style="width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,rgba(201,168,76,.2),rgba(11,22,34,.8));border:2px solid rgba(201,168,76,.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:24px">✝</div>
-          <div style="flex:1;min-width:180px">
-            <div style="font-family:var(--font-cin);font-size:8px;letter-spacing:3px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:5px">Ordained Minister · Universal Life Church · March 2026</div>
-            <div style="font-family:var(--font-serif);font-size:16px;font-weight:700;color:var(--cream);margin-bottom:4px">Minwoo Joung <span style="font-size:13px;font-weight:300;opacity:.55">정민우</span></div>
-            <div style="font-size:12px;font-weight:300;color:var(--cream);opacity:.55;line-height:2;margin-bottom:10px">
-              Independent Christian Minister (Non-denominational)<br>
-              Online Ministry · Bible Teaching · Faith · Life Guidance
-            </div>
-            <div style="font-size:12px;font-weight:300;color:var(--cream);opacity:.5;line-height:2;border-top:1px solid rgba(201,168,76,.1);padding-top:10px;margin-bottom:10px">
-              비교단 독립 기독교 사역자 · 온라인 기반 성경 중심 사역<br>
-              본 사역은 특정 교단에 소속되지 않은 독립 신앙 공동체로,<br>
-              성경 말씀을 중심으로 일상 속 믿음과 삶의 방향을 나눕니다.<br>
-              누구나 자유롭게 참여할 수 있으며, 모든 후원은 자율적입니다.
-            </div>
-            <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">
-              <span style="font-family:var(--font-cin);font-size:7px;letter-spacing:2px;padding:3px 9px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.22);border-radius:10px;color:var(--gold);text-transform:uppercase">Non-Denominational</span>
-              <span style="font-family:var(--font-cin);font-size:7px;letter-spacing:2px;padding:3px 9px;background:rgba(122,158,126,.1);border:1px solid rgba(122,158,126,.22);border-radius:10px;color:var(--sage);text-transform:uppercase">Online Ministry</span>
-              <span style="font-family:var(--font-cin);font-size:7px;letter-spacing:2px;padding:3px 9px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.22);border-radius:10px;color:var(--gold);text-transform:uppercase">Bible Teaching</span>
-              <span style="font-family:var(--font-cin);font-size:7px;letter-spacing:2px;padding:3px 9px;background:rgba(122,158,126,.1);border:1px solid rgba(122,158,126,.22);border-radius:10px;color:var(--sage);text-transform:uppercase" id="aboutBadgeKr">비교단 독립 사역</span>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top:10px;font-family:var(--font-cin);font-size:8px;letter-spacing:2px;color:var(--cream);opacity:.22;text-transform:uppercase;line-height:2">
-          This ministry operates independently · All support is voluntary and not required<br>
-          본 사역은 비교단 독립 사역으로 운영되며 모든 후원은 자율적으로 이루어지며 강요되지 않습니다
-        </div>
+      </div>
+      <div class="ab-cards reveal d2">
+        <div class="ab-card"><div class="ab-ic">📍</div><div class="ab-lb" id="ab1l">성전</div><div class="ab-vl" id="ab1v">인터넷이 닿는<br>모든 곳</div></div>
+        <div class="ab-card"><div class="ab-ic">⏱️</div><div class="ab-lb" id="ab2l">예배 시간</div><div class="ab-vl" id="ab2v">딱 10분<br>언제 어디서든</div></div>
+        <div class="ab-card"><div class="ab-ic">🌍</div><div class="ab-lb" id="ab3l">선교 대상</div><div class="ab-vl" id="ab3v">디지털 세대<br>모든 믿는 자</div></div>
+        <div class="ab-card"><div class="ab-ic">✝</div><div class="ab-lb" id="ab4l">교단</div><div class="ab-vl" id="ab4v">비교단 독립<br>Non-Denominational</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══ DOCTRINES ══ -->
-<section class="doctrines" id="doctrines">
+<!-- Five Ways of Life -->
+<section class="section" id="values" style="background:var(--navy2)">
   <div class="container">
-    <div class="doctrine-intro reveal">
-      <div class="eyebrow" id="valuesEyebrow">What We Believe · 우리의 믿음</div>
-      <h2 class="section-title" id="valuesTitle">Five Ways of Life</h2>
-      <p class="section-body"><span id="valuesSub">Five simple principles for living a meaningful, faith-centered life.<br>일상 속에서 실천하는 다섯 가지 삶의 방식입니다.</span></p>
+    <div class="tc reveal">
+      <div class="s-eye" id="valuesEye">What We Believe · 우리의 믿음</div>
+      <h2 class="s-title" id="valuesTitle">Five Ways of Life</h2>
+      <p class="s-sub" id="valuesSub">일상 속에서 실천하는 다섯 가지 삶의 방식입니다.</p>
     </div>
-    <div class="doctrine-cards reveal">
-      <div class="d-card">
-        <div class="d-num">01</div>
-        <div class="d-hanja" style="font-family:var(--font-cin);font-size:clamp(11px,1.2vw,14px);letter-spacing:3px;color:var(--gold);font-weight:700">THE RIGHT PATH</div>
-        <div class="d-name" style="font-size:12px;opacity:.55;margin-top:4px;font-weight:400">정도 (正道)</div>
-        <div class="d-name-sub" style="display:none"></div>
-        <div class="d-desc">바른 길을 걸어라</div>
-      </div>
-      <div class="d-card">
-        <div class="d-num">02</div>
-        <div class="d-hanja" style="font-family:var(--font-cin);font-size:clamp(11px,1.2vw,14px);letter-spacing:3px;color:var(--gold);font-weight:700">TRANSPARENCY</div>
-        <div class="d-name" style="font-size:12px;opacity:.55;margin-top:4px;font-weight:400">정직 (正直)</div>
-        <div class="d-name-sub" style="display:none"></div>
-        <div class="d-desc">투명하게 살아라</div>
-      </div>
-      <div class="d-card">
-        <div class="d-num">03</div>
-        <div class="d-hanja" style="font-family:var(--font-cin);font-size:clamp(11px,1.2vw,14px);letter-spacing:3px;color:var(--gold);font-weight:700">TAKE ROOT</div>
-        <div class="d-name" style="font-size:12px;opacity:.55;margin-top:4px;font-weight:400">정착 (定着)</div>
-        <div class="d-name-sub" style="display:none"></div>
-        <div class="d-desc">뿌리를 내려라</div>
-      </div>
-      <div class="d-card">
-        <div class="d-num">04</div>
-        <div class="d-hanja" style="font-family:var(--font-cin);font-size:clamp(11px,1.2vw,14px);letter-spacing:3px;color:var(--gold);font-weight:700">SERVE PEOPLE</div>
-        <div class="d-name" style="font-size:12px;opacity:.55;margin-top:4px;font-weight:400">정민 (正民)</div>
-        <div class="d-name-sub" style="display:none"></div>
-        <div class="d-desc">이웃을 섬겨라</div>
-      </div>
-      <div class="d-card">
-        <div class="d-num">05</div>
-        <div class="d-hanja" style="font-family:var(--font-cin);font-size:clamp(11px,1.2vw,14px);letter-spacing:3px;color:var(--gold);font-weight:700">STILLNESS</div>
-        <div class="d-name" style="font-size:12px;opacity:.55;margin-top:4px;font-weight:400">정지 (靜止)</div>
-        <div class="d-name-sub" style="display:none"></div>
-        <div class="d-desc">멈추어야 들린다</div>
-      </div>
+    <div class="d-grid reveal d1">
+      <div class="d-card"><div class="d-num">01</div><div class="d-eng">THE RIGHT PATH</div><div class="d-kor">정도 (正道)</div><div class="d-desc">바른 길을 걸어라</div></div>
+      <div class="d-card"><div class="d-num">02</div><div class="d-eng">TRANSPARENCY</div><div class="d-kor">정직 (正直)</div><div class="d-desc">투명하게 살아라</div></div>
+      <div class="d-card"><div class="d-num">03</div><div class="d-eng">TAKE ROOT</div><div class="d-kor">정착 (定着)</div><div class="d-desc">뿌리를 내려라</div></div>
+      <div class="d-card"><div class="d-num">04</div><div class="d-eng">SERVE PEOPLE</div><div class="d-kor">정민 (正民)</div><div class="d-desc">이웃을 섬겨라</div></div>
+      <div class="d-card"><div class="d-num">05</div><div class="d-eng">STILLNESS</div><div class="d-kor">정지 (靜止)</div><div class="d-desc">멈추어야 들린다</div></div>
     </div>
-    <div class="doctrine-detail reveal">
-      <div class="doctrine-detail-inner">
-        <div class="dd-item"><div class="dd-verse">"좁은 문으로 들어가라"</div><span class="dd-verse-ref" id="ddRef1">마태복음 7:13</span><div class="dd-text" id="ddText1">성공보다 성실, 속도보다 방향.</div></div>
-        <div class="dd-item"><div class="dd-verse">"진리가 너희를 자유롭게 하리라"</div><span class="dd-verse-ref" id="ddRef2">요한복음 8:32</span><div class="dd-text" id="ddText2">온라인과 오프라인이 같은 사람.</div></div>
-        <div class="dd-item"><div class="dd-verse">"어느 형편에든 자족하기를"</div><span class="dd-verse-ref" id="ddRef3">빌립보서 4:11</span><div class="dd-text" id="ddText3">어디에 있든 그 곳이 성전.</div></div>
-        <div class="dd-item"><div class="dd-verse">"이웃을 네 자신 같이 사랑하라"</div><span class="dd-verse-ref" id="ddRef4">마가복음 12:31</span><div class="dd-text" id="ddText4">댓글 하나도 사랑의 언어로.</div></div>
-        <div class="dd-item"><div class="dd-verse">"가만히 있어 내가 하나님임을"</div><span class="dd-verse-ref" id="ddRef5">시편 46:10</span><div class="dd-text" id="ddText5">느린 삶이 곧 영성입니다.</div></div>
-      </div>
+    <div class="d-row reveal d2">
+      <div class="d-verse"><div class="dv-t">"좁은 문으로 들어가라"</div><div class="dv-r">마태복음 7:13</div><div class="dv-d">성공보다 성실, 속도보다 방향.</div></div>
+      <div class="d-verse"><div class="dv-t">"진리가 너희를 자유롭게 하리라"</div><div class="dv-r">요한복음 8:32</div><div class="dv-d">온라인과 오프라인이 같은 사람.</div></div>
+      <div class="d-verse"><div class="dv-t">"어느 형편에든 자족하기를"</div><div class="dv-r">빌립보서 4:11</div><div class="dv-d">어디에 있든 그 곳이 성전.</div></div>
+      <div class="d-verse"><div class="dv-t">"이웃을 네 자신 같이 사랑하라"</div><div class="dv-r">마가복음 12:31</div><div class="dv-d">댓글 하나도 사랑의 언어로.</div></div>
+      <div class="d-verse"><div class="dv-t">"가만히 있어 내가 하나님임을"</div><div class="dv-r">시편 46:10</div><div class="dv-d">느린 삶이 곧 영성입니다.</div></div>
     </div>
   </div>
 </section>
 
-<!-- ══ CREED ══ -->
-<section class="creed-section" id="creed">
-  <div class="container--narrow">
-    <div class="reveal">
-      <div class="eyebrow" style="text-align:center" id="creedEye">Confession of Faith · 신앙 고백</div>
-      <div class="creed-box">
-        <div class="creed-title-label" id="creedLabel">✝ &nbsp; 정민교 신앙고백 &nbsp; ✝</div>
-        <div class="creed-lines" id="creedLines">
-          나는 <span class="creed-accent">바른 길</span>을 걷는 정민인이다.<br>
-          <span class="creed-accent">빠름</span>보다 깊음을,<br>
-          <span class="creed-accent">소유</span>보다 존재를,<br>
-          <span class="creed-accent">성공</span>보다 성품을 추구한다.<br><br>
-          나는 디지털 세계에서도<br>
-          <span class="creed-accent">하나님의 사람</span>으로 살며,<br>
-          느린 삶 안에서 <span class="creed-accent">영원</span>을 만난다.
-        </div>
-        <div class="creed-amen" id="creedAmen">— Amen · 아멘 —</div>
-      </div>
+<!-- 신앙고백 -->
+<section class="section" id="creed" style="background:var(--navy3)">
+  <div class="container-sm">
+    <div class="tc reveal"><div class="s-eye" id="creedEye">Confession of Faith · 신앙 고백</div></div>
+    <div class="creed-box reveal d1">
+      <div class="creed-label" id="creedLabel">✝ &nbsp; Jeongmin Church 신앙고백 &nbsp; ✝</div>
+      <div class="creed-lines" id="creedLines">나는 <span class="creed-accent">바른 길</span>을 걷는 정민인이다.<br><span class="creed-accent">빠름</span>보다 깊음을,<br><span class="creed-accent">소유</span>보다 존재를,<br><span class="creed-accent">성공</span>보다 성품을 추구한다.<br><br>나는 디지털 세계에서도<br><span class="creed-accent">하나님의 사람</span>으로 살며,<br>느린 삶 안에서 <span class="creed-accent">영원</span>을 만난다.</div>
+      <div class="creed-amen" id="creedAmen">— Amen · 아멘 —</div>
     </div>
   </div>
 </section>
 
-<!-- ══ WORSHIP ══ -->
-<section class="worship" id="worship">
+<!-- 사역 페이지 -->
+<section class="section" id="pages" style="background:var(--navy)">
   <div class="container">
-    <div class="reveal" style="text-align:center;max-width:560px;margin:0 auto">
-      <div class="eyebrow">Worship Style · 예배 방식</div>
-      <h2 class="section-title">예배</h2>
-      <p class="section-body" id="worshipDesc">성전은 건물이 아닙니다. 하나님을 향해 마음을 여는 그 자리가 성전입니다.</p>
-    </div>
-    <div class="worship-grid reveal">
-      <div class="w-card"><div class="w-icon">🕊️</div><div><div class="w-label" id="wCardTitle1">성전</div><div class="w-value" id="wCardDesc1">인터넷이 닿는 모든 곳</div></div></div>
-      <a href="/jeongminchurch/worship.html" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🌅</div><div><div class="w-label" style="color:var(--gold)" id="wCardTitle2">예배 시간 →</div><div class="w-value">알림 없는 아침 30분<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="wCardSub2">30분 예배 가이드 ✝</span></div></div></a>
-      <a href="/jeongminchurch/praise.html" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🎵</div><div><div class="w-label" style="color:var(--gold)" id="wCardTitle3">찬양 →</div><div class="w-value">자연의 소리 + 묵상 음악<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="wCardSub3">찬양 듣기 ✝</span></div></div></a>
-      <a href="/jeongminchurch/sermons.html" class="w-card" onclick="clearSermonBadge()" style="cursor:pointer;text-decoration:none;position:relative">
-    <span id="cardBadge" class="sermon-badge" style="display:none;position:absolute;top:10px;right:10px;min-width:20px;height:20px;background:#E05555;border-radius:50%;font-size:11px;font-weight:700;color:#fff;align-items:center;justify-content:center;padding:0 4px;font-family:sans-serif;animation:badgePulse 1.5s ease-in-out infinite;z-index:10">N</span>
-    <div class="w-icon">📖</div><div><div class="w-label" style="color:var(--gold)" id="wCardTitle4">말씀 →</div><div class="w-value">하루 한 구절, 깊이 묵상<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="wCardSub4">창립 설교 보러가기 ✝</span></div></div></a>
-      <a href="#donate" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🌿</div><div><div class="w-label" style="color:var(--gold)" id="wCardTitle5">헌금 →</div><div class="w-value">시간과 재능의 나눔<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="wCardSub5">후원하러 가기 ✝</span></div></div></a>
-      <a href="https://www.youtube.com/@jeongminchurch" target="_blank" rel="noopener" class="w-card" style="cursor:pointer;text-decoration:none"><div class="w-icon">🤝</div><div><div class="w-label" style="color:var(--gold)" id="wCardTitle6">교제 →</div><div class="w-value">느린 대화, 깊은 경청<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="wCardSub6">유튜브 채널 바로가기 ▶</span></div></div></a>
+    <div class="tc reveal"><div class="s-eye" id="pagesEye">Our Ministry · 사역</div><h2 class="s-title" id="pagesTitle">함께 드리는 예배</h2></div>
+    <div class="pages-grid">
+      <a href="/jeongminchurch/worship.html" class="pg-card reveal"><span class="pg-ic">🕊️</span><div class="pg-t" id="pg1t">10분 예배</div><p class="pg-d" id="pg1d">찬양 · 말씀 · 기도 · 신앙고백 · 축도<br>언제 어디서든 완전한 예배</p><span class="pg-l" id="pg1l">예배 시작하기 →</span></a>
+      <a href="/jeongminchurch/sermons.html" class="pg-card reveal d1"><span class="pg-ic">📖</span><div class="pg-t" id="pg2t">말씀</div><p class="pg-d" id="pg2d">매주 수요일 저녁 · 주일 아침<br>디지털 세대를 위한 성경 메시지</p><span class="pg-l" id="pg2l">말씀 듣기 →</span></a>
+      <a href="/jeongminchurch/praise.html" class="pg-card reveal d2"><span class="pg-ic">🎵</span><div class="pg-t" id="pg3t">찬양</div><p class="pg-d" id="pg3d">Jeongmin Church 창작 찬송<br>자연 묵상음악 · 찬송 모음</p><span class="pg-l" id="pg3l">찬양 듣기 →</span></a>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════
-   💛 DONATION SECTION
-══════════════════════════ -->
-<section class="donation-section" id="donate">
-  <div class="container">
-    <div class="reveal" style="text-align:center;max-width:560px;margin:0 auto 50px">
-      <div class="eyebrow" id="donateEye">Support · 후원</div>
-      <h2 class="section-title" id="donateTitle">함께<br>세상을 밝혀주세요</h2>
-      <p class="section-body"><span id="donateMainSub">여러분의 후원이 디지털 신앙 공동체를 이어갑니다.</span><br>
-          후원 신청 후 안내된 계좌로 입금해 주시면 됩니다.<br>
-          <span style="font-family:var(--font-cin);font-size:11px;letter-spacing:2px;color:var(--gold);opacity:.7;text-transform:uppercase" id="donateVoluntary">모든 후원은 자율적이며 강요되지 않습니다 · All support is voluntary</span></p>
-    </div>
-
-          <div class="donation-wrap reveal">
-        <div class="donation-card">
-          <div class="donation-header">
-            <div class="donation-icon">✝</div>
-            <div class="donation-title" id="donateCardTitle">후원 신청</div>
-            <div class="donation-sub" id="donateCardDesc">아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.</div>
-          </div>
-
-          <!-- 후원 신청 버튼 -->
-          <p style="font-size:13px;font-weight:300;color:var(--cream);opacity:.55;text-align:center;margin-bottom:20px;line-height:2">
-            후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.
-          </p>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfcBwzyAmeG9F26h7-H9HvhMSdNrz1tfODdMasjcVSdQMa2oQ/viewform?usp=sharing&ouid=103364882900686111237" target="_blank" rel="noopener"
-            style="display:block;width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--navy);font-family:var(--font-cin);font-size:12px;letter-spacing:5px;padding:18px 24px;border-radius:6px;text-transform:uppercase;font-weight:700;text-align:center;transition:all .3s;text-decoration:none"
-            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 12px 40px rgba(201,168,76,.25)'"
-            onmouseout="this.style.transform='';this.style.boxShadow=''">
-            <span id="donateBtn">✝ 후원 신청하기</span>
-          </a>
-
-          <p style="font-family:var(--font-cin);font-size:8.5px;letter-spacing:2px;color:var(--cream);opacity:.28;text-align:center;margin-top:16px;line-height:2">
-            <span id="donateNotice">신청서 작성 → 계좌 입금 → 이메일 확인<br>후원금은 Jeongmin Church 운영에만 사용됩니다</span>
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-<!-- ══ COMMUNITY ══ -->
-<section class="community" id="community">
-  <div class="container">
-    <div class="reveal" style="text-align:center;max-width:560px;margin:0 auto">
-      <div class="eyebrow" id="communityEye">Community · 공동체</div>
-      <h2 class="section-title" id="communityTitle">스마트폰 너머의<br>진짜 세상으로</h2>
-      <p class="section-body" id="communitySub">화면 앞에 갇힌 디지털 세대에게 진짜 삶을 전합니다.<br>느리게, 바르게, 함께 — Jeongmin Church는 이 시대의 선교입니다.</p>
-    </div>
-    <div class="stats-row reveal">
-      <div class="stat-cell"><div class="stat-num">5</div><div class="stat-label">Core Doctrines</div></div>
-      <div class="stat-cell"><div class="stat-num">∞</div><div class="stat-label">Digital Parish</div></div>
-      <div class="stat-cell"><div class="stat-num">1</div><div class="stat-label">Daily Scripture</div></div>
-      <div class="stat-cell"><div class="stat-num">∅</div><div class="stat-label">Notification</div></div>
-    </div>
-    <div class="community-features reveal">
-      <a href="/jeongminchurch/community.html#meditation" class="cf-item" style="text-decoration:none"><div class="cf-icon">📿</div><div><div class="cf-title" style="color:var(--gold)" id="cfTitle1">매일 묵상 나눔 →</div><div class="cf-desc" id="cfDesc1">하루 한 구절 말씀을 함께 나눕니다.<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="cfSub1">묵상 나누러 가기 ✝</span></div></div></a>
-      <a href="/jeongminchurch/community.html#letter" class="cf-item" style="text-decoration:none"><div class="cf-icon">✉️</div><div><div class="cf-title" style="color:var(--gold)" id="cfTitle2">Jeongmin Church 위클리 레터 →</div><div class="cf-desc" id="cfDesc2">매주 느린 삶과 신앙 이야기를 담은 뉴스레터.<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="cfSub2">레터 읽으러 가기 ✝</span></div></div></a>
-      <div class="cf-item"><div class="cf-icon">🌐</div><div><div class="cf-title" id="cfTitle3">온라인 소그룹</div><div class="cf-desc" id="cfDesc3">전국 어디서든 참여 가능한 소그룹 모임.</div></div></div>
-      <a href="/jeongminchurch/community.html#writing" class="cf-item" style="text-decoration:none"><div class="cf-icon">✍️</div><div><div class="cf-title" style="color:var(--gold)" id="cfTitle4">느린 글쓰기 모임 →</div><div class="cf-desc" id="cfDesc4">신앙 에세이, 묵상 일기를 함께 씁니다.<br><span style="font-size:11px;color:var(--gold);opacity:.7"><span id="cfSub4">글 쓰러 가기 ✝</span></div></div></a>
+<!-- 후원 -->
+<section class="section" id="donate" style="background:var(--navy2)">
+  <div class="donate-inner">
+    <div class="tc reveal"><div class="s-eye" id="donateEye">Support · 후원</div><h2 class="s-title" id="donateTitle">함께 세상을 밝혀주세요</h2><p class="s-sub" id="donateSub">여러분의 후원이 디지털 신앙 공동체를 이어갑니다.</p></div>
+    <div class="donate-card reveal d1">
+      <div class="donate-card-title" id="donateCardTitle">후원 신청</div>
+      <p class="donate-card-desc" id="donateCardDesc">아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfcBwzyAmeG9F26h7-H9HvhMSdNrz1tfODdMasjcVSdQMa2oQ/viewform" class="btn-main" target="_blank"><span>✝</span><span id="donateBtnText">후원 신청하기</span></a>
+      <div class="donate-vol" id="donateVol">모든 후원은 자율적이며 강요되지 않습니다 · All support is voluntary</div>
     </div>
   </div>
 </section>
 
-<!-- ══ JOIN ══ -->
+<!-- 공동체 -->
+<section class="section" id="community" style="background:var(--navy3)">
+  <div class="container">
+    <div class="tc reveal"><div class="s-eye" id="communityEye">Community · 공동체</div><h2 class="s-title" id="communityTitle">스마트폰 너머의<br>진짜 세상으로</h2><p class="s-sub" id="communitySub">화면 앞에 갇힌 디지털 세대에게 진짜 삶을 전합니다.</p></div>
+    <div class="cf-grid">
+      <div class="cf-card reveal"><span class="cf-ic">📿</span><div class="cf-t" id="cf1t">매일 묵상 나눔 →</div><p class="cf-d" id="cf1d">하루 한 구절 말씀을 함께 나눕니다.</p><span class="cf-s" id="cf1s">묵상 나누러 가기 ✝</span></div>
+      <div class="cf-card reveal d1"><span class="cf-ic">✉️</span><div class="cf-t" id="cf2t">Jeongmin Church 위클리 레터 →</div><p class="cf-d" id="cf2d">매주 느린 삶과 신앙 이야기를 담은 뉴스레터.</p><span class="cf-s" id="cf2s">레터 읽으러 가기 ✝</span></div>
+      <div class="cf-card reveal d2"><span class="cf-ic">🌐</span><div class="cf-t" id="cf3t">온라인 소그룹</div><p class="cf-d" id="cf3d">전국 어디서든 참여 가능한 소그룹 모임.</p></div>
+      <div class="cf-card reveal d3"><span class="cf-ic">✍️</span><div class="cf-t" id="cf4t">느린 글쓰기 모임 →</div><p class="cf-d" id="cf4d">신앙 에세이, 묵상 일기를 함께 씁니다.</p><span class="cf-s" id="cf4s">글 쓰러 가기 ✝</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 함께하기 -->
 <section class="join-section" id="join">
-  <div class="join-bg"></div>
-  <div class="container--narrow">
-    <div class="join-inner reveal">
-      <div class="eyebrow" id="joinEye">Join Us · 함께하기</div>
-      <h2 class="join-title" id="joinTitle">지금, <span class="gold">느린 걸음</span>으로<br>함께 시작하세요</h2>
-      <p class="join-sub" id="joinSub">스마트폰에 지친 당신, 화면 너머 진짜 세상이 그리운 당신.<br>Jeongmin Church는 이 시대의 디지털 세대를 향한 선교입니다.</p>
-      <div style="width:100%;max-width:480px;margin:0 auto">
-        <p style="font-family:var(--font-serif);font-size:14px;font-weight:300;color:var(--cream);opacity:.55;text-align:center;margin-bottom:24px;line-height:2">
-          <span id="joinNotice">아래 버튼을 클릭하면 가입 양식으로 이동합니다.</span><br>
-          <span style="font-size:12px;opacity:.7"><span id="joinSafe">✝ 구글 폼으로 안전하게 가입됩니다</span>
-        </p>
-        <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSc_6EnRTjCQSO68Eyy3QP80OuU_3cqADuuHN91UtzeQEAU7ug/viewform?usp=dialog" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block"><span id="joinBtn">Jeongmin Church 함께하기 ✝</span></a>
-        </div>
-        <p style="font-family:var(--font-cin);font-size:9px;letter-spacing:2px;color:var(--cream);opacity:.25;text-align:center;margin-top:16px">
-          <span id="joinPrivacy">가입 정보는 Jeongmin Church 운영에만 사용됩니다</span>
-        </p>
-      </div>
-      <div class="h-rule" style="max-width:280px;margin:28px auto"><div class="h-rule-line"></div><div class="h-rule-dot"></div><div class="h-rule-line"></div></div>
-      <p style="font-family:var(--font-cin);font-size:9px;letter-spacing:3px;color:var(--cream);opacity:.28;text-align:center">SLOWLY · RIGHTEOUSLY · TOGETHER</p>
-    </div>
+  <div class="container-sm reveal">
+    <div class="s-eye" id="joinEye" style="margin-bottom:16px">Join Us · 함께하기</div>
+    <h2 class="join-title" id="joinTitle">지금, 느린 걸음으로<br>함께 시작하세요</h2>
+    <p class="join-sub" id="joinSub">스마트폰에 지친 당신, 화면 너머 진짜 세상이 그리운 당신.<br>Jeongmin Church는 이 시대의 디지털 세대를 향한 선교입니다.</p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSc_6EnRTjCQSO68Eyy3QP80OuU_3cqADuuHN91UtzeQEAU7ug/viewform" class="btn-main" target="_blank"><span>✝</span><span id="joinBtnText">Jeongmin Church 함께하기</span></a>
+    <div class="join-note" id="joinNote">✝ 구글 폼으로 안전하게 가입됩니다</div>
+    <div class="join-privacy" id="joinPrivacy">가입 정보는 Jeongmin Church 운영에만 사용됩니다</div>
   </div>
 </section>
 
-<!-- ══ FOOTER ══ -->
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-logo" style="font-family:var(--font-cin);color:var(--gold);letter-spacing:3px;font-size:20px">Jeongmin Church</div>
-        <div class="footer-tagline">JEONGMIN CHURCH · 正民敎</div>
-        <p class="footer-desc" id="footerDesc">Independent Christian Ministry · Non-Denominational<br>디지털 세대를 향한 온라인 선교 사역<br><span style="font-size:10px;opacity:.5">All support is voluntary and not required</span></p>
-      </div>
-      <div>
-        <div class="footer-col-title" id="footerCol1">교회 안내</div>
-        <div class="footer-links">
-          <a href="#about"><span id="footerL1">교회 소개</span></a>
-          <a href="#doctrines"><span id="footerL2">삶의 방식</span></a>
-          <a href="#worship"><span id="footerL3">예배 방식</span></a>
-          <a href="/jeongminchurch/sermons.html">말씀</a>
-          <a href="#community">공동체</a>
-        </div>
-      </div>
-      <div>
-        <div class="footer-col-title" id="footerCol2">함께하기</div>
-        <div class="footer-links">
-          <a href="#join"><span id="footerL6">공동체 가입</span></a>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfcBwzyAmeG9F26h7-H9HvhMSdNrz1tfODdMasjcVSdQMa2oQ/viewform?usp=sharing&ouid=103364882900686111237" target="_blank" rel="noopener"><span id="footerL7">후원하기</span></a>
-          <a href="#"><span id="footerL8">위클리 레터</span></a>
-          <a href="#"><span id="footerL9">소그룹 신청</span></a>
-        </div>
-      </div>
-      <div>
-        <div class="footer-col-title" id="footerCol3">채널</div>
-        <div class="footer-links">
-          <a href="https://blog.naver.com/sacred_minimalism" target="_blank" rel="noopener"><span id="footerL10">네이버 블로그</span></a>
-          <a href="https://www.youtube.com/@jeongminchurch" target="_blank" rel="noopener"><span id="footerL11">유튜브</span></a>
-          <a href="#"><span id="footerL12">인스타그램</span></a>
-          <a href="#"><span id="footerL13">카카오 오픈채팅</span></a>
-        </div>
+<!-- 푸터 -->
+<footer>
+  <div class="ft-inner">
+    <div class="ft-top">
+      <div><div class="ft-brand-name">✝ Jeongmin Church</div><div class="ft-tagline">SLOWLY · RIGHTEOUSLY · TOGETHER</div><p class="ft-brand-desc">Independent Christian Ministry<br>Non-Denominational · Online<br>All support is voluntary</p></div>
+      <div class="ft-cols">
+        <div class="ft-col"><div class="ft-col-title" id="ftCol1">예배</div><a href="/jeongminchurch/worship.html" id="ftL1">10분 예배</a><a href="/jeongminchurch/sermons.html" id="ftL2">말씀</a><a href="/jeongminchurch/praise.html" id="ftL3">찬양</a></div>
+        <div class="ft-col"><div class="ft-col-title" id="ftCol2">함께하기</div><a href="#join" id="ftL4">공동체 가입</a><a href="#donate" id="ftL5">후원하기</a><a href="#community" id="ftL6">위클리 레터</a></div>
+        <div class="ft-col"><div class="ft-col-title" id="ftCol3">채널</div><a href="https://blog.naver.com/sacred_minimalism" target="_blank" id="ftL7">네이버 블로그</a><a href="https://www.youtube.com/@jeongminchurch" target="_blank" id="ftL8">유튜브</a><a href="#" id="ftL9">인스타그램</a></div>
       </div>
     </div>
-    <div class="footer-bottom">
-      <div class="footer-copy">© 2026 JEONGMIN CHURCH · ALL RIGHTS RESERVED</div>
-      <button class="footer-privacy-btn" onclick="openPrivacyModal()">개인정보처리방침</button>
-      <div class="footer-copy">SLOWLY · RIGHTEOUSLY · TOGETHER ✝</div>
-    </div>
-    <div style="text-align:center;margin-top:18px;padding-top:14px;border-top:1px solid rgba(201,168,76,0.05)">
-      <a href="/jeongminchurch/admin.html" style="font-family:var(--font-cin);font-size:8px;letter-spacing:2px;color:var(--cream);opacity:0.1;text-transform:uppercase;transition:opacity .4s;text-decoration:none" onmouseover="this.style.opacity='0.45'" onmouseout="this.style.opacity='0.1'">⚙ 관리자</a>
+    <div class="ft-bottom">
+      <span class="ft-copy">© 2026 JEONGMIN CHURCH · ALL RIGHTS RESERVED</span>
+      <span class="ft-disc">비교단 독립 사역 · 모든 후원은 자율적입니다<br>Independent Christian Ministry · Non-Denominational</span>
     </div>
   </div>
 </footer>
 
-<!-- ══════════════════════════════
-   JAVASCRIPT
-══════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-/* EmailJS 초기화 */
-document.addEventListener('DOMContentLoaded', function() {
-  emailjs.init("xhvEEyReSUGatSOh3");
-});
-
-/* NAV */
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
-
-/* MOBILE */
-function toggleMobile(){ document.getElementById('mobileMenu').classList.toggle('open'); }
-function closeMobile(){ document.getElementById('mobileMenu').classList.remove('open'); }
-
-/* REVEAL */
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
-}, { threshold: 0.01, rootMargin: '0px 0px -20px 0px' });
-document.querySelectorAll('.reveal').forEach(r => {
-  const rect = r.getBoundingClientRect();
-  if(rect.top < window.innerHeight) {
-    // already visible, no animation needed
-  } else {
-    r.classList.add('animate');
-    observer.observe(r);
-  }
-});
-
-/* PARTICLES */
+<script>
 (function(){
-  const c = document.getElementById('particles');
-  const ctx = c.getContext('2d');
-  function resize(){ c.width = c.offsetWidth; c.height = c.offsetHeight; }
-  window.addEventListener('resize', resize); resize();
-  const pts = Array.from({length:55}, () => ({
-    x: Math.random()*1200, y: Math.random()*800,
-    r: Math.random()*1.3+.3,
-    dx:(Math.random()-.5)*.18, dy:(Math.random()-.5)*.18,
-    a: Math.random()*.45+.1, da:(Math.random()-.5)*.006
-  }));
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    pts.forEach(p => {
-      p.x+=p.dx; p.y+=p.dy; p.a+=p.da;
-      if(p.x<0)p.x=c.width; if(p.x>c.width)p.x=0;
-      if(p.y<0)p.y=c.height; if(p.y>c.height)p.y=0;
-      if(p.a<.05||p.a>.65)p.da*=-1;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(201,168,76,${p.a})`; ctx.fill();
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
+  var c=document.getElementById("heroPts");if(!c)return;
+  for(var i=0;i<22;i++){var d=document.createElement("div");d.className="pt";d.style.cssText="left:"+Math.random()*100+"%;animation-delay:"+(Math.random()*20)+"s;animation-duration:"+(14+Math.random()*16)+"s";c.appendChild(d);}
 })();
+(function(){
+  var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add("on");});},{threshold:.12});
+  document.querySelectorAll(".reveal").forEach(function(el){io.observe(el);});
+})();
+window.addEventListener("scroll",function(){var n=document.getElementById("mainNav");if(n)n.classList.toggle("scrolled",window.scrollY>60);});
 
-/* ── DONATION LOGIC ── */
-let selectedAmount = 0;
-let selectedPayMethod = '';
-
-function formatKrw(n){
-  if(n >= 10000000) return (n/10000000).toFixed(0)+'천만원';
-  if(n >= 1000000)  return (n/1000000).toFixed(0)+'백만원';
-  if(n >= 10000)    return (n/10000).toFixed(0)+'만원';
-  return n.toLocaleString()+'원';
-}
-
-function selectAmount(amount, btn){
-  selectedAmount = amount;
-  document.getElementById('customAmount').value = '';
-  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  updateAmountDisplay(amount);
-}
-
-function onCustomInput(input){
-  document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
-  const val = parseInt(input.value) || 0;
-  selectedAmount = val;
-  if(val > 0) updateAmountDisplay(val);
-  else { document.getElementById('selectedAmountText').textContent = '금액을 입력해 주세요'; document.getElementById('selectedAmountSub').textContent=''; }
-}
-
-function updateAmountDisplay(amount){
-  const el = document.getElementById('selectedAmountText');
-  const sub = document.getElementById('selectedAmountSub');
-  el.textContent = amount.toLocaleString() + '원';
-  el.style.color = '#E8C96A';
-  el.style.textShadow = '0 0 30px rgba(201,168,76,0.4)';
-  sub.textContent = '✝ 후원 금액이 선택되었습니다';
-  sub.style.color = '#C9A84C';
-}
-
-function selectPay(method, btn){
-  selectedPayMethod = method;
-  document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-  document.getElementById('bankInfo').classList.toggle('show', method === 'bank');
-}
-
-function copyBank(){
-  const txt = document.getElementById('bankNum').textContent;
-  navigator.clipboard.writeText(txt).then(() => {
-    const btn = event.target;
-    btn.textContent = '완료!'; btn.style.color = '#7A9E7E';
-    setTimeout(() => { btn.textContent = '복사'; btn.style.color = ''; }, 2000);
-  });
-}
-
-function submitDonation(){
-  const name = document.getElementById('donorName').value.trim();
-  const email = document.getElementById('donorEmail').value.trim();
-  const agreed = document.getElementById('privacyAgree').checked;
-
-  if(!selectedAmount || selectedAmount < 1000){ alert('후원 금액을 선택해 주세요 🙏'); return; }
-  if(!name){ alert('이름을 입력해 주세요'); return; }
-  if(!email || !email.includes('@')){ alert('올바른 이메일을 입력해 주세요'); return; }
-  if(!selectedPayMethod){ alert('결제 방법을 선택해 주세요'); return; }
-  if(!agreed){ alert('개인정보처리방침에 동의해 주세요'); return; }
-
-  const btn = document.getElementById('donateSubmitBtn');
-  btn.textContent = '전송 중... 🙏'; btn.disabled = true;
-
-  const payNames = { bank:'계좌이체', kakao:'카카오페이', toss:'토스', naver:'네이버페이' };
-  const amountStr = selectedAmount.toLocaleString() + '원';
-  const payName = payNames[selectedPayMethod] || selectedPayMethod;
-  const dateStr = new Date().toLocaleString('ko-KR');
-
-  // ① 후원자 감사 이메일 (template_y9l6zdd)
-  const donorParams = {
-    to_name:  name,
-    to_email: email,
-    subject:  'Thank you for your support — Jeongmin Church',
-    message:  'Jeongmin Church 후원을 진행해 주셔서 진심으로 감사드립니다.\n\n✝ 후원 내역\n• 후원 금액: ' + amountStr + '\n• 결제 방법: ' + payName + '\n• 일시: ' + dateStr + '\n\n"심는 자와 거두는 자가 함께 즐거워하리라"\n— 요한복음 4:36\n\n여러분의 후원이 디지털 신앙 공동체를 더욱 풍성하게 만들어 갑니다.',
-    reply_to: 'jinsiljoung@gmail.com'
-  };
-
-  // ② 관리자 알림 이메일 (template_ndouy2b)
-  const adminParams = {
-    to_name:     'Jeongmin Church Admin',
-    to_email:    'jinsiljoung@gmail.com',
-    donor_name:  name,
-    donor_email: email,
-    amount:      amountStr,
-    pay_method:  payName,
-    date:        dateStr,
-    reply_to:    email
-  };
-
-  emailjs.send('service_rfhl58b', 'template_y9l6zdd', donorParams)
-    .then(() => {
-      return emailjs.send('service_rfhl58b', 'template_ndouy2b', adminParams);
-    })
-    .then(() => {
-      document.getElementById('donationForm').style.display = 'none';
-      document.getElementById('donationSuccess').classList.add('show');
-      btn.textContent = '후원하기 ✝'; btn.disabled = false;
-    })
-    .catch((err) => {
-      console.error('EmailJS 오류:', JSON.stringify(err));
-      alert('이메일 발송 중 오류가 발생했습니다.\n오류: ' + (err.text || JSON.stringify(err)));
-      btn.textContent = '후원하기 ✝'; btn.disabled = false;
-    });
-}
-
-
-function resetDonation(){
-  selectedAmount = 0; selectedPayMethod = '';
-  document.getElementById('donationForm').style.display = 'block';
-  document.getElementById('donationSuccess').classList.remove('show');
-  document.getElementById('donorName').value = '';
-  document.getElementById('donorEmail').value = '';
-  document.getElementById('customAmount').value = '';
-  document.getElementById('privacyAgree').checked = false;
-  document.getElementById('bankInfo').classList.remove('show');
-  document.querySelectorAll('.amount-btn,.pay-btn').forEach(b => b.classList.remove('selected'));
-  document.getElementById('selectedAmountText').textContent = '금액을 선택해 주세요';
-  document.getElementById('selectedAmountSub').textContent = '';
-}
-
-/* ── PRIVACY MODAL ── */
-function openPrivacyModal(){
-  document.getElementById('privacyOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closePrivacyModal(){
-  document.getElementById('privacyOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-function closePrivacy(e){
-  if(e.target === document.getElementById('privacyOverlay')) closePrivacyModal();
-}
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closePrivacyModal(); });
-
-/* ── JOIN ── */
-function handleJoin(e){
-  e.preventDefault();
-  const name  = document.getElementById('joinName').value.trim();
-  const email = document.getElementById('joinEmail').value.trim();
-  const agreed = document.getElementById('joinPrivacy').checked;
-  if(!name||!email){ alert('이름과 이메일을 입력해 주세요 🙏'); return; }
-  if(!agreed){ alert('개인정보처리방침에 동의해 주세요'); return; }
-
-  const btn = e.target.querySelector('button[type="submit"]');
-  btn.textContent = '전송 중... 🙏'; btn.disabled = true;
-
-  const dateStr = new Date().toLocaleString('ko-KR');
-
-  // ① Netlify Forms 제출 (신도 명단 저장)
-  const formData = new FormData();
-  formData.append('form-name', 'jeongmin-join');
-  formData.append('이름', name);
-  formData.append('이메일', email);
-  formData.append('가입일시', dateStr);
-
-  // ② 신도 환영 이메일 (EmailJS)
-  const scriptures = [
-    { text: '"여호와는 나의 목자시니 내게 부족함이 없으리로다"', ref: '시편 23:1' },
-    { text: '"너는 마음을 다하여 여호와를 신뢰하고 네 명철을 의지하지 말라"', ref: '잠언 3:5' },
-    { text: '"두려워하지 말라 내가 너와 함께 함이라"', ref: '이사야 41:10' },
-    { text: '"내 영혼아 잠잠히 하나님만 바라라"', ref: '시편 62:5' },
-    { text: '"여호와는 마음이 상한 자를 가까이 하시고"', ref: '시편 34:18' },
-    { text: '"모든 것이 합력하여 선을 이루느니라"', ref: '로마서 8:28' },
-    { text: '"나를 강하게 하시는 자 안에서 내가 모든 것을 할 수 있느니라"', ref: '빌립보서 4:13' },
-  ];
-  const sc = scriptures[Math.floor(Math.random() * scriptures.length)];
-  const welcomeParams = {
-    to_name:  name,
-    to_email: email,
-    subject:  'Welcome to Jeongmin Church',
-    message:  'Jeongmin Church에 함께해 주셔서 진심으로 감사드립니다.\n\n✝ 오늘의 말씀\n' + sc.text + '\n' + sc.ref + '\n\n✝ Five Ways of Life\n• 정도(正道) — 바른 길을 걸어라\n• 정직(正直) — 투명하게 살아라\n• 정착(定着) — 뿌리를 내려라\n• 정민(正民) — 이웃을 섬겨라\n• 정지(靜止) — 멈추어야 들린다\n\n하나님의 말씀이 ' + name + ' 님의 발걸음을 인도하시기를 기도합니다.',
-    reply_to: 'jinsiljoung@gmail.com'
-  };
-
-  // ③ 관리자 알림 이메일 (EmailJS)
-  const adminJoinParams = {
-    to_name:  'Jeongmin Church Admin',
-    to_email: 'jinsiljoung@gmail.com',
-    subject:  '새 신도 가입 알림',
-    message:  '새 신도가 가입했습니다! 🙏\n\n• 이름: ' + name + '\n• 이메일: ' + email + '\n• 가입일시: ' + dateStr,
-    reply_to: email
-  };
-
-  fetch('/', { method: 'POST', body: formData })
-    .then(() => {
-      return Promise.all([
-        emailjs.send('service_rfhl58b', 'template_y9l6zdd', welcomeParams),
-        emailjs.send('service_rfhl58b', 'template_ndouy2b', adminJoinParams)
-      ]);
-    })
-    .then(() => {
-      btn.textContent = '✝ 아멘! 함께합니다';
-      btn.style.background = '#7A9E7E';
-      btn.disabled = false;
-      document.getElementById('joinName').value = '';
-      document.getElementById('joinEmail').value = '';
-      document.getElementById('joinPrivacy').checked = false;
-      setTimeout(() => { btn.textContent = 'Jeongmin Church 함께하기 ✝'; btn.style.background = ''; }, 3500);
-    })
-    .catch((err) => {
-      console.error('오류:', err);
-      btn.textContent = '✝ 아멘! 함께합니다';
-      btn.style.background = '#7A9E7E';
-      btn.disabled = false;
-      document.getElementById('joinName').value = '';
-      document.getElementById('joinEmail').value = '';
-      document.getElementById('joinPrivacy').checked = false;
-      setTimeout(() => { btn.textContent = 'Jeongmin Church 함께하기 ✝'; btn.style.background = ''; }, 3500);
-    });
-}
-
-/* ══ 말씀 알림 뱃지 ══ */
-const BADGE_KEY = 'jm_sermon_badge';
-
-function checkSermonBadge() {
-  const data = JSON.parse(localStorage.getItem(BADGE_KEY) || '{"count":0,"seen":0}');
-  const unread = data.count - data.seen;
-  document.querySelectorAll('.sermon-badge').forEach(b => {
-    if (unread > 0) {
-      b.textContent = unread > 9 ? '9+' : String(unread);
-      b.classList.add('show');
-    } else {
-      b.classList.remove('show');
-    }
-  });
-}
-
-function clearSermonBadge() {
-  const data = JSON.parse(localStorage.getItem(BADGE_KEY) || '{"count":0,"seen":0}');
-  data.seen = data.count;
-  localStorage.setItem(BADGE_KEY, JSON.stringify(data));
-  document.querySelectorAll('.sermon-badge').forEach(b => b.classList.remove('show'));
-}
-
-window.addEventListener('load', checkSermonBadge);
-
-/* ══ 한/영 전환 ══ */
-/* ══ 한/영 전환 시스템 ══ */
-var LANG_DATA = {
-  ko: {
-    langBtn: "KO | EN",
-    navAbout: "소개", navValues: "삶의 방식", navWorship: "예배",
-    navSermon: "말씀", navDonate: "후원", navCommunity: "공동체", navCta: "함께하기",
-    heroEye: "Digital Church · 디지털 교회",
-    heroSub: "디지털 세대를 향한 이 시대의 선교",
-    valuesEye: "What We Believe · 우리의 믿음",
-    valuesTitle: "Five Ways of Life",
-    valuesSub: "일상 속에서 실천하는 다섯 가지 삶의 방식입니다.",
-    aboutBody1: "Sharing simple and practical messages from the Bible for everyday life — Sermons, Short reflections, and Faith-based life guidance for the digital generation.",
-    aboutBody2: "스마트폰 앞에 갇힌 디지털 세대에게 성경의 진리와 느린 삶의 가치를 전합니다. 이 사역은 독립적인 비교단 온라인 기독교 사역입니다.",
-    aboutVerse: "&quot;너희는 가만히 있어 내가 하나님 됨을 알지어다&quot;",
-    aboutVerseRef: "— 시편 46:10 —",
-    aboutBtnJoin: "함께 시작하기",
-    aboutBadgeKr: "비교단 독립 사역",
-    aboutProfileSub: "비교단 독립 기독교 사역자 · 온라인 기반 성경 중심 사역",
-    creedEye: "Confession of Faith · 신앙 고백",
-    creedLabel: "✝ &nbsp; 정민교 신앙고백 &nbsp; ✝",
-    creedAmen: "— Amen · 아멘 —",
-    worshipEye: "Worship Style · 예배 방식",
-    worshipTitle: "예배",
-    worshipDesc: "성전은 건물이 아닙니다. 하나님을 향해 마음을 여는 그 자리가 성전입니다.",
-    wt1:"성전", wd1:"인터넷이 닿는 모든 곳",
-    wt2:"예배 시간 →", wd2:"알림 없는 아침 30분", ws2:"30분 예배 가이드 ✝",
-    wt3:"찬양 →", wd3:"자연의 소리 + 묵상 음악", ws3:"찬양 듣기 ✝",
-    wt4:"말씀 →", wd4:"하루 한 구절, 깊이 묵상", ws4:"창립 설교 보러가기 ✝",
-    wt5:"헌금 →", wd5:"시간과 재능의 나눔", ws5:"후원하러 가기 ✝",
-    wt6:"교제 →", wd6:"느린 대화, 깊은 경청", ws6:"유튜브 채널 바로가기 ▶",
-    donateEye: "Support · 후원",
-    donateTitle: "함께<br>세상을 밝혀주세요",
-    donateMainSub: "여러분의 후원이 디지털 신앙 공동체를 이어갑니다.",
-    donateCardTitle: "후원 신청",
-    donateCardDesc: "아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.",
-    donateBtn: "✝ 후원 신청하기",
-    donateNotice: "신청서 작성 → 계좌 입금 → 이메일 확인<br>후원금은 Jeongmin Church 운영에만 사용됩니다",
-    communityEye: "Community · 공동체",
-    communityTitle: "스마트폰 너머의<br>진짜 세상으로",
-    communitySub: "화면 앞에 갇힌 디지털 세대에게 진짜 삶을 전합니다.<br>느리게, 바르게, 함께 — Jeongmin Church는 이 시대의 선교입니다.",
-    ct1:"매일 묵상 나눔 →", cd1:"하루 한 구절 말씀을 함께 나눕니다.", cs1:"묵상 나누러 가기 ✝",
-    ct2:"Jeongmin Church 위클리 레터 →", cd2:"매주 느린 삶과 신앙 이야기를 담은 뉴스레터.", cs2:"레터 읽으러 가기 ✝",
-    ct3:"온라인 소그룹", cd3:"전국 어디서든 참여 가능한 소그룹 모임.",
-    ct4:"느린 글쓰기 모임 →", cd4:"신앙 에세이, 묵상 일기를 함께 씁니다.", cs4:"글 쓰러 가기 ✝",
-    joinEye: "Join Us · 함께하기",
-    joinTitle: "지금, <span class=\"gold\">느린 걸음</span>으로<br>함께 시작하세요",
-    joinSub: "스마트폰에 지친 당신, 화면 너머 진짜 세상이 그리운 당신.<br>Jeongmin Church는 이 시대의 디지털 세대를 향한 선교입니다.",
-    joinBtn: "Jeongmin Church 함께하기 ✝",
-    joinPrivacy: "가입 정보는 Jeongmin Church 운영에만 사용됩니다",
-    footerDesc: "Independent Christian Ministry · Non-Denominational<br>디지털 세대를 향한 온라인 선교 사역",
-    footerCol1: "교회 안내", footerCol2: "함께하기", footerCol3: "채널",
-    fl1:"교회 소개", fl2:"삶의 방식", fl3:"예배 방식", fl4:"말씀", fl5:"공동체",
-    fl6:"공동체 가입", fl7:"후원하기", fl8:"위클리 레터", fl9:"소그룹 신청",
-    fl10:"네이버 블로그", fl11:"유튜브", fl12:"인스타그램", fl13:"카카오 오픈채팅",
-    footerCopy: "개인정보처리방침",
-    dv1:'"좁은 문으로 들어가라"', dr1:"마태복음 7:13", dd1:"성공보다 성실, 속도보다 방향.",
-    dv2:'"진리가 너희를 자유롭게 하리라"', dr2:"요한복음 8:32", dd2:"온라인과 오프라인이 같은 사람.",
-    dv3:'"어느 형편에든 자족하기를"', dr3:"빌립보서 4:11", dd3:"어디에 있든 그 곳이 성전.",
-    dv4:'"이웃을 네 자신 같이 사랑하라"', dr4:"마가복음 12:31", dd4:"댓글 하나도 사랑의 언어로.",
-    dv5:'"가만히 있어 내가 하나님임을"', dr5:"시편 46:10", dd5:"느린 삶이 곧 영성입니다."
+var LANG={
+  ko:{
+    langBtn:"KO | EN",navCta:"✝ 예배 시작",
+    navSteps:"10분 예배",navAbout:"소개",navValues:"삶의 방식",navSermons:"말씀",navDonate:"후원",navCommunity:"공동체",
+    heroBadge:"✝ &nbsp; JEONGMIN CHURCH · 온라인 예배",
+    timerLabel:"분",timerTitle:"완전한 예배",timerSteps:"찬양 · 말씀 · 기도 · 신앙고백 · 축도",
+    heroLine1:"언제 어디서든,",heroLine2:"딱 10분이면 충분합니다",
+    heroSub:"믿음은 있지만 교회 가기 힘드신가요?<br><strong>인터넷만 있으면 어디서든</strong> — 출근길, 집에서, 점심시간 —<br>하나님께 예배드릴 수 있습니다.",
+    heroBtnMain:"지금 예배 시작하기",heroBtnSub:"예배 순서 보기 ↓",heroNote:"소요시간 약 10분 · 인터넷만 있으면 가능",
+    stepsEye:"10분 예배 순서 · Worship Order",stepsTitle:"짧지만, 완전한 예배입니다",
+    stepsSub:"형식보다 마음이 먼저입니다. 찬양에서 축도까지, 10분 안에 진심으로 예배드릴 수 있습니다.",
+    sn1:"찬양",sd1:"자연 소리와 함께<br>찬송가 한 곡",sn2:"말씀",sd2:"오늘의 성경 한 구절<br>짧은 묵상",
+    sn3:"기도",sd3:"대표기도<br>오늘 하루를 드림",sn4:"신앙고백",sd4:"믿음을 고백하고<br>다짐하는 시간",sn5:"축도",sd5:"하나님의 은혜로<br>하루를 시작",
+    stepsBtnText:"10분 예배 지금 시작하기",
+    whyEye:"Why Online Worship · 온라인 예배",whyTitle:"교회는 건물이 아닙니다",
+    whySub:"성전은 하나님을 향해 마음을 여는 그 자리입니다.<br>인터넷이 닿는 곳, 그곳이 성전입니다.",
+    why1t:"스마트폰에 갇힌 세대를 위해",why1d:"화면 앞에서 하루를 시작하는 디지털 세대에게 — 같은 화면으로 하나님을 만날 수 있습니다. 기술을 피하지 않고, <strong>기술 안에서 예배드립니다.</strong>",
+    why2t:"바쁜 일상 속에서도",why2d:"출근길 지하철, 점심시간, 잠들기 전 침대에서. <strong>언제 어디서든</strong> 장소와 시간의 제약 없이 하나님께 예배드릴 수 있습니다.",
+    why3t:"마음의 불편함을 평안으로",why3d:"믿음이 있기에 예배를 드리지 않으면 마음이 불편합니다. 딱 10분, 그 <strong>불편함을 평안으로</strong> 바꿔드립니다.",
+    wordEye:"오늘의 말씀 · Word of the Day",wordTitle:"말씀이 힘이 됩니다",wordLabel:"✝ 오늘의 말씀",
+    wordText:"&quot;너희는 가만히 있어 내가 하나님 됨을 알지어다&quot;",wordRef:"— 시편 46:10 —",wordBtn:"모든 말씀 보기 →",
+    aboutEye:"About · Jeongmin Church",aboutTitle:"디지털 세대를 위한<br>온라인 신앙 공동체",
+    aboutDesc1:"스마트폰과 PC 화면 앞에 갇혀 진짜 세상을 보지 못하는 디지털 세대에게 하나님의 말씀과 느린 삶의 가치를 전합니다.",
+    aboutDesc2:"비교단 독립 온라인 기독교 사역 · 모든 후원은 자율적입니다.",
+    al1:"✝ 10분 예배 바로가기",al2:"📖 말씀 · Sermons",al3:"🎵 찬양 · Praise",al4:"🤝 공동체 · Community",
+    ab1l:"성전",ab1v:"인터넷이 닿는<br>모든 곳",ab2l:"예배 시간",ab2v:"딱 10분<br>언제 어디서든",
+    ab3l:"선교 대상",ab3v:"디지털 세대<br>모든 믿는 자",ab4l:"교단",ab4v:"비교단 독립<br>Non-Denominational",
+    valuesEye:"What We Believe · 우리의 믿음",valuesTitle:"Five Ways of Life",valuesSub:"일상 속에서 실천하는 다섯 가지 삶의 방식입니다.",
+    creedEye:"Confession of Faith · 신앙 고백",creedLabel:"✝ &nbsp; Jeongmin Church 신앙고백 &nbsp; ✝",creedAmen:"— Amen · 아멘 —",
+    pagesEye:"Our Ministry · 사역",pagesTitle:"함께 드리는 예배",
+    pg1t:"10분 예배",pg1d:"찬양 · 말씀 · 기도 · 신앙고백 · 축도<br>언제 어디서든 완전한 예배",pg1l:"예배 시작하기 →",
+    pg2t:"말씀",pg2d:"매주 수요일 저녁 · 주일 아침<br>디지털 세대를 위한 성경 메시지",pg2l:"말씀 듣기 →",
+    pg3t:"찬양",pg3d:"Jeongmin Church 창작 찬송<br>자연 묵상음악 · 찬송 모음",pg3l:"찬양 듣기 →",
+    donateEye:"Support · 후원",donateTitle:"함께 세상을 밝혀주세요",donateSub:"여러분의 후원이 디지털 신앙 공동체를 이어갑니다.",
+    donateCardTitle:"후원 신청",donateCardDesc:"아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.",donateBtnText:"후원 신청하기",
+    donateVol:"모든 후원은 자율적이며 강요되지 않습니다 · All support is voluntary",
+    communityEye:"Community · 공동체",communityTitle:"스마트폰 너머의<br>진짜 세상으로",communitySub:"화면 앞에 갇힌 디지털 세대에게 진짜 삶을 전합니다.",
+    cf1t:"매일 묵상 나눔 →",cf1d:"하루 한 구절 말씀을 함께 나눕니다.",cf1s:"묵상 나누러 가기 ✝",
+    cf2t:"Jeongmin Church 위클리 레터 →",cf2d:"매주 느린 삶과 신앙 이야기를 담은 뉴스레터.",cf2s:"레터 읽으러 가기 ✝",
+    cf3t:"온라인 소그룹",cf3d:"전국 어디서든 참여 가능한 소그룹 모임.",
+    cf4t:"느린 글쓰기 모임 →",cf4d:"신앙 에세이, 묵상 일기를 함께 씁니다.",cf4s:"글 쓰러 가기 ✝",
+    joinEye:"Join Us · 함께하기",joinTitle:"지금, 느린 걸음으로<br>함께 시작하세요",
+    joinSub:"스마트폰에 지친 당신, 화면 너머 진짜 세상이 그리운 당신.<br>Jeongmin Church는 이 시대의 디지털 세대를 향한 선교입니다.",
+    joinBtnText:"Jeongmin Church 함께하기",joinNote:"✝ 구글 폼으로 안전하게 가입됩니다",joinPrivacy:"가입 정보는 Jeongmin Church 운영에만 사용됩니다",
+    ftCol1:"예배",ftCol2:"함께하기",ftCol3:"채널",
+    ftL1:"10분 예배",ftL2:"말씀",ftL3:"찬양",ftL4:"공동체 가입",ftL5:"후원하기",ftL6:"위클리 레터",ftL7:"네이버 블로그",ftL8:"유튜브",ftL9:"인스타그램"
   },
-  en: {
-    langBtn: "EN | KO",
-    navAbout: "About", navValues: "Our Values", navWorship: "Worship",
-    navSermon: "Sermons", navDonate: "Support", navCommunity: "Community", navCta: "Join Us",
-    heroEye: "Online Christian Ministry · Non-Denominational",
-    heroSub: "Reaching the Digital Generation with Biblical Truth",
-    valuesEye: "What We Believe · Our Values",
-    valuesTitle: "Five Ways of Life",
-    valuesSub: "Five simple principles for living a meaningful, faith-centered life.",
-    aboutBody1: "Sharing simple and practical messages from the Bible for everyday life — Sermons, Short reflections, and Faith-based life guidance for the digital generation.",
-    aboutBody2: "We reach those trapped in front of screens with timeless Biblical truth and the value of a slower, more intentional life.",
-    aboutVerse: "&quot;Be still, and know that I am God&quot;",
-    aboutVerseRef: "— Psalm 46:10 —",
-    aboutBtnJoin: "Get Started",
-    aboutBadgeKr: "Independent Ministry",
-    aboutProfileSub: "Independent Christian Minister · Online Bible-Based Ministry",
-    creedEye: "Confession of Faith · Our Creed",
-    creedLabel: "✝ &nbsp; Jeongmin Church Creed &nbsp; ✝",
-    creedAmen: "— Amen —",
-    worshipEye: "Worship Style · How We Worship",
-    worshipTitle: "Worship",
-    worshipDesc: "The sanctuary is not a building. Wherever you open your heart to God — that is holy ground.",
-    wt1:"Sanctuary", wd1:"Wherever the internet reaches",
-    wt2:"Worship Time →", wd2:"30 minutes each morning, screens off", ws2:"30-Min Worship Guide ✝",
-    wt3:"Praise →", wd3:"Nature sounds + Meditation music", ws3:"Listen to Praise ✝",
-    wt4:"Word →", wd4:"One verse a day, deeply meditated", ws4:"First Sermon ✝",
-    wt5:"Giving →", wd5:"Sharing your time and talents", ws5:"Support Us ✝",
-    wt6:"Fellowship →", wd6:"Slow conversations, deep listening", ws6:"YouTube Channel ▶",
-    donateEye: "Support · Our Ministry",
-    donateTitle: "Together, Let Us<br>Light Up the World",
-    donateMainSub: "Your support helps sustain this digital faith community.",
-    donateCardTitle: "Support Request",
-    donateCardDesc: "Click the button below to fill out a support request form.<br>Transfer to the provided account after submission.",
-    donateBtn: "✝ Support Now",
-    donateNotice: "Fill form → Bank transfer → Email confirmation<br>All funds are used solely for Jeongmin Church ministry",
-    communityEye: "Community · Connect",
-    communityTitle: "Beyond the Screen —<br>Real Life Awaits",
-    communitySub: "We bring the Gospel to those lost in the digital world.<br>Slowly · Righteously · Together — Jeongmin Church is a mission for this generation.",
-    ct1:"Daily Meditation →", cd1:"Share one verse together each day.", cs1:"Share Meditation ✝",
-    ct2:"Jeongmin Church Weekly Letter →", cd2:"A weekly newsletter on slow living and faith.", cs2:"Read Letter ✝",
-    ct3:"Online Small Groups", cd3:"Small groups you can join from anywhere.",
-    ct4:"Slow Writing Group →", cd4:"Write faith essays and meditation journals together.", cs4:"Start Writing ✝",
-    joinEye: "Join Us · Get Started",
-    joinTitle: "Begin the Journey,<br><span class=\"gold\">One Slow Step</span> at a Time",
-    joinSub: "Tired of your screen? Longing for something real?<br>Jeongmin Church is a mission for the digital generation.",
-    joinBtn: "Join Jeongmin Church ✝",
-    joinPrivacy: "Your information is used solely for Jeongmin Church community purposes",
-    footerDesc: "Independent Christian Ministry · Non-Denominational<br>Online Christian Mission for the Digital Generation",
-    footerCol1: "Ministry", footerCol2: "Get Involved", footerCol3: "Channels",
-    fl1:"About", fl2:"Our Values", fl3:"Worship", fl4:"Sermons", fl5:"Community",
-    fl6:"Join Community", fl7:"Support Us", fl8:"Weekly Letter", fl9:"Small Groups",
-    fl10:"Naver Blog", fl11:"YouTube", fl12:"Instagram", fl13:"KakaoTalk Chat",
-    footerCopy: "Privacy Policy",
-    dv1:'"Enter through the narrow gate"', dr1:"Matthew 7:13", dd1:"Character over success, direction over speed.",
-    dv2:'"The truth will set you free"', dr2:"John 8:32", dd2:"The same person online and offline.",
-    dv3:'"I have learned to be content"', dr3:"Philippians 4:11", dd3:"Wherever you are, that place is holy.",
-    dv4:'"Love your neighbor as yourself"', dr4:"Mark 12:31", dd4:"Every comment is a chance to love.",
-    dv5:'"Be still and know that I am God"', dr5:"Psalm 46:10", dd5:"A slow life is a spiritual life."
+  en:{
+    langBtn:"EN | KO",navCta:"✝ Start Worship",
+    navSteps:"10-Min Worship",navAbout:"About",navValues:"Our Values",navSermons:"Sermons",navDonate:"Support",navCommunity:"Community",
+    heroBadge:"✝ &nbsp; JEONGMIN CHURCH · ONLINE WORSHIP",
+    timerLabel:"min",timerTitle:"Complete Worship",timerSteps:"Praise · Word · Prayer · Creed · Benediction",
+    heroLine1:"Anywhere, anytime —",heroLine2:"Just 10 minutes is enough",
+    heroSub:"Faith without a place to worship?<br><strong>All you need is the internet</strong> — on the bus, at home, during lunch —<br>You can worship God anywhere.",
+    heroBtnMain:"Start Worship Now",heroBtnSub:"See Worship Order ↓",heroNote:"About 10 minutes · Works anywhere with internet",
+    stepsEye:"10-Min Worship Order",stepsTitle:"Brief, but Complete",
+    stepsSub:"It is about the heart, not the format. From praise to benediction — complete worship in 10 minutes.",
+    sn1:"Praise",sd1:"Nature sounds +<br>One hymn",sn2:"Word",sd2:"One verse today<br>Short reflection",
+    sn3:"Prayer",sd3:"Representative prayer<br>Offering the day",sn4:"Confession",sd4:"Confessing faith<br>Making a commitment",sn5:"Benediction",sd5:"Beginning the day<br>with grace",
+    stepsBtnText:"Start 10-Min Worship Now",
+    whyEye:"Why Online Worship",whyTitle:"The Church is Not a Building",
+    whySub:"The sanctuary is wherever you open your heart to God.<br>Where the internet reaches, that place is holy ground.",
+    why1t:"For the Digital Generation",why1d:"For those who start their day in front of a screen — you can meet God on that same screen. We do not avoid technology — <strong>we worship within it.</strong>",
+    why2t:"Even in a Busy Life",why2d:"On the subway, during a lunch break, before bed. <strong>Anywhere, anytime</strong> — no limits on place or time.",
+    why3t:"Peace for Your Heart",why3d:"If you have faith, not worshipping feels uneasy. Just 10 minutes can <strong>turn that unease into peace.</strong>",
+    wordEye:"Word of the Day",wordTitle:"The Word Gives Strength",wordLabel:"✝ Word of the Day",
+    wordText:"&quot;Be still, and know that I am God&quot;",wordRef:"— Psalm 46:10 —",wordBtn:"All Sermons →",
+    aboutEye:"About · Jeongmin Church",aboutTitle:"An Online Faith Community<br>for the Digital Generation",
+    aboutDesc1:"We bring Biblical truth and the value of a slower life to those trapped in front of screens.",
+    aboutDesc2:"Independent Christian Ministry · Non-Denominational · All support is voluntary.",
+    al1:"✝ Start 10-Min Worship",al2:"📖 Sermons",al3:"🎵 Praise",al4:"🤝 Community",
+    ab1l:"Sanctuary",ab1v:"Wherever the<br>internet reaches",ab2l:"Worship Time",ab2v:"Just 10 minutes<br>Anywhere, anytime",
+    ab3l:"Mission",ab3v:"Digital Generation<br>All believers",ab4l:"Denomination",ab4v:"Independent<br>Non-Denominational",
+    valuesEye:"What We Believe · Our Values",valuesTitle:"Five Ways of Life",valuesSub:"Five simple principles for living a meaningful, faith-centered life.",
+    creedEye:"Confession of Faith · Our Creed",creedLabel:"✝ &nbsp; Jeongmin Church Creed &nbsp; ✝",creedAmen:"— Amen —",
+    pagesEye:"Our Ministry",pagesTitle:"Worship Together",
+    pg1t:"10-Min Worship",pg1d:"Praise · Word · Prayer · Creed · Benediction<br>Complete worship, anywhere",pg1l:"Start Worship →",
+    pg2t:"Sermons",pg2d:"Every Wednesday evening · Sunday morning<br>Biblical messages for the digital generation",pg2l:"Listen →",
+    pg3t:"Praise",pg3d:"Jeongmin Church original hymns<br>Nature meditation music · Hymn collection",pg3l:"Listen →",
+    donateEye:"Support · Our Ministry",donateTitle:"Together, Light Up the World",donateSub:"Your support helps sustain this digital faith community.",
+    donateCardTitle:"Support Request",donateCardDesc:"Click the button below to fill out a support request form.<br>Transfer to the provided account after submission.",donateBtnText:"Support Now",
+    donateVol:"All support is completely voluntary and not required",
+    communityEye:"Community · Connect",communityTitle:"Beyond the Screen —<br>Real Life Awaits",communitySub:"We bring the Gospel to those lost in the digital world.",
+    cf1t:"Daily Meditation →",cf1d:"Share one verse together each day.",cf1s:"Share Meditation ✝",
+    cf2t:"Weekly Letter →",cf2d:"A weekly newsletter on slow living and faith.",cf2s:"Read Letter ✝",
+    cf3t:"Online Small Groups",cf3d:"Small groups you can join from anywhere.",
+    cf4t:"Slow Writing Group →",cf4d:"Write faith essays and meditation journals together.",cf4s:"Start Writing ✝",
+    joinEye:"Join Us · Get Started",joinTitle:"Begin the Journey,<br>One Slow Step at a Time",
+    joinSub:"Tired of your screen? Longing for something real?<br>Jeongmin Church is a mission for the digital generation.",
+    joinBtnText:"Join Jeongmin Church",joinNote:"✝ Secure sign-up via Google Forms",joinPrivacy:"Your information is used solely for Jeongmin Church community purposes",
+    ftCol1:"Worship",ftCol2:"Get Involved",ftCol3:"Channels",
+    ftL1:"10-Min Worship",ftL2:"Sermons",ftL3:"Praise",ftL4:"Join Community",ftL5:"Support Us",ftL6:"Weekly Letter",ftL7:"Naver Blog",ftL8:"YouTube",ftL9:"Instagram"
   }
 };
 
-var currentLang = localStorage.getItem("jm_lang") || "ko";
-
-function toggleLang() {
-  currentLang = currentLang === "ko" ? "en" : "ko";
-  applyLang(currentLang);
-  localStorage.setItem("jm_lang", currentLang);
+var currentLang=localStorage.getItem("jm_lang")||"ko";
+function toggleLang(){currentLang=currentLang==="ko"?"en":"ko";applyLang(currentLang);localStorage.setItem("jm_lang",currentLang);}
+window.toggleLang=toggleLang;
+function ST(id,val){var el=document.getElementById(id);if(el&&val!==undefined)el.innerHTML=val;}
+function applyLang(lang){
+  var t=LANG[lang];if(!t)return;
+  document.getElementById("htmlRoot").setAttribute("lang",lang);
+  var lb=document.getElementById("langBtn");if(lb)lb.textContent=t.langBtn;
+  var cta=document.getElementById("navCta");if(cta)cta.textContent=t.navCta;
+  document.querySelectorAll("[data-key]").forEach(function(el){var k=el.getAttribute("data-key");if(t[k])el.textContent=t[k];});
+  if(lang==="en"){ST("creedLines",'I am one who walks <span class="creed-accent">the right path</span>.<br>I choose <span class="creed-accent">depth</span> over speed,<br><span class="creed-accent">being</span> over having,<br><span class="creed-accent">character</span> over success.<br><br>Even in the digital world,<br>I live as <span class="creed-accent">God\'s person</span>,<br>finding <span class="creed-accent">eternity</span> in a slower life.');}
+  else{ST("creedLines",'나는 <span class="creed-accent">바른 길</span>을 걷는 정민인이다.<br><span class="creed-accent">빠름</span>보다 깊음을,<br><span class="creed-accent">소유</span>보다 존재를,<br><span class="creed-accent">성공</span>보다 성품을 추구한다.<br><br>나는 디지털 세계에서도<br><span class="creed-accent">하나님의 사람</span>으로 살며,<br>느린 삶 안에서 <span class="creed-accent">영원</span>을 만난다.');}
+  Object.keys(t).forEach(function(k){if(k==="langBtn"||k==="navCta"||k==="creedLines")return;ST(k,t[k]);});
 }
-window.toggleLang = toggleLang;
-
-function ST(id, val) {
-  var el = document.getElementById(id);
-  if (el && val !== undefined) el.innerHTML = val;
-}
-
-function applyLang(lang) {
-  var t = LANG_DATA[lang];
-  if (!t) return;
-  document.getElementById("htmlRoot").setAttribute("lang", lang === "ko" ? "ko" : "en");
-
-  ST("langToggle", t.langBtn);
-  var cta = document.getElementById("navCta");
-  if (cta) cta.textContent = t.navCta;
-
-  document.querySelectorAll("[data-key]").forEach(function(el) {
-    var k = el.getAttribute("data-key");
-    if (t[k]) el.textContent = t[k];
-  });
-
-  ST("heroEyebrow", t.heroEye);
-  ST("heroSubtitle", t.heroSub);
-  ST("valuesEyebrow", t.valuesEye);
-  ST("valuesTitle", t.valuesTitle);
-  ST("valuesSub", t.valuesSub);
-  ST("aboutBody1", t.aboutBody1);
-  ST("aboutBody2", t.aboutBody2);
-  ST("aboutVerse", t.aboutVerse);
-  ST("aboutVerseRef", t.aboutVerseRef);
-  ST("aboutBtnJoin", t.aboutBtnJoin);
-  ST("aboutBadgeKr", t.aboutBadgeKr);
-  ST("aboutProfileSub", t.aboutProfileSub);
-  ST("creedEye", t.creedEye);
-  ST("creedLabel", t.creedLabel);
-  ST("creedAmen", t.creedAmen);
-  ST("worshipEye", t.worshipEye);
-  ST("worshipTitle", t.worshipTitle);
-  ST("worshipDesc", t.worshipDesc);
-  ST("communityEye", t.communityEye);
-  ST("communityTitle", t.communityTitle);
-  ST("communitySub", t.communitySub);
-  ST("donateEye", t.donateEye);
-  ST("donateTitle", t.donateTitle);
-  ST("donateMainSub", t.donateMainSub);
-  ST("donateCardTitle", t.donateCardTitle);
-  ST("donateCardDesc", t.donateCardDesc);
-  ST("donateBtn", t.donateBtn);
-  ST("donateNotice", t.donateNotice);
-  ST("joinEye", t.joinEye);
-  ST("joinTitle", t.joinTitle);
-  ST("joinSub", t.joinSub);
-  ST("joinBtn", t.joinBtn);
-  ST("joinPrivacy", t.joinPrivacy);
-  ST("footerDesc", t.footerDesc);
-  ST("footerCol1", t.footerCol1);
-  ST("footerCol2", t.footerCol2);
-  ST("footerCol3", t.footerCol3);
-  ST("footerCopy", t.footerCopy);
-
-  for (var i = 1; i <= 13; i++) ST("fl" + i, t["fl" + i]);
-  for (var i = 1; i <= 6; i++) {
-    ST("wCardTitle" + i, t["wt" + i]);
-    ST("wCardDesc" + i, t["wd" + i]);
-    if (t["ws" + i]) ST("wCardSub" + i, t["ws" + i]);
-  }
-  for (var i = 1; i <= 5; i++) {
-    ST("ddVerse" + i, t["dv" + i]);
-    ST("ddRef" + i, t["dr" + i]);
-    ST("ddText" + i, t["dd" + i]);
-  }
-  ST("cfTitle1", t.ct1); ST("cfDesc1", t.cd1); ST("cfSub1", t.cs1);
-  ST("cfTitle2", t.ct2); ST("cfDesc2", t.cd2); ST("cfSub2", t.cs2);
-  ST("cfTitle3", t.ct3); ST("cfDesc3", t.cd3);
-  ST("cfTitle4", t.ct4); ST("cfDesc4", t.cd4); ST("cfSub4", t.cs4);
-
-  if (lang === "en") {
-    ST("creedLines",
-      'I am one who walks <span class="creed-accent">the right path</span>.<br>' +
-      'I choose <span class="creed-accent">depth</span> over speed,<br>' +
-      '<span class="creed-accent">being</span> over having,<br>' +
-      '<span class="creed-accent">character</span> over success.<br><br>' +
-      'Even in the digital world,<br>' +
-      'I live as <span class="creed-accent">God\'s person</span>,<br>' +
-      'finding <span class="creed-accent">eternity</span> in a slower life.'
-    );
-  } else {
-    ST("creedLines",
-      '나는 <span class="creed-accent">바른 길</span>을 걷는 정민인이다.<br>' +
-      '<span class="creed-accent">빠름</span>보다 깊음을,<br>' +
-      '<span class="creed-accent">소유</span>보다 존재를,<br>' +
-      '<span class="creed-accent">성공</span>보다 성품을 추구한다.<br><br>' +
-      '나는 디지털 세계에서도<br>' +
-      '<span class="creed-accent">하나님의 사람</span>으로 살며,<br>' +
-      '느린 삶 안에서 <span class="creed-accent">영원</span>을 만난다.'
-    );
-  }
-}
-
-window.addEventListener("DOMContentLoaded", function() {
-  var saved = localStorage.getItem("jm_sheet_url");
-  if (saved && document.getElementById("sheetUrl")) document.getElementById("sheetUrl").value = saved;
-  if (currentLang === "en") applyLang("en");
-});
-
-
-// 저장된 언어 적용
-window.addEventListener('DOMContentLoaded', ()=>{
-  const saved = localStorage.getItem('jm_sheet_url');
-  if(saved && document.getElementById('sheetUrl')) document.getElementById('sheetUrl').value = saved;
-  if(currentLang === 'en') applyLang('en');
-});
+if(currentLang==="en")applyLang("en");
 </script>
 </body>
 </html>
