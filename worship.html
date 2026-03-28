@@ -3,532 +3,669 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jeongmin Church — 30분 개인 예배</title>
+<title>Jeongmin Church — 10분 온라인 예배</title>
+<meta name="description" content="언제 어디서든 딱 10분, 정민 온라인교회 예배를 드리세요. 찬양·기도·말씀·신앙고백·축도.">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;700;900&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --navy:   #0B1622;
-  --navy2:  #0F1D2E;
-  --gold:   #C9A84C;
-  --gold-l: #E8C96A;
-  --gold-p: #F0DFAA;
-  --sage:   #7A9E7E;
-  --cream:  #F5EDD6;
-  --red:    #E05555;
-  --border: rgba(201,168,76,0.15);
-  --font-s: 'Noto Serif KR', serif;
-  --font-c: 'Cinzel', serif;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{background:var(--navy);color:var(--cream);font-family:var(--font-s);overflow-x:hidden;min-height:100vh}
-body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9000;opacity:.4}
-a{color:inherit;text-decoration:none}
-button{cursor:pointer;border:none;font-family:inherit}
+:root{--navy:#0B1622;--navy2:#0F1D2E;--navy3:#162638;--gold:#C9A84C;--gold-l:#E8C96A;--gold-p:#F0DFAA;--sage:#7A9E7E;--cream:#F5EDD6;--border:rgba(201,168,76,.14);--fs:'Noto Serif KR',serif;--fc:'Cinzel',serif;--ease:cubic-bezier(.16,1,.3,1)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{background:var(--navy);color:var(--cream);font-family:var(--fs);overflow-x:hidden}
 
-/* ── NAV ── */
-.nav{position:sticky;top:0;z-index:200;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(11,22,34,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
-.nav-logo{font-family:var(--font-s);font-size:17px;font-weight:700;letter-spacing:4px}
-.nav-back{font-family:var(--font-c);font-size:9px;letter-spacing:3px;color:var(--cream);opacity:.5;text-transform:uppercase;padding:7px 14px;border:1px solid var(--border);border-radius:2px;transition:all .3s}
-.nav-back:hover{opacity:.9;border-color:rgba(201,168,76,.4)}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between;background:rgba(11,22,34,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.nav-cross{position:relative;width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+.nav-cross::before{content:'';position:absolute;width:2.5px;height:18px;background:var(--gold);border-radius:2px}
+.nav-cross::after{content:'';position:absolute;width:12px;height:2.5px;background:var(--gold);border-radius:2px;margin-top:-4px}
+.nav-logo-text{font-family:var(--fc);font-size:12px;letter-spacing:2px;color:var(--gold)}
+.nav-back{font-family:var(--fc);font-size:8px;letter-spacing:2px;color:var(--cream);opacity:.45;text-decoration:none;transition:opacity .3s}
+.nav-back:hover{opacity:.9}
 
-/* ── HERO ── */
-.hero{text-align:center;padding:60px 24px 40px;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(201,168,76,.07) 0%,transparent 65%);pointer-events:none}
-.hero-eyebrow{font-family:var(--font-c);font-size:10px;letter-spacing:6px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:14px}
-.hero-title{font-family:var(--font-s);font-size:clamp(26px,5vw,42px);font-weight:900;color:var(--cream);margin-bottom:12px}
-.hero-sub{font-size:14px;font-weight:300;color:var(--cream);opacity:.5;line-height:2;margin-bottom:28px}
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden;padding:70px 20px 40px}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 100% 80% at 50% 30%,#0d2038 0%,#0B1622 65%)}
+.hero-cross-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-52%);opacity:.025;pointer-events:none}
+.hero-cross-bg svg{width:min(500px,85vw)}
+.hero-pts{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.pt{position:absolute;width:2px;height:2px;border-radius:50%;background:var(--gold);animation:ptFloat linear infinite}
+@keyframes ptFloat{0%{transform:translateY(110vh);opacity:0}5%{opacity:.6}90%{opacity:.2}100%{transform:translateY(-5vh);opacity:0}}
 
-/* ── TIMER ── */
-.timer-wrap{max-width:340px;margin:0 auto 14px;background:linear-gradient(145deg,rgba(201,168,76,.08),rgba(15,29,46,.95));border:1px solid rgba(201,168,76,.25);border-radius:12px;padding:28px 24px;text-align:center;position:relative}
-.timer-wrap::before{content:'';position:absolute;top:-1px;left:20%;right:20%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
-.timer-label{font-family:var(--font-c);font-size:9px;letter-spacing:4px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:10px}
-.timer-display{font-family:var(--font-c);font-size:52px;font-weight:700;color:var(--gold-l);letter-spacing:4px;line-height:1;text-shadow:0 0 40px rgba(201,168,76,.3);margin-bottom:6px}
-.timer-step{font-family:var(--font-s);font-size:14px;font-weight:500;color:var(--cream);margin-bottom:4px}
-.timer-step-desc{font-size:11px;font-weight:300;color:var(--cream);opacity:.45;margin-bottom:16px}
-.timer-progress{width:100%;height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-bottom:16px;overflow:hidden}
-.timer-progress-fill{height:100%;background:linear-gradient(90deg,var(--sage),var(--gold));border-radius:2px;transition:width .5s linear;width:0%}
-.timer-btns{display:flex;gap:10px;justify-content:center}
-.timer-btn{font-family:var(--font-c);font-size:10px;letter-spacing:3px;padding:11px 20px;border-radius:6px;text-transform:uppercase;transition:all .25s}
-.btn-start{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);font-weight:700}
-.btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.3)}
-.btn-pause{background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--cream);opacity:.7}
-.btn-pause:hover{opacity:1}
-.btn-reset{background:rgba(224,85,85,.08);border:1px solid rgba(224,85,85,.2);color:var(--red);opacity:.6}
-.btn-reset:hover{opacity:1}
-.step-indicator{display:flex;gap:6px;justify-content:center;margin-top:14px}
-.step-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.12);transition:all .4s}
-.step-dot.active{background:var(--gold);box-shadow:0 0 8px rgba(201,168,76,.5)}
-.step-dot.done{background:var(--sage)}
+.hero-content{position:relative;z-index:2;max-width:660px;margin:0 auto}
+.hero-eye{font-family:var(--fc);font-size:8px;letter-spacing:5px;color:var(--gold);opacity:.65;margin-bottom:20px;animation:fadeUp .5s var(--ease) .1s both}
+.hero-title{font-family:var(--fs);font-size:clamp(22px,4.5vw,46px);font-weight:900;color:var(--cream);line-height:1.3;margin-bottom:14px;animation:fadeUp .6s var(--ease) .2s both}
+.hero-title .hl{color:var(--gold-l)}
+.hero-sub{font-size:13px;font-weight:300;color:var(--cream);opacity:.5;line-height:2;margin-bottom:36px;animation:fadeUp .6s var(--ease) .3s both}
 
-/* ── WORSHIP STEPS ── */
-.content{max-width:720px;margin:0 auto;padding:20px 24px 80px}
-.worship-steps{display:flex;flex-direction:column;gap:14px}
+/* 타이머 */
+.worship-timer{display:inline-flex;align-items:center;gap:4px;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.25);border-radius:8px;padding:14px 24px;margin-bottom:36px;animation:fadeUp .6s var(--ease) .25s both}
+.wt-num{font-family:var(--fc);font-size:44px;font-weight:700;color:var(--gold);line-height:1;letter-spacing:-1px;min-width:54px;text-align:center}
+.wt-colon{font-family:var(--fc);font-size:32px;color:var(--gold);opacity:.5;animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:.5}50%{opacity:.1}}
+.wt-label{font-family:var(--fc);font-size:7px;letter-spacing:3px;color:var(--cream);opacity:.4;text-align:center;margin-top:2px}
 
-.step-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:all .3s;cursor:default}
-.step-card.current{border-color:var(--gold);background:rgba(201,168,76,.05);box-shadow:0 0 30px rgba(201,168,76,.08)}
-.step-card.done-card{border-color:rgba(122,158,126,.3);background:rgba(122,158,126,.04);opacity:.7}
+/* 시작 버튼 */
+.btn-start{display:inline-flex;align-items:center;gap:10px;font-family:var(--fc);font-size:10px;letter-spacing:3px;padding:17px 44px;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;border-radius:3px;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 8px 32px rgba(201,168,76,.2);animation:fadeUp .6s var(--ease) .4s both}
+.btn-start:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(201,168,76,.35)}
+.btn-start:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.start-note{font-family:var(--fc);font-size:8px;letter-spacing:2px;color:var(--cream);opacity:.28;margin-top:12px;animation:fadeUp .5s var(--ease) .5s both}
 
-.step-header{display:flex;align-items:center;gap:14px;padding:18px 20px;cursor:pointer}
-.step-num{width:36px;height:36px;border-radius:50%;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center;font-family:var(--font-c);font-size:11px;color:var(--gold);flex-shrink:0;transition:all .3s}
-.step-card.current .step-num{background:var(--gold);color:var(--navy);border-color:var(--gold)}
-.step-card.done-card .step-num{background:var(--sage);color:var(--navy);border-color:var(--sage)}
-.step-info{flex:1}
-.step-title-row{display:flex;align-items:center;gap:8px;margin-bottom:3px}
-.step-title{font-family:var(--font-s);font-size:15px;font-weight:700;color:var(--cream)}
-.step-time-badge{font-family:var(--font-c);font-size:8px;letter-spacing:2px;padding:2px 8px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.2);border-radius:10px;color:var(--gold);text-transform:uppercase}
-.step-sub{font-size:12px;font-weight:300;color:var(--cream);opacity:.45}
-.step-doctrine{font-family:var(--font-c);font-size:8px;letter-spacing:2px;padding:3px 10px;border-radius:10px;text-transform:uppercase;flex-shrink:0}
-.d-jeongji{background:rgba(122,158,126,.12);border:1px solid rgba(122,158,126,.25);color:var(--sage)}
-.d-jeongdo{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);color:var(--gold)}
-.d-jeongmin{background:rgba(122,158,126,.12);border:1px solid rgba(122,158,126,.25);color:var(--sage)}
-.d-confession{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);color:var(--gold-l)}
+/* 예배 순서 미리보기 */
+.steps-preview{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:32px;flex-wrap:wrap;animation:fadeUp .5s var(--ease) .5s both}
+.sp-item{display:flex;align-items:center;gap:6px;font-family:var(--fc);font-size:7.5px;letter-spacing:2px;color:var(--cream);opacity:.35}
+.sp-dot{width:4px;height:4px;border-radius:50%;background:var(--gold);opacity:.4}
+.sp-sep{font-size:10px;color:var(--gold);opacity:.2}
 
-.step-body{padding:0 20px 20px;display:none}
-.step-card.current .step-body,.step-card.open .step-body{display:block}
+/* 예배 진행 화면 */
+.worship-screen{display:none;min-height:100vh;padding:70px 20px 40px;position:relative}
+.worship-screen.active{display:block}
 
-.step-verse{border-left:2px solid rgba(201,168,76,.4);padding:14px 18px;background:rgba(201,168,76,.04);border-radius:0 4px 4px 0;margin-bottom:14px}
-.step-verse-text{font-style:italic;font-size:14px;color:var(--gold-p);line-height:2;margin-bottom:4px}
-.step-verse-ref{font-family:var(--font-c);font-size:8px;letter-spacing:2px;color:var(--gold);opacity:.55}
+/* 진행 바 */
+.progress-bar{position:fixed;top:60px;left:0;right:0;height:3px;background:rgba(201,168,76,.1);z-index:150}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-l));width:0%;transition:width .3s ease}
 
-.step-guide{font-size:13.5px;font-weight:300;color:var(--cream);opacity:.65;line-height:2.3;margin-bottom:12px}
-.step-guide p{margin-bottom:8px}
-.step-guide .accent{color:var(--gold-p);font-weight:500}
+/* 스텝 카드 */
+.step-card{display:none;max-width:680px;margin:0 auto;text-align:center;padding:20px 0}
+.step-card.active{display:block}
+.step-num-badge{font-family:var(--fc);font-size:8px;letter-spacing:4px;color:var(--gold);opacity:.5;margin-bottom:14px}
+.step-icon-big{font-size:52px;margin-bottom:18px;display:block;animation:iconPop .5s var(--ease) both}
+@keyframes iconPop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.step-name{font-family:var(--fs);font-size:clamp(24px,4vw,40px);font-weight:900;color:var(--cream);margin-bottom:8px}
+.step-name .gold{color:var(--gold-l)}
+.step-time-badge{display:inline-block;font-family:var(--fc);font-size:9px;letter-spacing:3px;color:var(--gold);background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:20px;padding:4px 14px;margin-bottom:20px}
+.step-desc{font-size:13px;font-weight:300;color:var(--cream);opacity:.5;line-height:2;margin-bottom:28px}
 
-.step-action{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:6px;padding:14px 16px;font-size:13px;font-weight:300;color:var(--cream);opacity:.55;line-height:2;font-style:italic}
+/* 오디오 플레이어 커스텀 */
+.audio-wrap{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;padding:24px 28px;margin:20px auto;max-width:500px;position:relative;overflow:hidden}
+.audio-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.audio-title{font-family:var(--fc);font-size:9px;letter-spacing:3px;color:var(--gold);opacity:.6;margin-bottom:12px}
+.audio-name{font-family:var(--fs);font-size:15px;font-weight:500;color:var(--cream);margin-bottom:16px;opacity:.85}
+.audio-controls{display:flex;align-items:center;gap:12px}
+.audio-btn{width:44px;height:44px;border-radius:50%;background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .3s;flex-shrink:0}
+.audio-btn:hover{background:var(--gold-l);transform:scale(1.05)}
+.audio-progress-wrap{flex:1}
+.audio-progress{width:100%;height:4px;background:rgba(201,168,76,.15);border-radius:2px;cursor:pointer;position:relative;margin-bottom:6px}
+.audio-progress-fill{height:100%;background:var(--gold);border-radius:2px;width:0%;transition:width .1s linear;pointer-events:none}
+.audio-time{display:flex;justify-content:space-between;font-family:var(--fc);font-size:8px;letter-spacing:1px;color:var(--cream);opacity:.4}
 
-/* ── CREED SECTION ── */
-.creed-section{background:linear-gradient(160deg,rgba(201,168,76,.08),rgba(201,168,76,.02));border:1px solid rgba(201,168,76,.22);border-radius:10px;padding:clamp(32px,5vw,56px);text-align:center;margin-top:30px;position:relative;overflow:hidden}
-.creed-section::before{content:'✝';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:180px;color:rgba(201,168,76,.04);pointer-events:none;font-family:serif}
-.creed-label{font-family:var(--font-c);font-size:9px;letter-spacing:5px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:20px}
-.creed-text{font-family:var(--font-s);font-size:clamp(15px,2.5vw,18px);color:var(--cream);line-height:3.2;letter-spacing:.5px}
-.creed-accent{color:var(--gold-l);font-weight:700}
-.creed-amen{font-family:var(--font-c);font-size:16px;letter-spacing:10px;color:var(--gold);opacity:.75;margin-top:22px}
+/* 유튜브 임베드 */
+.yt-wrap{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:20px auto;max-width:560px;position:relative}
+.yt-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);z-index:1}
+.yt-iframe{width:100%;aspect-ratio:16/9;border:none;display:block}
 
-/* ── COMPLETE OVERLAY ── */
-.complete-overlay{position:fixed;inset:0;z-index:300;background:rgba(5,12,22,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .5s;text-align:center;padding:32px}
-.complete-overlay.show{opacity:1;pointer-events:all}
-.complete-cross{font-size:56px;margin-bottom:20px;animation:pop .6s ease}
-.complete-title{font-family:var(--font-s);font-size:clamp(24px,5vw,38px);font-weight:900;color:var(--cream);margin-bottom:12px}
-.complete-sub{font-size:15px;font-weight:300;color:var(--cream);opacity:.55;line-height:2.2;margin-bottom:32px;max-width:480px}
-.complete-verse{font-style:italic;color:var(--gold-p);opacity:.8;font-size:15px;line-height:2;margin-bottom:30px}
-.complete-btn{font-family:var(--font-c);font-size:10px;letter-spacing:4px;padding:14px 32px;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border-radius:4px;text-transform:uppercase;font-weight:700;transition:all .3s}
-.complete-btn:hover{transform:translateY(-2px)}
-@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+/* 신앙고백 카드 */
+.creed-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;padding:36px 32px;margin:20px auto;max-width:520px;text-align:center;position:relative;overflow:hidden}
+.creed-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.creed-label-sm{font-family:var(--fc);font-size:8px;letter-spacing:4px;color:var(--gold);opacity:.5;margin-bottom:20px}
+.creed-text{font-family:var(--fs);font-size:clamp(14px,2vw,17px);font-weight:400;color:var(--cream);line-height:2.8;letter-spacing:.3px}
+.creed-ac{color:var(--gold-l);font-weight:700}
+.creed-amen{font-family:var(--fc);font-size:12px;letter-spacing:6px;color:var(--gold);opacity:.6;margin-top:20px}
+.tts-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px}
+.tts-btn{font-family:var(--fc);font-size:8px;letter-spacing:2px;padding:8px 18px;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--gold);border-radius:2px;cursor:pointer;transition:all .3s}
+.tts-btn:hover{background:rgba(201,168,76,.1)}
+.tts-status{font-family:var(--fc);font-size:8px;letter-spacing:2px;color:var(--cream);opacity:.4}
 
-/* ── H RULE ── */
-.h-rule{display:flex;align-items:center;gap:12px;margin:24px 0}
-.h-rule-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.25),transparent)}
-.h-rule-dot{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);opacity:.5;flex-shrink:0}
+/* 축도 카드 */
+.benediction-card{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:10px;padding:40px 32px;margin:20px auto;max-width:520px;text-align:center;position:relative;overflow:hidden}
+.benediction-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.bene-text{font-family:var(--fs);font-size:clamp(14px,2vw,17px);font-weight:300;color:var(--cream);opacity:.75;line-height:2.2;font-style:italic}
+.bene-ref{font-family:var(--fc);font-size:9px;letter-spacing:3px;color:var(--gold);opacity:.55;margin-top:14px}
 
-@media(max-width:500px){
-  .timer-display{font-size:40px}
-  .step-header{gap:10px;padding:14px 16px}
-}
+/* 이전/다음 버튼 */
+.step-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:32px}
+.btn-prev{font-family:var(--fc);font-size:8.5px;letter-spacing:2px;padding:10px 22px;border:1px solid rgba(201,168,76,.25);background:transparent;color:var(--cream);opacity:.5;border-radius:2px;cursor:pointer;transition:all .3s}
+.btn-prev:hover{opacity:.9;border-color:rgba(201,168,76,.5)}
+.btn-next{font-family:var(--fc);font-size:8.5px;letter-spacing:2px;padding:12px 32px;background:var(--gold);color:var(--navy);border:none;border-radius:2px;cursor:pointer;font-weight:700;transition:all .3s}
+.btn-next:hover{background:var(--gold-l);transform:translateY(-1px)}
+.btn-finish{font-family:var(--fc);font-size:9px;letter-spacing:2px;padding:14px 36px;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;border-radius:3px;cursor:pointer;font-weight:700;transition:all .3s;box-shadow:0 8px 24px rgba(201,168,76,.2)}
+.btn-finish:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(201,168,76,.35)}
+
+/* 단계 표시 */
+.step-indicator{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:28px;flex-wrap:wrap}
+.si-item{display:flex;align-items:center;gap:6px;font-family:var(--fc);font-size:7.5px;letter-spacing:2px;color:var(--cream);opacity:.3;transition:opacity .3s}
+.si-item.active{opacity:.9;color:var(--gold)}
+.si-item.done{opacity:.5}
+.si-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.si-sep{color:var(--gold);opacity:.2;font-size:8px}
+
+/* 완료 화면 */
+.complete-screen{display:none;min-height:100vh;padding:70px 20px;display:none;align-items:center;justify-content:center;text-align:center;position:relative}
+.complete-screen.active{display:flex;flex-direction:column}
+.complete-cross{font-size:60px;margin-bottom:24px;animation:iconPop .6s var(--ease) both}
+.complete-title{font-family:var(--fs);font-size:clamp(24px,4vw,42px);font-weight:900;color:var(--cream);margin-bottom:14px;line-height:1.3}
+.complete-title .hl{color:var(--gold-l)}
+.complete-sub{font-size:14px;font-weight:300;color:var(--cream);opacity:.5;line-height:2;margin-bottom:36px}
+.complete-verse{background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:8px;padding:24px 28px;max-width:480px;margin:0 auto 36px}
+.cv-text{font-family:var(--fs);font-size:15px;font-weight:300;font-style:italic;color:var(--cream);opacity:.75;line-height:1.8;margin-bottom:8px}
+.cv-ref{font-family:var(--fc);font-size:8.5px;letter-spacing:3px;color:var(--gold);opacity:.55}
+.complete-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-again{font-family:var(--fc);font-size:9px;letter-spacing:2px;padding:12px 28px;background:var(--gold);color:var(--navy);border:none;border-radius:2px;cursor:pointer;font-weight:700;transition:all .3s}
+.btn-again:hover{background:var(--gold-l)}
+.btn-home{font-family:var(--fc);font-size:9px;letter-spacing:2px;padding:12px 28px;border:1px solid rgba(201,168,76,.3);background:transparent;color:var(--gold);border-radius:2px;cursor:pointer;transition:all .3s;text-decoration:none;display:inline-flex;align-items:center}
+.btn-home:hover{background:rgba(201,168,76,.08)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
 
-<!-- 완료 오버레이 -->
-<div class="complete-overlay" id="completeOverlay">
-  <div class="complete-cross">✝</div>
-  <div class="complete-title">예배를 마칩니다</div>
-  <div class="complete-sub">오늘도 하나님 앞에 고요히 앉아<br>30분을 드린 당신은<br>정민인입니다</div>
-  <div class="complete-verse">"너희는 가만히 있어 내가 하나님 됨을 알지어다"<br>— 시편 46:10 —</div>
-  <button class="complete-btn" onclick="resetAll()">✝ 처음으로</button>
-</div>
-
 <!-- NAV -->
 <nav class="nav">
-  <div class="nav-logo">Jeongmin Church</div>
-  <a href="/jeongminchurch/index.html" class="nav-back">← 홈</a>
+  <a href="/jeongminchurch/index.html" class="nav-logo">
+    <div class="nav-cross"></div>
+    <span class="nav-logo-text">Jeongmin Church</span>
+  </a>
+  <a href="/jeongminchurch/index.html" class="nav-back">← 홈으로</a>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-eyebrow">Personal Worship · 개인 예배</div>
-  <h1 class="hero-title">✝ 30분 Jeongmin Church 예배</h1>
-  <p class="hero-sub">알림을 끄십시오. 스크롤을 멈추십시오.<br>지금 이 30분을 하나님께 드리십시오.</p>
-
-  <!-- TIMER -->
-  <div class="timer-wrap">
-    <div class="timer-label">✝ 예배 타이머</div>
-    <div class="timer-display" id="timerDisplay">30:00</div>
-    <div class="timer-step" id="timerStep">예배를 시작해 주세요</div>
-    <div class="timer-step-desc" id="timerStepDesc">아래 순서를 따라 천천히 진행하세요</div>
-    <div class="timer-progress">
-      <div class="timer-progress-fill" id="timerFill"></div>
-    </div>
-    <div class="timer-btns">
-      <button class="timer-btn btn-start" id="startBtn" onclick="startTimer()">▶ 시작</button>
-      <button class="timer-btn btn-pause" id="pauseBtn" onclick="pauseTimer()" style="display:none">⏸ 일시정지</button>
-      <button class="timer-btn btn-reset" onclick="resetTimer()">↺ 초기화</button>
-    </div>
-    <div class="step-indicator" id="stepIndicator"></div>
-  </div>
+<!-- 진행 바 -->
+<div class="progress-bar" id="progressBar" style="display:none">
+  <div class="progress-fill" id="progressFill"></div>
 </div>
 
-<!-- WORSHIP STEPS -->
-<div class="content">
-  <div class="h-rule"><div class="h-rule-line"></div><div class="h-rule-dot"></div><div class="h-rule-line"></div></div>
+<!-- ══ 시작 화면 ══ -->
+<section class="hero" id="startScreen">
+  <div class="hero-bg"></div>
+  <div class="hero-cross-bg">
+    <svg viewBox="0 0 200 280" fill="none"><rect x="90" y="0" width="20" height="280" rx="10" fill="#C9A84C"/><rect x="0" y="85" width="200" height="20" rx="10" fill="#C9A84C"/></svg>
+  </div>
+  <div class="hero-pts" id="heroPts"></div>
+  <div class="hero-content">
+    <div class="hero-eye">✝ &nbsp; JEONGMIN CHURCH · 정민 온라인교회 예배</div>
 
-  <div class="worship-steps" id="worshipSteps">
+    <div class="worship-timer" id="worshipTimer">
+      <div><div class="wt-num" id="timerMin">10</div><div class="wt-label">분</div></div>
+      <div class="wt-colon">:</div>
+      <div><div class="wt-num" id="timerSec">00</div><div class="wt-label">초</div></div>
+    </div>
 
-    <!-- STEP 1 -->
-    <div class="step-card" id="step-0" onclick="toggleStep(0)">
-      <div class="step-header">
-        <div class="step-num">1</div>
-        <div class="step-info">
-          <div class="step-title-row">
-            <div class="step-title">🤫 고요함 — 준비 기도</div>
-            <span class="step-time-badge">3분</span>
+    <h1 class="hero-title">
+      언제 어디서든<br>
+      <span class="hl">딱 10분, 예배드리세요</span>
+    </h1>
+    <p class="hero-sub">찬양 · 기도 · 말씀 · 신앙고백 · 찬양 · 축도<br>인터넷만 있으면 지금 바로 시작할 수 있습니다</p>
+
+    <button class="btn-start" id="startBtn" onclick="startWorship()">
+      <span>✝</span>
+      <span>예배 시작하기</span>
+    </button>
+    <div class="start-note">소리를 켜주세요 · 소요시간 약 10분</div>
+
+    <div class="steps-preview">
+      <span class="sp-item"><span class="sp-dot"></span>🎵 찬양(여)</span>
+      <span class="sp-sep">›</span>
+      <span class="sp-item"><span class="sp-dot"></span>🙏 기도</span>
+      <span class="sp-sep">›</span>
+      <span class="sp-item"><span class="sp-dot"></span>📖 말씀</span>
+      <span class="sp-sep">›</span>
+      <span class="sp-item"><span class="sp-dot"></span>✝ 신앙고백</span>
+      <span class="sp-sep">›</span>
+      <span class="sp-item"><span class="sp-dot"></span>🎵 찬양(남)</span>
+      <span class="sp-sep">›</span>
+      <span class="sp-item"><span class="sp-dot"></span>🕊️ 축도</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 예배 진행 화면 ══ -->
+<div class="worship-screen" id="worshipScreen">
+
+  <!-- 단계 표시 -->
+  <div class="step-indicator" id="stepIndicator">
+    <span class="si-item" data-step="0"><span class="si-dot"></span>찬양</span>
+    <span class="si-sep">›</span>
+    <span class="si-item" data-step="1"><span class="si-dot"></span>기도</span>
+    <span class="si-sep">›</span>
+    <span class="si-item" data-step="2"><span class="si-dot"></span>말씀</span>
+    <span class="si-sep">›</span>
+    <span class="si-item" data-step="3"><span class="si-dot"></span>신앙고백</span>
+    <span class="si-sep">›</span>
+    <span class="si-item" data-step="4"><span class="si-dot"></span>찬양</span>
+    <span class="si-sep">›</span>
+    <span class="si-item" data-step="5"><span class="si-dot"></span>축도</span>
+  </div>
+
+  <!-- 스텝 0: 찬양 (여자버전) -->
+  <div class="step-card" id="step-0">
+    <div class="step-num-badge">01 / 06</div>
+    <span class="step-icon-big">🎵</span>
+    <div class="step-name">찬양 <span class="gold">· Praise</span></div>
+    <div class="step-time-badge">약 2분</div>
+    <p class="step-desc">하나님을 향해 마음을 엽니다.<br>느리게, 바르게, 함께 — 찬송가를 드립니다.</p>
+    <div class="audio-wrap">
+      <div class="audio-title">✝ JEONGMIN CHURCH 창작 찬송가</div>
+      <div class="audio-name">느리게, 바르게, 함께 — Soprano (여자버전)</div>
+      <div class="audio-controls">
+        <button class="audio-btn" id="playBtn0" onclick="toggleAudio(0)">▶</button>
+        <div class="audio-progress-wrap">
+          <div class="audio-progress" onclick="seekAudio(0, event)">
+            <div class="audio-progress-fill" id="progress0"></div>
           </div>
-          <div class="step-sub">정지(靜止) 교리 · 멈추어야 들린다</div>
-        </div>
-        <span class="step-doctrine d-jeongji">靜止</span>
-      </div>
-      <div class="step-body">
-        <div class="step-verse">
-          <div class="step-verse-text">"너희는 가만히 있어 내가 하나님 됨을 알지어다"</div>
-          <div class="step-verse-ref">— 시편 46:10 —</div>
-        </div>
-        <div class="step-guide">
-          <p>핸드폰을 뒤집어 놓으세요. 알림을 끄세요.</p>
-          <p>눈을 감고 천천히 숨을 세 번 쉬세요.</p>
-          <p><span class="accent">들이쉬며:</span> "하나님, 여기 있습니다"<br>
-          <span class="accent">내쉬며:</span> "세상을 내려놓습니다"</p>
-          <p>마음이 고요해질 때까지 서두르지 마세요.<br>침묵이 곧 예배의 시작입니다.</p>
-        </div>
-        <div class="step-action">
-          💡 억지로 집중하려 하지 마세요. 떠오르는 생각들을 그냥 흘려보내세요.
-          하나님은 지금 이 자리에 계십니다.
+          <div class="audio-time">
+            <span id="curTime0">0:00</span>
+            <span id="durTime0">--:--</span>
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- STEP 2 -->
-    <div class="step-card" id="step-1" onclick="toggleStep(1)">
-      <div class="step-header">
-        <div class="step-num">2</div>
-        <div class="step-info">
-          <div class="step-title-row">
-            <div class="step-title">🙏 감사 기도</div>
-            <span class="step-time-badge">5분</span>
-          </div>
-          <div class="step-sub">정민(正民) 교리 · 이웃을 바르게 섬겨라</div>
-        </div>
-        <span class="step-doctrine d-jeongmin">正民</span>
-      </div>
-      <div class="step-body">
-        <div class="step-verse">
-          <div class="step-verse-text">"범사에 감사하라 이것이 그리스도 예수 안에서 너희를 향하신 하나님의 뜻이니라"</div>
-          <div class="step-verse-ref">— 데살로니가전서 5:18 —</div>
-        </div>
-        <div class="step-guide">
-          <p>오늘 감사한 것을 <span class="accent">세 가지</span>만 말씀드리세요.</p>
-          <p>거창할 필요 없습니다.<br>
-          "오늘 밥을 먹었습니다."<br>
-          "숨을 쉴 수 있습니다."<br>
-          "이 시간이 주어졌습니다."</p>
-          <p>그리고 오늘 내 삶 속의 <span class="accent">이웃 한 사람</span>을 위해 짧게 기도하세요.</p>
-        </div>
-        <div class="step-action">
-          💡 감사는 느낌이 아닌 선택입니다. 감사가 잘 되지 않는 날도 "감사합니다"라고 말하는 것이 Jeongmin Church의 예배입니다.
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 3 -->
-    <div class="step-card" id="step-2" onclick="toggleStep(2)">
-      <div class="step-header">
-        <div class="step-num">3</div>
-        <div class="step-info">
-          <div class="step-title-row">
-            <div class="step-title">📖 말씀 묵상</div>
-            <span class="step-time-badge">10분</span>
-          </div>
-          <div class="step-sub">정도(正道) 교리 · 바른 길을 걸어라</div>
-        </div>
-        <span class="step-doctrine d-jeongdo">正道</span>
-      </div>
-      <div class="step-body">
-        <div class="step-verse">
-          <div class="step-verse-text">"너는 마음을 다하여 여호와를 신뢰하고 네 명철을 의지하지 말라 너는 범사에 그를 인정하라 그리하면 네 길을 지도하시리라"</div>
-          <div class="step-verse-ref">— 잠언 3:5-6 —</div>
-        </div>
-        <div class="step-guide">
-          <p>오늘의 말씀을 <span class="accent">천천히 한 번</span> 읽으세요.<br>
-          다시 한 번 더 읽으세요. 이번엔 더 천천히.</p>
-          <p>마음에 걸리는 <span class="accent">한 단어 또는 한 구절</span>에 멈추세요.</p>
-          <p>그 말씀이 오늘 내 삶에 어떻게 닿는지<br>
-          조용히 생각해보세요.</p>
-          <p><span class="accent">질문해도 좋습니다.</span><br>
-          "하나님, 이 말씀으로 오늘 저에게 무엇을 말씀하십니까?"</p>
-        </div>
-        <div class="step-action">
-          💡 많이 읽는 것이 목표가 아닙니다. 한 구절이라도 깊이 삶에 새기는 것이 Jeongmin Church의 말씀 묵상입니다.
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 4 -->
-    <div class="step-card" id="step-3" onclick="toggleStep(3)">
-      <div class="step-header">
-        <div class="step-num">4</div>
-        <div class="step-info">
-          <div class="step-title-row">
-            <div class="step-title">✍️ 응답 기도</div>
-            <span class="step-time-badge">7분</span>
-          </div>
-          <div class="step-sub">정직(正直) 교리 · 투명하게 살아라</div>
-        </div>
-        <span class="step-doctrine d-jeongdo">正直</span>
-      </div>
-      <div class="step-body">
-        <div class="step-verse">
-          <div class="step-verse-text">"진리가 너희를 자유롭게 하리라"</div>
-          <div class="step-verse-ref">— 요한복음 8:32 —</div>
-        </div>
-        <div class="step-guide">
-          <p>말씀에 응답하는 기도를 드리세요.<br>
-          가면을 벗고, <span class="accent">솔직하게</span> 말씀드리세요.</p>
-          <p>잘 지내고 있다고 하지 않아도 됩니다.<br>
-          힘들다면 힘들다고,<br>
-          모르겠다면 모르겠다고,<br>
-          두렵다면 두렵다고.</p>
-          <p>하나님은 <span class="accent">포장된 기도</span>보다<br>
-          <span class="accent">정직한 침묵</span>을 더 가까이 하십니다.</p>
-          <p>오늘 하루를 어떻게 살 것인지<br>
-          짧게 결단의 기도로 마무리하세요.</p>
-        </div>
-        <div class="step-action">
-          💡 기도는 유창해야 할 필요가 없습니다. "하나님, 오늘도 함께해 주세요." 이것으로 충분합니다.
-        </div>
-      </div>
-    </div>
-
-    <!-- STEP 5 -->
-    <div class="step-card" id="step-4" onclick="toggleStep(4)">
-      <div class="step-header">
-        <div class="step-num">5</div>
-        <div class="step-info">
-          <div class="step-title-row">
-            <div class="step-title">✝ Jeongmin Church 신앙고백</div>
-            <span class="step-time-badge">5분</span>
-          </div>
-          <div class="step-sub">정착(定着) 교리 · 뿌리를 내려라</div>
-        </div>
-        <span class="step-doctrine d-confession">信仰告白</span>
-      </div>
-      <div class="step-body">
-        <div class="step-guide">
-          <p>아래 신앙고백을 <span class="accent">천천히 소리 내어</span> 읽으세요.<br>
-          입술로 말하는 것이 마음에 뿌리를 내립니다.</p>
-          <p>서두르지 마세요. 한 문장씩, 깊이.</p>
-        </div>
-
-        <!-- 신앙고백 -->
-        <div style="background:linear-gradient(160deg,rgba(201,168,76,.07),rgba(201,168,76,.02));border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:28px 24px;text-align:center;margin:14px 0;position:relative">
-          <div style="font-family:var(--font-c);font-size:8px;letter-spacing:4px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:16px">✝ Jeongmin Church 신앙고백 ✝</div>
-          <div style="font-family:var(--font-s);font-size:clamp(14px,2.5vw,17px);color:var(--cream);line-height:3;letter-spacing:.5px">
-            나는 <span style="color:var(--gold-l);font-weight:700">바른 길</span>을 걷는 정민인이다.<br>
-            <span style="color:var(--gold-l);font-weight:700">빠름</span>보다 깊음을,<br>
-            <span style="color:var(--gold-l);font-weight:700">소유</span>보다 존재를,<br>
-            <span style="color:var(--gold-l);font-weight:700">성공</span>보다 성품을 추구한다.<br><br>
-            나는 디지털 세계에서도<br>
-            <span style="color:var(--gold-l);font-weight:700">하나님의 사람</span>으로 살며,<br>
-            느린 삶 안에서 <span style="color:var(--gold-l);font-weight:700">영원</span>을 만난다.
-          </div>
-          <div style="font-family:var(--font-c);font-size:15px;letter-spacing:10px;color:var(--gold);opacity:.75;margin-top:20px">— Amen · 아멘 —</div>
-        </div>
-
-        <div class="step-action">
-          💡 고백이 끝나면 잠시 눈을 감고 침묵하세요. 이것이 오늘 예배의 마무리입니다.
-          오늘도 느리게, 바르게, 함께. ✝
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /worship-steps -->
-
-  <div class="h-rule"><div class="h-rule-line"></div><div class="h-rule-dot"></div><div class="h-rule-line"></div></div>
-
-  <!-- 예배 전체 요약 -->
-  <div style="background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:8px;padding:24px;margin-top:8px">
-    <div style="font-family:var(--font-c);font-size:9px;letter-spacing:4px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:14px">Worship Order · 예배 순서 요약</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--cream);opacity:.65">
-        <span style="font-family:var(--font-c);font-size:10px;color:var(--gold);opacity:.7;min-width:40px">03분</span>
-        <span>🤫 고요함 — 준비 기도 (정지)</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--cream);opacity:.65">
-        <span style="font-family:var(--font-c);font-size:10px;color:var(--gold);opacity:.7;min-width:40px">05분</span>
-        <span>🙏 감사 기도 (정민)</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--cream);opacity:.65">
-        <span style="font-family:var(--font-c);font-size:10px;color:var(--gold);opacity:.7;min-width:40px">10분</span>
-        <span>📖 말씀 묵상 (정도)</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--cream);opacity:.65">
-        <span style="font-family:var(--font-c);font-size:10px;color:var(--gold);opacity:.7;min-width:40px">07분</span>
-        <span>✍️ 응답 기도 (정직)</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--cream);opacity:.65">
-        <span style="font-family:var(--font-c);font-size:10px;color:var(--gold);opacity:.7;min-width:40px">05분</span>
-        <span>✝ Jeongmin Church 신앙고백 (정착)</span>
-      </div>
-      <div style="height:1px;background:var(--border);margin:4px 0"></div>
-      <div style="display:flex;align-items:center;gap:12px;font-size:13px;color:var(--gold);font-weight:700">
-        <span style="font-family:var(--font-c);font-size:10px;min-width:40px">30분</span>
-        <span>✝ 총 예배 시간</span>
-      </div>
+    <audio id="audio0" src="/jeongminchurch/찬송_여자.mp3" preload="metadata"></audio>
+    <div class="step-nav">
+      <button class="btn-next" onclick="nextStep()">다음 — 기도 →</button>
     </div>
   </div>
 
+  <!-- 스텝 1: 기도 -->
+  <div class="step-card" id="step-1">
+    <div class="step-num-badge">02 / 06</div>
+    <span class="step-icon-big">🙏</span>
+    <div class="step-name">기도 <span class="gold">· Prayer</span></div>
+    <div class="step-time-badge">약 2분</div>
+    <p class="step-desc">오늘 하루를 하나님께 드립니다.<br>눈을 감고 마음을 열어 기도를 듣습니다.</p>
+    <div class="audio-wrap">
+      <div class="audio-title">✝ 오늘의 기도</div>
+      <div class="audio-name">대표기도 — 하나님의 인도하심을 구합니다</div>
+      <div class="audio-controls">
+        <button class="audio-btn" id="playBtn1" onclick="toggleTTS(1)">▶</button>
+        <div class="audio-progress-wrap">
+          <div class="audio-progress">
+            <div class="audio-progress-fill" id="progress1"></div>
+          </div>
+          <div class="audio-time">
+            <span id="ttsStatus1">재생 버튼을 누르세요</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="step-nav">
+      <button class="btn-prev" onclick="prevStep()">← 찬양</button>
+      <button class="btn-next" onclick="nextStep()">다음 — 말씀 →</button>
+    </div>
+  </div>
+
+  <!-- 스텝 2: 말씀 -->
+  <div class="step-card" id="step-2">
+    <div class="step-num-badge">03 / 06</div>
+    <span class="step-icon-big">📖</span>
+    <div class="step-name">말씀 <span class="gold">· Word</span></div>
+    <div class="step-time-badge">약 3분</div>
+    <p class="step-desc">하나님의 말씀을 듣습니다.<br>최근 설교를 통해 마음에 말씀을 새깁니다.</p>
+    <div class="audio-wrap">
+      <div class="audio-title">✝ 최근 말씀</div>
+      <div class="audio-name" id="sermonTitle">뿌리 깊은 나무 — 정착의 신앙</div>
+      <div class="audio-controls">
+        <button class="audio-btn" id="playBtn2" onclick="toggleTTS(2)">▶</button>
+        <div class="audio-progress-wrap">
+          <div class="audio-progress">
+            <div class="audio-progress-fill" id="progress2"></div>
+          </div>
+          <div class="audio-time">
+            <span id="ttsStatus2">재생 버튼을 누르세요</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:var(--cream);opacity:.3;margin-top:8px">
+      전체 설교 보기 → <a href="/jeongminchurch/sermons.html" style="color:var(--gold);opacity:.5;text-decoration:none">sermons.html</a>
+    </p>
+    <div class="step-nav">
+      <button class="btn-prev" onclick="prevStep()">← 기도</button>
+      <button class="btn-next" onclick="nextStep()">다음 — 신앙고백 →</button>
+    </div>
+  </div>
+
+  <!-- 스텝 3: 신앙고백 -->
+  <div class="step-card" id="step-3">
+    <div class="step-num-badge">04 / 06</div>
+    <span class="step-icon-big">✝</span>
+    <div class="step-name">신앙고백 <span class="gold">· Confession</span></div>
+    <div class="step-time-badge">약 2분</div>
+    <p class="step-desc">믿음을 고백하고 오늘 하루를 다짐합니다.</p>
+    <div class="creed-card">
+      <div class="creed-label-sm">✝ &nbsp; JEONGMIN CHURCH 신앙고백 &nbsp; ✝</div>
+      <div class="creed-text" id="creedText">
+        나는 <span class="creed-ac">바른 길</span>을 걷는 정민인이다.<br>
+        <span class="creed-ac">빠름</span>보다 깊음을,<br>
+        <span class="creed-ac">소유</span>보다 존재를,<br>
+        <span class="creed-ac">성공</span>보다 성품을 추구한다.<br><br>
+        나는 디지털 세계에서도<br>
+        <span class="creed-ac">하나님의 사람</span>으로 살며,<br>
+        느린 삶 안에서 <span class="creed-ac">영원</span>을 만난다.
+      </div>
+      <div class="creed-amen">— Amen · 아멘 —</div>
+    </div>
+    <div class="tts-controls">
+      <button class="tts-btn" onclick="toggleTTS(3)" id="ttsBtn3">▶ 낭독 듣기</button>
+      <span class="tts-status" id="ttsStatus3"></span>
+    </div>
+    <div class="step-nav">
+      <button class="btn-prev" onclick="prevStep()">← 말씀</button>
+      <button class="btn-next" onclick="nextStep()">다음 — 찬양 →</button>
+    </div>
+  </div>
+
+  <!-- 스텝 4: 찬양 (남자버전) -->
+  <div class="step-card" id="step-4">
+    <div class="step-num-badge">05 / 06</div>
+    <span class="step-icon-big">🎵</span>
+    <div class="step-name">찬양 <span class="gold">· Praise</span></div>
+    <div class="step-time-badge">약 2분</div>
+    <p class="step-desc">신앙고백 후 다시 한 번 찬양으로<br>하나님께 영광을 드립니다.</p>
+    <div class="audio-wrap">
+      <div class="audio-title">✝ JEONGMIN CHURCH 창작 찬송가</div>
+      <div class="audio-name">느리게, 바르게, 함께 — Bass (남자버전)</div>
+      <div class="audio-controls">
+        <button class="audio-btn" id="playBtn4" onclick="toggleAudio(4)">▶</button>
+        <div class="audio-progress-wrap">
+          <div class="audio-progress" onclick="seekAudio(4, event)">
+            <div class="audio-progress-fill" id="progress4"></div>
+          </div>
+          <div class="audio-time">
+            <span id="curTime4">0:00</span>
+            <span id="durTime4">--:--</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <audio id="audio4" src="/jeongminchurch/찬송_남자.mp3" preload="metadata"></audio>
+    <div class="step-nav">
+      <button class="btn-prev" onclick="prevStep()">← 신앙고백</button>
+      <button class="btn-next" onclick="nextStep()">다음 — 축도 →</button>
+    </div>
+  </div>
+
+  <!-- 스텝 5: 축도 -->
+  <div class="step-card" id="step-5">
+    <div class="step-num-badge">06 / 06</div>
+    <span class="step-icon-big">🕊️</span>
+    <div class="step-name">축도 <span class="gold">· Benediction</span></div>
+    <div class="step-time-badge">약 1분</div>
+    <p class="step-desc">하나님의 은혜가 오늘 하루 함께하시기를<br>기도하며 예배를 마칩니다.</p>
+    <div class="benediction-card">
+      <p class="bene-text">
+        "여호와는 너를 지키시는 이시라<br>
+        여호와께서 네 오른쪽에서 네 그늘이 되시나니<br>
+        여호와께서 너를 지켜 모든 환난을 면하게 하시며<br>
+        또 네 영혼을 지키시리로다<br>
+        여호와께서 너의 출입을 지금부터 영원까지 지키시리로다"
+      </p>
+      <div class="bene-ref">— 시편 121:5-8 —</div>
+    </div>
+    <div style="font-family:var(--fc);font-size:13px;letter-spacing:4px;color:var(--gold);opacity:.65;margin:20px 0;text-align:center">
+      SLOWLY · RIGHTEOUSLY · TOGETHER
+    </div>
+    <div class="step-nav">
+      <button class="btn-prev" onclick="prevStep()">← 찬양</button>
+      <button class="btn-finish" onclick="finishWorship()">✝ 예배를 마칩니다</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ 완료 화면 ══ -->
+<div class="complete-screen" id="completeScreen">
+  <div class="complete-cross">🕊️</div>
+  <h2 class="complete-title">
+    오늘도 예배를<br>
+    <span class="hl">드렸습니다.</span>
+  </h2>
+  <p class="complete-sub">10분의 예배가 오늘 하루를 지켜줄 것입니다.<br>하나님이 당신과 함께하십니다.</p>
+  <div class="complete-verse">
+    <p class="cv-text">"너희는 가만히 있어 내가 하나님 됨을 알지어다"</p>
+    <div class="cv-ref">— 시편 46:10 —</div>
+  </div>
+  <div class="complete-btns">
+    <button class="btn-again" onclick="restartWorship()">✝ 다시 예배드리기</button>
+    <a href="/jeongminchurch/index.html" class="btn-home">← 홈으로</a>
+    <a href="/jeongminchurch/sermons.html" class="btn-home">📖 말씀 더 보기</a>
+  </div>
 </div>
 
 <script>
-/* ══ WORSHIP STEPS DATA ══ */
-const STEPS = [
-  { title:'🤫 고요함 — 준비 기도', secs: 3*60 },
-  { title:'🙏 감사 기도',           secs: 5*60 },
-  { title:'📖 말씀 묵상',           secs:10*60 },
-  { title:'✍️ 응답 기도',           secs: 7*60 },
-  { title:'✝ Jeongmin Church 신앙고백',      secs: 5*60 },
-];
-const TOTAL = STEPS.reduce((s,x) => s+x.secs, 0); // 1800
+/* ── 파티클 ── */
+(function(){
+  var c=document.getElementById("heroPts");if(!c)return;
+  for(var i=0;i<18;i++){var d=document.createElement("div");d.className="pt";d.style.cssText="left:"+Math.random()*100+"%;animation-delay:"+(Math.random()*18)+"s;animation-duration:"+(14+Math.random()*14)+"s";c.appendChild(d);}
+})();
 
-let timer = null;
-let currentStep = 0;
-let stepElapsed = 0;
-let totalElapsed = 0;
-let running = false;
+/* ── 타이머 ── */
+var totalSec = 600;
+var timerInterval = null;
+var worshipStarted = false;
 
-/* ── Render dots ── */
-const dotWrap = document.getElementById('stepIndicator');
-STEPS.forEach((_,i) => {
-  const d = document.createElement('div');
-  d.className = 'step-dot'; d.id = 'dot-'+i;
-  dotWrap.appendChild(d);
-});
-
-/* ── Timer logic ── */
-function startTimer() {
-  if (running) return;
-  running = true;
-  document.getElementById('startBtn').style.display = 'none';
-  document.getElementById('pauseBtn').style.display = 'inline-block';
-  updateStepUI();
-  timer = setInterval(tick, 1000);
+function updateTimerDisplay(sec){
+  var m = Math.floor(sec/60);
+  var s = sec % 60;
+  document.getElementById("timerMin").textContent = String(m).padStart(2,"0");
+  document.getElementById("timerSec").textContent = String(s).padStart(2,"0");
 }
 
-function pauseTimer() {
-  clearInterval(timer);
-  running = false;
-  document.getElementById('startBtn').style.display = 'inline-block';
-  document.getElementById('startBtn').textContent = '▶ 계속';
-  document.getElementById('pauseBtn').style.display = 'none';
+/* ── 예배 상태 ── */
+var currentStep = 0;
+var totalSteps = 6;
+var timerRunning = false;
+var elapsed = 0;
+
+/* ── TTS ── */
+var synth = window.speechSynthesis;
+var currentUtterance = null;
+var ttsPlaying = {};
+
+var PRAYER_TEXT = "하늘에 계신 하나님 아버지, 오늘도 이 자리에 나아올 수 있음에 감사드립니다. 바쁜 일상 속에서도 하나님을 향해 마음을 열 수 있도록 인도해 주셨음에 감사합니다. 오늘 하루 우리의 발걸음을 바른 길로 인도해 주시고, 스마트폰 화면 너머에서도 하나님의 존재를 느낄 수 있게 해주세요. 빠른 세상 속에서 느리게, 바르게, 함께 걸어가게 하시고, 디지털 세대에게 하나님의 말씀이 빛이 되게 하여 주옵소서. 오늘 이 예배를 통해 마음에 평안을 주시고, 하루를 주님 안에서 시작하게 해주세요. 예수님 이름으로 기도드립니다. 아멘.";
+
+var SERMON_TEXT = "뿌리 깊은 나무. 정착의 신앙. 우리는 지금 뿌리 내리기 어려운 시대를 살고 있습니다. 직장이 바뀌고, 거주지가 바뀌고, 관계가 바뀝니다. 트렌드는 매주 바뀌고, 유행은 한 달을 넘기지 못합니다. 이런 시대에 시편 기자는 말합니다. 그는 시냇가에 심은 나무가 철을 따라 열매를 맺으며 그 잎사귀가 마르지 아니함 같으니. 뿌리가 물에 닿아 있는 나무는 세상이 아무리 변해도 흔들리지 않습니다. 우리의 뿌리가 어디에 닿아 있느냐가 중요합니다. 말씀에 뿌리를 내리십시오. 어디에 있든, 그곳이 성전입니다. 장소가 아닌 말씀에 뿌리를 내리는 것, 이것이 정민교가 말하는 정착의 신앙입니다. 아멘.";
+
+var CREED_TEXT = "나는 바른 길을 걷는 정민인이다. 빠름보다 깊음을, 소유보다 존재를, 성공보다 성품을 추구한다. 나는 디지털 세계에서도 하나님의 사람으로 살며, 느린 삶 안에서 영원을 만난다. 아멘.";
+
+function getBestVoice(){
+  var voices = synth.getVoices();
+  return voices.find(function(v){ return v.lang==="ko-KR" && v.name.includes("Google"); })
+    || voices.find(function(v){ return v.lang==="ko-KR"; })
+    || voices[0] || null;
 }
 
-function resetTimer() {
-  clearInterval(timer);
-  running = false;
-  currentStep = 0; stepElapsed = 0; totalElapsed = 0;
-  document.getElementById('timerDisplay').textContent = '30:00';
-  document.getElementById('timerStep').textContent = '예배를 시작해 주세요';
-  document.getElementById('timerStepDesc').textContent = '아래 순서를 따라 천천히 진행하세요';
-  document.getElementById('timerFill').style.width = '0%';
-  document.getElementById('startBtn').style.display = 'inline-block';
-  document.getElementById('startBtn').textContent = '▶ 시작';
-  document.getElementById('pauseBtn').style.display = 'none';
-  // Reset cards
-  document.querySelectorAll('.step-card').forEach(c => {
-    c.classList.remove('current','done-card');
-  });
-  STEPS.forEach((_,i) => {
-    const d = document.getElementById('dot-'+i);
-    d.className = 'step-dot';
-  });
-}
+function toggleTTS(stepIdx){
+  var texts = {1: PRAYER_TEXT, 2: SERMON_TEXT, 3: CREED_TEXT};
+  var text = texts[stepIdx];
+  if(!text) return;
 
-function resetAll() {
-  document.getElementById('completeOverlay').classList.remove('show');
-  resetTimer();
-}
+  var btnId = stepIdx === 3 ? "ttsBtn3" : "playBtn" + stepIdx;
+  var btn = document.getElementById(btnId);
+  var statusId = stepIdx === 3 ? "ttsStatus3" : "ttsStatus" + stepIdx;
+  var status = document.getElementById(statusId);
 
-function tick() {
-  stepElapsed++;
-  totalElapsed++;
-
-  // Step complete
-  if (stepElapsed >= STEPS[currentStep].secs) {
-    stepElapsed = 0;
-    currentStep++;
-    if (currentStep >= STEPS.length) {
-      // 예배 완료
-      clearInterval(timer);
-      running = false;
-      document.getElementById('timerDisplay').textContent = '00:00';
-      document.getElementById('timerFill').style.width = '100%';
-      setTimeout(() => {
-        document.getElementById('completeOverlay').classList.add('show');
-      }, 800);
-      return;
-    }
-    updateStepUI();
-    // Auto scroll to current step
-    const el = document.getElementById('step-'+currentStep);
-    if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+  if(synth.speaking && ttsPlaying[stepIdx]){
+    synth.cancel();
+    ttsPlaying[stepIdx] = false;
+    if(btn) btn.innerHTML = stepIdx===3 ? "▶ 낭독 듣기" : "▶";
+    if(status) status.textContent = "정지됨";
+    return;
   }
 
-  updateTimerDisplay();
-  updateProgress();
-  updateDots();
+  synth.cancel();
+  Object.keys(ttsPlaying).forEach(function(k){ ttsPlaying[k]=false; });
+
+  var u = new SpeechSynthesisUtterance(text);
+  var v = getBestVoice();
+  if(v) u.voice = v;
+  u.lang = "ko-KR";
+  u.rate = 0.85;
+  u.pitch = 1.0;
+  u.volume = 0.95;
+
+  ttsPlaying[stepIdx] = true;
+  if(btn) btn.innerHTML = stepIdx===3 ? "⏹ 정지" : "⏹";
+  if(status) status.textContent = "낭독 중...";
+
+  // 진행 바 (간단 타이머)
+  var progId = "progress" + stepIdx;
+  var prog = document.getElementById(progId);
+  var est = text.length * 0.08; // 대략 추정
+  var startTime = Date.now();
+  var progInterval = setInterval(function(){
+    if(!ttsPlaying[stepIdx]){ clearInterval(progInterval); return; }
+    var pct = Math.min(100, (Date.now()-startTime)/1000/est*100);
+    if(prog) prog.style.width = pct + "%";
+  }, 100);
+
+  u.onend = function(){
+    ttsPlaying[stepIdx] = false;
+    if(btn) btn.innerHTML = stepIdx===3 ? "▶ 낭독 듣기" : "▶";
+    if(status) status.textContent = "낭독 완료 ✝";
+    if(prog) prog.style.width = "100%";
+    clearInterval(progInterval);
+  };
+  u.onerror = function(){
+    ttsPlaying[stepIdx] = false;
+    if(btn) btn.innerHTML = stepIdx===3 ? "▶ 낭독 듣기" : "▶";
+  };
+
+  currentUtterance = u;
+  synth.speak(u);
 }
 
-function updateStepUI() {
-  document.querySelectorAll('.step-card').forEach((c,i) => {
-    c.classList.remove('current','done-card');
-    if (i < currentStep) c.classList.add('done-card');
-    if (i === currentStep) c.classList.add('current');
+/* ── 오디오 플레이어 ── */
+var audioPlaying = {};
+
+function toggleAudio(idx){
+  var audio = document.getElementById("audio" + idx);
+  var btn = document.getElementById("playBtn" + idx);
+  if(!audio) return;
+
+  if(audio.paused){
+    // 다른 오디오 정지
+    [0, 4].forEach(function(i){
+      if(i !== idx){
+        var a = document.getElementById("audio" + i);
+        if(a && !a.paused){ a.pause(); document.getElementById("playBtn"+i).textContent="▶"; audioPlaying[i]=false; }
+      }
+    });
+    audio.play().catch(function(){});
+    btn.textContent = "⏹";
+    audioPlaying[idx] = true;
+  } else {
+    audio.pause();
+    btn.textContent = "▶";
+    audioPlaying[idx] = false;
+  }
+}
+
+function seekAudio(idx, e){
+  var audio = document.getElementById("audio" + idx);
+  var bar = e.currentTarget;
+  if(!audio || !audio.duration) return;
+  var rect = bar.getBoundingClientRect();
+  var pct = (e.clientX - rect.left) / rect.width;
+  audio.currentTime = pct * audio.duration;
+}
+
+function formatTime(sec){
+  var m = Math.floor(sec/60);
+  var s = Math.floor(sec%60);
+  return m + ":" + String(s).padStart(2,"0");
+}
+
+[0, 4].forEach(function(idx){
+  var audio = document.getElementById("audio" + idx);
+  if(!audio) return;
+  audio.addEventListener("timeupdate", function(){
+    var prog = document.getElementById("progress" + idx);
+    var cur = document.getElementById("curTime" + idx);
+    if(prog && audio.duration) prog.style.width = (audio.currentTime/audio.duration*100) + "%";
+    if(cur) cur.textContent = formatTime(audio.currentTime);
   });
-  const s = STEPS[currentStep];
-  document.getElementById('timerStep').textContent = s.title;
-}
-
-function updateTimerDisplay() {
-  const remaining = STEPS[currentStep].secs - stepElapsed;
-  const m = Math.floor(remaining / 60);
-  const s = remaining % 60;
-  document.getElementById('timerDisplay').textContent =
-    String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-
-  const totalRemaining = TOTAL - totalElapsed;
-  const tm = Math.floor(totalRemaining/60);
-  const ts = totalRemaining%60;
-  document.getElementById('timerStepDesc').textContent =
-    `전체 남은 시간: ${String(tm).padStart(2,'0')}:${String(ts).padStart(2,'0')}`;
-}
-
-function updateProgress() {
-  const pct = (totalElapsed / TOTAL) * 100;
-  document.getElementById('timerFill').style.width = pct + '%';
-}
-
-function updateDots() {
-  STEPS.forEach((_,i) => {
-    const d = document.getElementById('dot-'+i);
-    d.className = 'step-dot';
-    if (i < currentStep) d.classList.add('done');
-    if (i === currentStep) d.classList.add('active');
+  audio.addEventListener("loadedmetadata", function(){
+    var dur = document.getElementById("durTime" + idx);
+    if(dur) dur.textContent = formatTime(audio.duration);
   });
+  audio.addEventListener("ended", function(){
+    document.getElementById("playBtn" + idx).textContent = "▶";
+    audioPlaying[idx] = false;
+  });
+});
+
+/* ── 예배 흐름 제어 ── */
+function startWorship(){
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("worshipScreen").classList.add("active");
+  document.getElementById("progressBar").style.display = "block";
+  worshipStarted = true;
+  showStep(0);
+  startMainTimer();
 }
 
-/* ── Step toggle ── */
-function toggleStep(idx) {
-  const card = document.getElementById('step-'+idx);
-  card.classList.toggle('open');
+function showStep(idx){
+  // 이전 TTS 정지
+  synth.cancel();
+  Object.keys(ttsPlaying).forEach(function(k){ ttsPlaying[k]=false; });
+  // 오디오 정지
+  [0, 4].forEach(function(i){
+    var a = document.getElementById("audio" + i);
+    if(a && !a.paused){ a.pause(); var b=document.getElementById("playBtn"+i); if(b) b.textContent="▶"; }
+  });
+
+  currentStep = idx;
+
+  // 스텝 카드 전환
+  for(var i=0; i<totalSteps; i++){
+    var card = document.getElementById("step-"+i);
+    if(card) card.classList.toggle("active", i===idx);
+  }
+
+  // 단계 표시 업데이트
+  document.querySelectorAll(".si-item").forEach(function(el){
+    var s = parseInt(el.getAttribute("data-step"));
+    el.classList.toggle("active", s===idx);
+    el.classList.toggle("done", s<idx);
+  });
+
+  // 진행률 업데이트
+  var pct = (idx / totalSteps) * 100;
+  document.getElementById("progressFill").style.width = pct + "%";
+
+  // 스크롤 상단
+  window.scrollTo({top:0, behavior:"smooth"});
 }
+
+function nextStep(){
+  if(currentStep < totalSteps - 1) showStep(currentStep + 1);
+}
+
+function prevStep(){
+  if(currentStep > 0) showStep(currentStep - 1);
+}
+
+function finishWorship(){
+  synth.cancel();
+  [0,4].forEach(function(i){ var a=document.getElementById("audio"+i); if(a)a.pause(); });
+  document.getElementById("worshipScreen").classList.remove("active");
+  document.getElementById("progressBar").style.display = "none";
+  var cs = document.getElementById("completeScreen");
+  cs.classList.add("active");
+  cs.style.display = "flex";
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function restartWorship(){
+  document.getElementById("completeScreen").classList.remove("active");
+  document.getElementById("completeScreen").style.display = "none";
+  document.getElementById("startScreen").style.display = "flex";
+  elapsed = 0;
+  updateTimerDisplay(totalSec);
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+/* ── 메인 타이머 ── */
+function startMainTimer(){
+  clearInterval(timerInterval);
+  elapsed = 0;
+  timerInterval = setInterval(function(){
+    elapsed++;
+    var remaining = Math.max(0, totalSec - elapsed);
+    updateTimerDisplay(remaining);
+    if(remaining <= 0){ clearInterval(timerInterval); }
+  }, 1000);
+}
+
+// 초기 타이머 표시
+updateTimerDisplay(totalSec);
 </script>
 </body>
 </html>
