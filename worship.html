@@ -144,6 +144,8 @@
 
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,.4)}50%{box-shadow:0 0 0 8px rgba(201,168,76,0)}}
+@keyframes donateGlow{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(201,168,76,.5);transform:scale(1)}50%{opacity:.75;box-shadow:0 0 12px 4px rgba(201,168,76,.35);transform:scale(1.04)}}
+.donate-blink{animation:donateGlow 1.4s ease-in-out infinite!important}
 </style>
 </head>
 <body>
@@ -247,7 +249,7 @@
         </div>
       </div>
     </div>
-    <audio id="audio0" src="/jeongminchurch/찬송_여자.mp3" preload="metadata"></audio>
+    <audio id="audio0" src="찬송_여자.mp3" preload="auto"></audio>
     <div class="step-nav">
       <button class="btn-next" onclick="nextStep()">다음 — 기도 →</button>
     </div>
@@ -365,7 +367,7 @@
         </div>
       </div>
     </div>
-    <audio id="audio4" src="/jeongminchurch/찬송_남자.mp3" preload="metadata"></audio>
+    <audio id="audio4" src="찬송_남자.mp3" preload="auto"></audio>
     <div class="step-nav">
       <button class="btn-prev" onclick="prevStep()">← 신앙고백</button>
       <button class="btn-next" onclick="nextStep()">다음 — 축도 →</button>
@@ -429,7 +431,7 @@
   </div>
   <div class="complete-btns">
     <button class="btn-again" onclick="restartWorship()">✝ 다시 예배드리기</button>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfcBwzyAmeG9F26h7-H9HvhMSdNrz1tfODdMasjcVSdQMa2oQ/viewform" class="btn-home" target="_blank" style="color:var(--gold-l);border-color:rgba(201,168,76,.5)">💛 헌금하기</a>
+    <button class="btn-home donate-blink" onclick="showDonateModal()" style="color:var(--gold-l);border-color:rgba(201,168,76,.5);cursor:pointer;font-weight:700">💛 헌금하기</button>
     <a href="/jeongminchurch/index.html" class="btn-home">← 홈으로</a>
     <a href="/jeongminchurch/sermons.html" class="btn-home">📖 말씀 더 보기</a>
   </div>
@@ -584,6 +586,12 @@ function formatTime(sec){
 [0, 4].forEach(function(idx){
   var audio = document.getElementById("audio" + idx);
   if(!audio) return;
+  // 오류 감지
+  audio.addEventListener("error", function(e){
+    console.error("오디오 로드 오류 (idx="+idx+"):", e.target.error ? e.target.error.message : e);
+    var btn = document.getElementById("playBtn"+idx);
+    if(btn){ btn.textContent = "⚠️"; btn.title = "파일을 불러올 수 없습니다"; }
+  });
   audio.addEventListener("timeupdate", function(){
     var prog = document.getElementById("progress" + idx);
     var cur = document.getElementById("curTime" + idx);
@@ -671,21 +679,40 @@ function showStep(idx){
 function autoPlayAudio(idx, onEnded){
   var audio = document.getElementById("audio" + idx);
   var btn = document.getElementById("playBtn" + idx);
-  if(!audio) { if(onEnded) onEnded(); return; }
-  audio.currentTime = 0;
-  audio.play().then(function(){
-    if(btn) btn.textContent = "⏹";
-    audioPlaying[idx] = true;
-    audio.onended = function(){
-      if(btn) btn.textContent = "▶";
-      audioPlaying[idx] = false;
-      if(onEnded) onEnded();
-    };
-  }).catch(function(e){
-    console.log("autoplay blocked:", e);
-    // 자동재생 차단 시 버튼 표시 (사용자가 직접 누를 수 있음)
-    if(btn) btn.style.animation = "pulse 1s ease-in-out infinite";
-  });
+  if(!audio){ if(onEnded) onEnded(); return; }
+
+  // 로드 완료 후 재생 시도
+  function tryPlay(){
+    audio.currentTime = 0;
+    var p = audio.play();
+    if(p !== undefined){
+      p.then(function(){
+        if(btn){ btn.textContent = "⏹"; btn.style.animation = ""; }
+        audioPlaying[idx] = true;
+        audio.onended = function(){
+          if(btn) btn.textContent = "▶";
+          audioPlaying[idx] = false;
+          if(onEnded) onEnded();
+        };
+      }).catch(function(e){
+        console.log("autoplay blocked:", e);
+        // 버튼 깜빡임으로 안내
+        if(btn) btn.style.animation = "pulse 0.8s ease-in-out infinite";
+        // 수동 클릭 대기 후 자동 다음 단계 진행 (30초 후)
+        setTimeout(function(){ if(!audioPlaying[idx] && onEnded) onEnded(); }, 30000);
+      });
+    }
+  }
+
+  if(audio.readyState >= 2){
+    tryPlay();
+  } else {
+    audio.addEventListener("canplay", function handler(){
+      audio.removeEventListener("canplay", handler);
+      tryPlay();
+    });
+    audio.load();
+  }
 }
 
 /* ── 자동 TTS 재생 ── */
@@ -787,6 +814,59 @@ function startMainTimer(){
 
 // 초기 타이머 표시
 updateTimerDisplay(totalSec);
+
+/* ── 헌금 모달 ── */
+function showDonateModal(){
+  var m = document.getElementById("donateModal");
+  m.style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+function closeDonateModal(){
+  var m = document.getElementById("donateModal");
+  m.style.display = "none";
+  document.body.style.overflow = "";
+}
+// 모달 바깥 클릭 시 닫기
+window.addEventListener("DOMContentLoaded", function(){
+  var m = document.getElementById("donateModal");
+  if(m) m.addEventListener("click", function(e){
+    if(e.target === m) closeDonateModal();
+  });
+});
 </script>
+
+<!-- ══ 헌금 모달 ══ -->
+<div id="donateModal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(6,13,22,.92);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px">
+  <div style="background:var(--navy2);border:1px solid var(--border);border-radius:12px;max-width:560px;width:100%;position:relative;overflow:hidden;animation:fadeUp .4s var(--ease) both">
+    <!-- 상단 골드라인 -->
+    <div style="height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
+    <div style="padding:40px 36px 36px;text-align:center">
+      <!-- 닫기 버튼 -->
+      <button onclick="closeDonateModal()" style="position:absolute;top:16px;right:20px;background:none;border:none;color:var(--cream);opacity:.35;font-size:18px;cursor:pointer;transition:opacity .3s" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='.35'">✕</button>
+
+      <!-- 아이콘 -->
+      <div style="font-size:40px;margin-bottom:14px">💛</div>
+
+      <!-- 타이틀 -->
+      <div style="font-family:var(--fc);font-size:8px;letter-spacing:5px;color:var(--gold);opacity:.6;margin-bottom:14px">SUPPORT · 후원</div>
+      <h2 style="font-family:var(--fs);font-size:clamp(22px,4vw,32px);font-weight:900;color:var(--cream);line-height:1.35;margin-bottom:12px">함께 세상을 밝혀주세요</h2>
+      <p style="font-size:13px;font-weight:300;color:var(--cream);opacity:.5;line-height:2;margin-bottom:28px">여러분의 후원이 디지털 신앙 공동체를 이어갑니다.</p>
+
+      <!-- 후원 카드 -->
+      <div style="background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:8px;padding:28px 24px;position:relative;overflow:hidden;margin-bottom:20px">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)"></div>
+        <div style="font-family:var(--fc);font-size:8px;letter-spacing:4px;color:var(--gold);opacity:.6;margin-bottom:12px">후원 신청</div>
+        <p style="font-size:13px;font-weight:300;color:var(--cream);opacity:.5;line-height:2;margin-bottom:22px">아래 버튼을 클릭해 후원 신청서를 작성해 주세요.<br>신청 후 안내드린 계좌로 입금해 주시면 됩니다.</p>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfcBwzyAmeG9F26h7-H9HvhMSdNrz1tfODdMasjcVSdQMa2oQ/viewform" target="_blank" onclick="closeDonateModal()" style="display:inline-flex;align-items:center;gap:10px;font-family:var(--fc);font-size:10px;letter-spacing:3px;padding:15px 40px;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;border-radius:3px;cursor:pointer;font-weight:700;text-decoration:none;transition:all .3s;box-shadow:0 6px 24px rgba(201,168,76,.2)">
+          <span>✝</span><span>후원 신청하기</span>
+        </a>
+        <div style="font-family:var(--fc);font-size:7.5px;letter-spacing:2px;color:var(--gold);opacity:.35;margin-top:14px">모든 후원은 자율적이며 강요되지 않습니다 · All support is voluntary</div>
+      </div>
+
+      <!-- 닫기 -->
+      <button onclick="closeDonateModal()" style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:var(--cream);opacity:.35;background:none;border:none;cursor:pointer;transition:opacity .3s" onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='.35'">닫기</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
