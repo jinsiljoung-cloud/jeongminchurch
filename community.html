@@ -64,7 +64,7 @@ input,textarea{font-family:inherit}
 .page-sub{font-size:14px;font-weight:300;color:var(--cream);opacity:.5;line-height:2}
 
 /* ── TABS ── */
-.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 32px;overflow-x:auto;scrollbar-width:none}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);padding:0 32px;overflow-x:auto;scrollbar-width:none;position:sticky;top:64px;z-index:100;background:var(--navy);}
 .tabs::-webkit-scrollbar{display:none}
 .tab-btn{font-family:var(--font-c);font-size:10px;letter-spacing:3px;color:var(--cream);opacity:.45;padding:18px 24px;text-transform:uppercase;border-bottom:2px solid transparent;white-space:nowrap;transition:all .3s;background:none}
 .tab-btn:hover{opacity:.8}
@@ -459,8 +459,6 @@ function switchTab(tab, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderAll();
-  // 탭 위치로 부드럽게 스크롤
-  document.querySelector('.tabs').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 /* ══════════════════════
@@ -643,6 +641,7 @@ function closeLetterModal(e){ if(e.target===document.getElementById('letterOverl
 // Init
 document.addEventListener('keydown', e => { if(e.key==='Escape') { closeLogin(); closeLetterFull(); } });
 updateUI();
+renderAll();
 </script>
 </body>
 </html>
