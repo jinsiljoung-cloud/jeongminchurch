@@ -196,6 +196,11 @@ footer{background:#060d16;padding:64px 40px 36px;border-top:1px solid var(--bord
 .ft-bottom{border-top:1px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
 .ft-copy{font-family:var(--fc);font-size:7.5px;letter-spacing:2px;color:var(--cream);opacity:.2}
 .ft-disc{font-size:9px;color:var(--cream);opacity:.16;text-align:right;line-height:1.8}
+.ft-counter{display:flex;align-items:center;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(201,168,76,.06);justify-content:center}
+.ft-counter-dot{width:5px;height:5px;border-radius:50%;background:var(--sage);opacity:.4;animation:counterPulse 2.5s ease-in-out infinite}
+@keyframes counterPulse{0%,100%{opacity:.3}50%{opacity:.7}}
+.ft-counter-text{font-family:var(--fc);font-size:7px;letter-spacing:2.5px;color:var(--cream);opacity:.22}
+.ft-counter-num{font-family:var(--fc);font-size:8px;letter-spacing:1px;color:var(--sage);opacity:.55;font-weight:600}
 
 /* 공통 */
 @keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
@@ -451,6 +456,18 @@ footer{background:#060d16;padding:64px 40px 36px;border-top:1px solid var(--bord
     <div class="ft-bottom">
       <span class="ft-copy">© 2026 JEONGMIN CHURCH · ALL RIGHTS RESERVED</span>
       <span class="ft-disc">비교단 독립 사역 · 모든 후원은 자율적입니다<br>Independent Christian Ministry · Non-Denominational</span>
+      <!-- 방문자 카운터 -->
+      <div class="ft-counter">
+        <div class="ft-counter-dot"></div>
+        <span class="ft-counter-text">TODAY</span>
+        <span class="ft-counter-num" id="cntToday">—</span>
+        <span class="ft-counter-text" style="opacity:.15">·</span>
+        <span class="ft-counter-text">TOTAL</span>
+        <span class="ft-counter-num" id="cntTotal">—</span>
+        <span class="ft-counter-text" style="opacity:.15">·</span>
+        <span class="ft-counter-text">VISITORS</span>
+        <div class="ft-counter-dot" style="animation-delay:.8s"></div>
+      </div>
     </div>
   </div>
 </footer>
@@ -576,6 +593,23 @@ function applyLang(lang){
   Object.keys(t).forEach(function(k){if(k==="langBtn"||k==="navCta"||k==="creedLines")return;ST(k,t[k]);});
 }
 if(currentLang==="en")applyLang("en");
+
+/* visitor counter */
+(function(){
+  var today=new Date().toISOString().slice(0,10);
+  var total=parseInt(localStorage.getItem("jm_vt")||"0");
+  var tc=parseInt(localStorage.getItem("jm_vd")||"0");
+  var ld=localStorage.getItem("jm_vdate")||"";
+  if(ld!==today){tc=0;localStorage.setItem("jm_vdate",today);}
+  total++;tc++;
+  localStorage.setItem("jm_vt",total);
+  localStorage.setItem("jm_vd",tc);
+  function fmt(n){var s=String(n),r="";for(var i=0;i<s.length;i++){if(i&&(s.length-i)%3===0)r+=",";r+=s[i];}return r;}
+  var eT=document.getElementById("cntToday");
+  var eA=document.getElementById("cntTotal");
+  if(eT)eT.textContent=fmt(tc);
+  if(eA)eA.textContent=fmt(total);
+})();
 </script>
 </body>
 </html>
