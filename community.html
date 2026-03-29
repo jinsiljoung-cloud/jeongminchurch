@@ -644,21 +644,36 @@ document.addEventListener('keydown', e => { if(e.key==='Escape') { closeLogin();
 // 탭 클릭 이벤트 - 안정적인 이벤트리스너 방식
 document.addEventListener('DOMContentLoaded', function() {
   var tabBtns = document.querySelectorAll('.tab-btn');
+
+  function activateTab(tab) {
+    ['meditation','writing','letter'].forEach(function(t) {
+      var el = document.getElementById('tab-'+t);
+      if (el) el.style.display = t === tab ? 'block' : 'none';
+    });
+    tabBtns.forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-tab') === tab);
+    });
+    renderAll();
+  }
+
   tabBtns.forEach(function(btn) {
     btn.addEventListener('click', function() {
       var tab = this.getAttribute('data-tab');
-      if (!tab) return;
-      // 탭 콘텐츠 전환
-      ['meditation','writing','letter'].forEach(function(t) {
-        var el = document.getElementById('tab-'+t);
-        if (el) el.style.display = t === tab ? 'block' : 'none';
-      });
-      // 활성 버튼 표시
-      tabBtns.forEach(function(b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      renderAll();
+      if (tab) activateTab(tab);
     });
   });
+
+  // 홈페이지에서 넘어올 때 해당 탭 자동 열기
+  var savedTab = localStorage.getItem('jm_tab');
+  if (savedTab && ['meditation','writing','letter'].indexOf(savedTab) !== -1) {
+    activateTab(savedTab);
+    localStorage.removeItem('jm_tab'); // 한 번 쓰고 삭제
+    // 탭 위치로 스크롤
+    setTimeout(function() {
+      var tabsEl = document.getElementById('tabsContainer');
+      if (tabsEl) tabsEl.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 300);
+  }
 });
 
 updateUI();
