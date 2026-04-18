@@ -11,10 +11,7 @@ from pathlib import Path
 def install(pkg):
     subprocess.check_call([sys.executable, "-m", "pip", "install", pkg, "-q"])
 
-try:
-    import google.generativeai as genai
-except ImportError:
-    install("google-generativeai"); import google.generativeai as genai
+import urllib.request
 
 try:
     from google.cloud import texttospeech
@@ -103,9 +100,6 @@ def generate_sermon_content(info):
     if not api_key:
         print("❌ GEMINI_API_KEY 환경변수 없음"); sys.exit(1)
 
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-1.5-flash")
-
     prompt = f"""당신은 {CHURCH['name_ko']} ({CHURCH['name_en']}) 설교 작성 전문가입니다.
 
 교회 정보:
@@ -170,8 +164,18 @@ def generate_sermon_content(info):
 6. 한국어로만 작성
 7. JSON만 반환"""
 
-    response = model.generate_content(prompt)
-    raw = response.text.strip()
+    # 패키지 없이 REST API 직접 호출
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    body = json.dumps({
+        "contents": [{"parts": [{"text": prompt}]}],
+        "generationConfig": {"temperature": 0.8, "maxOutputTokens": 4096}
+    }).encode("utf-8")
+
+    req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        result = json.loads(resp.read().decode("utf-8"))
+
+    raw = result["candidates"][0]["content"]["parts"][0]["text"].strip()
     raw = re.sub(r'^```json\s*', '', raw)
     raw = re.sub(r'^```\s*', '', raw)
     raw = re.sub(r'\s*```$', '', raw)
