@@ -36,7 +36,7 @@ jobs:
       # 3) 의존성 설치
       - name: 패키지 설치
         run: |
-          pip install anthropic google-cloud-texttospeech --quiet
+          pip install google-genai google-cloud-texttospeech --quiet
 
       # 4) Google 키 파일 복원
       - name: Google TTS 키 파일 생성
