@@ -331,7 +331,58 @@ input{font-family:inherit}
   <audio id="audio-f" preload="auto"><source src="느리게__바르게__함께_여성보컬_.mp3" type="audio/mpeg"></audio>
   <audio id="audio-m" preload="auto"><source src="빠른_세상_내려놓고__남자보컬_.mp3" type="audio/mpeg"></audio>
   <audio id="audio-m2" preload="auto"><source src="알림을_끄고_합창버전.mp3" type="audio/mpeg"></audio>
+  <!-- 내려놓으라 — 창작 찬송가 제6장 -->
+  <div class="audio-card" id="card-n">
+    <div style="font-family:var(--font-c);font-size:8px;letter-spacing:3px;color:var(--gold);opacity:.5;margin-bottom:14px;text-transform:uppercase">✝ 바른믿음교회 창작 찬송가 제6장</div>
+    <div class="audio-header">
+      <span style="font-size:30px">🙏</span>
+      <div style="flex:1">
+        <div style="font-family:var(--font-s);font-size:15px;font-weight:700;margin-bottom:3px">내려놓으라</div>
+        <div style="font-family:var(--font-c);font-size:9px;letter-spacing:2px;color:var(--gold);opacity:.55;text-transform:uppercase">바른믿음교회 창작 찬송가 · 세상 욕심을 내려놓으라</div>
+      </div>
+      <button class="audio-play-btn" id="btn-n" onclick="toggleAudio('n')">▶</button>
+    </div>
+    <div>
+      <div class="audio-progress-bar" id="pb-n" onclick="seekAudio('n',event)"><div class="audio-progress-fill" id="pf-n"></div></div>
+      <div class="audio-time-row">
+        <span class="audio-time" id="tc-n">0:00</span>
+        <div style="display:flex;align-items:center">
+          <span style="font-size:12px;opacity:.4">🔈</span>
+          <input type="range" class="audio-vol" min="0" max="1" step="0.05" value="0.85" oninput="setVol('n',this.value)">
+          <span class="audio-time" id="td-n">--:--</span>
+        </div>
+      </div>
+    </div>
+    <button class="lyrics-btn" id="lbtn-n" onclick="toggleLyrics('n')">♪ 가사 보기</button>
+    <div class="lyrics-wrap" id="lw-n">
+      <div class="lyrics-text">더 갖고 싶어 달려온 세월
+더 높이 오르려 버텨온 날들
+손에 꼭 쥐고 놓지 못했던
+그것이 전부인 줄만 알았네
+
+새벽에 눈 떠도 불안한 마음
+잠들기 전에도 채워지지 않아
+가득 채웠는데 여전히 공허해
+내가 붙든 것이 나를 붙들었네
+
+<span class="lyrics-chorus">✝ 후렴 ✝
+내려놓으라 내려놓으라
+움켜쥔 그 손을 펴라
+세상의 것들은 안개처럼 사라져도
+주님은 영원히 남으시네
+
+내려놓으라 내려놓으라
+무거운 짐 주님께 드려라
+다 내려놓을 때 비로소 채워지는
+하나님의 평안이 임하리라
+
+바른믿음교회 주 안에 쉬어가라
+느리게 바르게 함께 걸어가라</span></div>
+    </div>
+  </div>
+
   <audio id="audio-d" preload="auto"><source src="돌아오라.mp3" type="audio/mpeg"></audio>
+  <audio id="audio-n" preload="auto"><source src="내려_놓으라_.mp3" type="audio/mpeg"></audio>
 </div>
 
 <!-- 🌿 자연 묵상 탭 -->
@@ -416,8 +467,8 @@ function switchTab(t,btn){
 }
 
 /* ✝ 오디오 플레이어 */
-const AF=document.getElementById('audio-f'), AM=document.getElementById('audio-m'), AM2=document.getElementById('audio-m2'), AD=document.getElementById('audio-d');
-const audios={f:AF,m:AM,m2:AM2,d:AD};
+const AF=document.getElementById('audio-f'), AM=document.getElementById('audio-m'), AM2=document.getElementById('audio-m2'), AD=document.getElementById('audio-d'), AN=document.getElementById('audio-n');
+const audios={f:AF,m:AM,m2:AM2,d:AD,n:AN};
 
 AF.addEventListener('loadedmetadata',()=>{ document.getElementById('td-f').textContent=fmt(AF.duration); });
 AM.addEventListener('loadedmetadata',()=>{ document.getElementById('td-m').textContent=fmt(AM.duration); });
@@ -430,6 +481,9 @@ AM2.addEventListener('ended',()=>stopUI('m2'));
 AD.addEventListener('loadedmetadata',()=>{ document.getElementById('td-d').textContent=fmt(AD.duration); });
 AD.addEventListener('timeupdate',()=>updProg('d'));
 AD.addEventListener('ended',()=>stopUI('d'));
+AN.addEventListener('loadedmetadata',()=>{ document.getElementById('td-n').textContent=fmt(AN.duration); });
+AN.addEventListener('timeupdate',()=>updProg('n'));
+AN.addEventListener('ended',()=>stopUI('n'));
 
 /* 페이지 로드 시 여자 버전 자동 재생 */
 // 자동재생 제거 - 사용자 클릭 후 재생
@@ -439,6 +493,7 @@ window.addEventListener('load',()=>{
   audios.m.load();
   audios.m2.load();
   audios.d.load();
+  audios.n.load();
 });
 
 function toggleAudio(k){
