@@ -103,7 +103,8 @@ def generate_sermon_content(info):
     if not api_key:
         print("❌ GEMINI_API_KEY 환경변수 없음"); sys.exit(1)
 
-    client = genai.Client(api_key=api_key)
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel("gemini-1.5-flash")
 
     prompt = f"""당신은 {CHURCH['name_ko']} ({CHURCH['name_en']}) 설교 작성 전문가입니다.
 
@@ -169,7 +170,7 @@ def generate_sermon_content(info):
 6. 한국어로만 작성
 7. JSON만 반환"""
 
-    response = client.models.generate_content(model="gemini-1.5-flash-latest", contents=prompt)
+    response = model.generate_content(prompt)
     raw = response.text.strip()
     raw = re.sub(r'^```json\s*', '', raw)
     raw = re.sub(r'^```\s*', '', raw)
