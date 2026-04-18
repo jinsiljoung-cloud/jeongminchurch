@@ -323,7 +323,7 @@
         </div>
       </div>
     </div>
-    <audio id="audio0" src="느리게__바르게__함께_여성보컬_.mp3" preload="auto"></audio>
+    <audio id="audio0" src="%EB%8A%90%EB%A6%AC%EA%B2%8C__%EB%B0%94%EB%A5%B4%EA%B2%8C__%ED%95%A8%EA%BB%98_%EC%97%AC%EC%84%B1%EB%B3%B4%EC%BB%AC_.mp3" preload="auto"></audio>
     <audio id="audio1" src="prayer.mp3" preload="auto"></audio>
     <audio id="audio2" src="sermon.mp3" preload="auto"></audio>
     <audio id="audio3" src="creed.mp3" preload="auto"></audio>
@@ -446,7 +446,7 @@
         </div>
       </div>
     </div>
-    <audio id="audio4" src="알림을_끄고_합창버전.mp3" preload="auto"></audio>
+    <audio id="audio4" src="%EC%95%8C%EB%A6%BC%EC%9D%84_%EB%81%84%EA%B3%A0_%ED%95%A9%EC%B0%BD%EB%B2%84%EC%A0%84.mp3" preload="auto"></audio>
     <div class="step-nav">
       <button class="btn-prev" onclick="prevStep()">← 신앙고백</button>
       <button class="btn-next" onclick="nextStep()">다음 — 축도 →</button>
@@ -941,7 +941,13 @@ function prevStep(){
 
 function finishWorship(){
   synth.cancel();
-  [0,4].forEach(function(i){ var a=document.getElementById("audio"+i); if(a)a.pause(); });
+  // 모든 오디오 정지
+  [0,1,2,3,4,5].forEach(function(i){
+    var a = document.getElementById("audio"+i);
+    if(a){ a.pause(); a.currentTime = 0; }
+    ttsPlaying[i] = false;
+  });
+  synth.cancel();
   document.getElementById("worshipScreen").classList.remove("active");
   document.getElementById("progressBar").style.display = "none";
   var cs = document.getElementById("completeScreen");
