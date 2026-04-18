@@ -321,8 +321,16 @@ function filterSermons(type, btn) {
 function sortNewestFirst() {
   const grid = document.getElementById('sermonsGrid');
   const cards = Array.from(grid.querySelectorAll('.sermon-card'));
-  // 역순으로 다시 붙이기
-  cards.reverse().forEach(card => grid.appendChild(card));
+  cards.sort((a, b) => {
+    const elA = a.querySelector('.sc-date');
+    const elB = b.querySelector('.sc-date');
+    const da = elA ? elA.textContent.trim().replace(/[^0-9]/g, '') : '0';
+    const db = elB ? elB.textContent.trim().replace(/[^0-9]/g, '') : '0';
+    if(da.length < 8) return 1;
+    if(db.length < 8) return -1;
+    return db.localeCompare(da);
+  });
+  cards.forEach(card => grid.appendChild(card));
 }
 
 /* ══ 뱃지 — 설교 목록 방문 시 읽음 처리 ══ */
