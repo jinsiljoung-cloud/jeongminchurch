@@ -1,24 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-바른믿음교회 — 설교 자동생성 스크립트
-Claude Code 없이 Anthropic API 직접 호출 → 타임아웃 해결
-
+바른믿음교회 — 설교 자동생성 스크립트 (Gemini 무료 버전)
 실행: python generate_sermon.py [wednesday|sunday]
-      (인자 없으면 오늘 요일로 자동 판단)
 """
 
 import os, sys, json, re, subprocess, datetime
 from pathlib import Path
 
-# ── 패키지 자동 설치 ──
 def install(pkg):
     subprocess.check_call([sys.executable, "-m", "pip", "install", pkg, "-q"])
 
 try:
-    import anthropic
+    import google.generativeai as genai
 except ImportError:
-    install("anthropic"); import anthropic
+    install("google-generativeai"); import google.generativeai as genai
 
 try:
     from google.cloud import texttospeech
@@ -35,18 +31,20 @@ CHURCH = {
     "name_ko": "바른믿음교회",
     "name_en": "True Faith Church",
     "motto": "느리게·바르게·함께",
-    "five_ways": ["정도(正道) 바른 길을 걸어라",
-                  "정직(正直) 투명하게 살아라",
-                  "정착(定着) 뿌리를 내려라",
-                  "정민(正民) 이웃을 섬겨라",
-                  "정지(靜止) 멈추어야 들린다"],
+    "five_ways": [
+        "정도(正道) 바른 길을 걸어라",
+        "정직(正直) 투명하게 살아라",
+        "정착(定着) 뿌리를 내려라",
+        "정민(正民) 이웃을 섬겨라",
+        "정지(靜止) 멈추어야 들린다"
+    ],
     "target": "직장생활로 바빠서 교회를 못 가는 20~40대 디지털 세대",
     "pastor": "Daniel Joung 목사",
 }
 
 TTS_VOICES = {
-    "sermon":      {"name": "ko-KR-Chirp3-HD-Charon",   "rate": 0.82},
-    "fallback":    {"name": "ko-KR-Chirp3-HD-Orus",      "rate": 0.82},
+    "sermon":   {"name": "ko-KR-Chirp3-HD-Charon", "rate": 0.82},
+    "fallback": {"name": "ko-KR-Chirp3-HD-Orus",   "rate": 0.82},
 }
 
 
@@ -54,7 +52,6 @@ TTS_VOICES = {
 # 1) 다음 설교 번호 & 타입 결정
 # ══════════════════════════════════════════════
 def get_next_sermon_info(force_type=None):
-    # sermons-data.js에서 최신 번호 파악
     latest_n = 8
     if Path(SERMONS_DATA_JS).exists():
         content = Path(SERMONS_DATA_JS).read_text(encoding="utf-8")
@@ -64,60 +61,50 @@ def get_next_sermon_info(force_type=None):
 
     next_n = latest_n + 1
 
-    # 타입 결정: 수요=wednesday, 주일=sunday
     if force_type:
         stype = force_type
     else:
-        weekday = datetime.datetime.now().weekday()  # 0=Mon, 1=Tue, ...
-        # 화요일(1) 실행 → 수요 저녁 설교
-        # 토요일(5) 실행 → 주일 아침 설교
+        weekday = datetime.datetime.now().weekday()
         stype = "wednesday" if weekday == 1 else "sunday"
 
-    # 날짜 계산 (실행일 기준 다음 예배일)
     today = datetime.date.today()
     if stype == "wednesday":
-        # 이번 주 수요일
         days_ahead = (2 - today.weekday()) % 7
         if days_ahead == 0: days_ahead = 7
         target_date = today + datetime.timedelta(days=days_ahead)
-        series = "바른믿음교회 말씀 · 수요 저녁 예배"
+        series    = "바른믿음교회 말씀 · 수요 저녁 예배"
         series_en = "True Faith Church 말씀 · 수요 저녁 예배"
-        worship = "수요 저녁 예배"
+        worship   = "수요 저녁 예배"
     else:
-        # 이번 주 주일
         days_ahead = (6 - today.weekday()) % 7
         if days_ahead == 0: days_ahead = 7
         target_date = today + datetime.timedelta(days=days_ahead)
-        series = "바른믿음교회 말씀 · 주일 아침 예배"
+        series    = "바른믿음교회 말씀 · 주일 아침 예배"
         series_en = "True Faith Church 말씀 · 주일 아침 예배"
-        worship = "주일 아침 예배"
+        worship   = "주일 아침 예배"
 
-    kor_weekdays = ["월요일","화요일","수요일","목요일","금요일","토요일","주일"]
-    date_str = f"{target_date.year}년 {target_date.month}월 {target_date.day}일 {kor_weekdays[target_date.weekday()]}"
+    kor_days = ["월요일","화요일","수요일","목요일","금요일","토요일","주일"]
+    date_str = f"{target_date.year}년 {target_date.month}월 {target_date.day}일 {kor_days[target_date.weekday()]}"
 
     return {
-        "n": next_n,
-        "type": stype,
-        "date": date_str,
-        "series": series,
-        "series_en": series_en,
-        "worship": worship,
-        "filename": f"sermon-{next_n}.html",
+        "n": next_n, "type": stype, "date": date_str,
+        "series": series, "series_en": series_en,
+        "worship": worship, "filename": f"sermon-{next_n}.html",
     }
 
 
 # ══════════════════════════════════════════════
-# 2) Anthropic API로 설교 내용 생성
+# 2) Gemini API로 설교 내용 생성
 # ══════════════════════════════════════════════
 def generate_sermon_content(info):
-    print(f"\n📡 Anthropic API 호출 중... (sermon-{info['n']}, {info['worship']})")
-    
-    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if not api_key:
-        print("❌ ANTHROPIC_API_KEY 환경변수 없음")
-        sys.exit(1)
+    print(f"\n📡 Gemini API 호출 중... (sermon-{info['n']}, {info['worship']})")
 
-    client = anthropic.Anthropic(api_key=api_key)
+    api_key = os.environ.get("GEMINI_API_KEY", "")
+    if not api_key:
+        print("❌ GEMINI_API_KEY 환경변수 없음"); sys.exit(1)
+
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel("gemini-1.5-flash")
 
     prompt = f"""당신은 {CHURCH['name_ko']} ({CHURCH['name_en']}) 설교 작성 전문가입니다.
 
@@ -132,67 +119,61 @@ def generate_sermon_content(info):
 - 예배: {info['worship']}
 - 날짜: {info['date']}
 
-다음 형식으로 JSON 하나만 반환하세요 (```json 없이):
+다음 형식으로 JSON 하나만 반환하세요 (코드펜스 없이, 순수 JSON만):
 
 {{
-  "title": "설교 제목 (간결하고 임팩트 있게)",
-  "subtitle": "부제목 또는 한 줄 요약",
-  "verse": "대표 성경 구절 (성경 원문 한국어)",
-  "verse_ref": "성경 책 장:절 (예: 요한복음 15:5)",
+  "title": "설교 제목",
+  "verse": "대표 성경 구절 원문",
+  "verse_ref": "책 장:절 (예: 요한복음 15:5)",
   "sections": [
     {{
-      "label": "배경 · 또는 도입",
+      "label": "배경 · 도입",
       "paragraphs": ["문단1", "문단2"],
-      "verse_box": {{"text": "인용 성경구절", "ref": "출처"}},
-      "emphasis": "강조 문장 (없으면 null)"
+      "verse_box": {{"text": "인용구절", "ref": "출처"}},
+      "emphasis": "강조문장 또는 null"
     }},
     {{
       "label": "1부 · 소제목",
       "paragraphs": ["문단1", "문단2", "문단3"],
-      "verse_box": {{"text": "인용 성경구절", "ref": "출처"}},
-      "emphasis": "강조 문장"
+      "verse_box": {{"text": "인용구절", "ref": "출처"}},
+      "emphasis": "강조문장"
     }},
     {{
       "label": "2부 · 소제목",
       "paragraphs": ["문단1", "문단2"],
       "verse_box": null,
-      "emphasis": "강조 문장"
+      "emphasis": "강조문장"
     }},
     {{
       "label": "3부 · 소제목",
       "paragraphs": ["문단1", "문단2"],
-      "verse_box": {{"text": "인용 성경구절", "ref": "출처"}},
+      "verse_box": {{"text": "인용구절", "ref": "출처"}},
       "emphasis": null
     }},
     {{
       "label": "마무리 · 이번 주 실천",
       "paragraphs": ["문단1", "문단2"],
-      "verse_box": {{"text": "기도문 또는 고백", "ref": "— 아멘 —"}},
+      "verse_box": {{"text": "기도문", "ref": "— 아멘 —"}},
       "emphasis": "느리게 · 바르게 · 함께 · 아멘"
     }}
   ],
-  "plain_text": "TTS용 전체 설교 텍스트 (단락 구분만, 마침표 꼭 사용, 약 600~800자)",
+  "plain_text": "TTS용 전체 설교 텍스트 (600~800자, 마침표 사용)",
   "reading_minutes": 5
 }}
 
 요구사항:
 1. 20~40대 직장인에게 말하듯 쉽고 따뜻하게
-2. 빠른 세상, 스마트폰, 디지털 환경에 공감하는 내용 포함
-3. Five Ways of Life 중 하나를 자연스럽게 연결
-4. 설교 마지막은 반드시 "느리게, 바르게, 함께. 아멘." 으로 끝
-5. 실천 가능한 한 가지 행동 제안 포함
+2. 스마트폰·디지털 환경 공감 포함
+3. Five Ways of Life 중 하나 자연스럽게 연결
+4. 마지막은 반드시 "느리게, 바르게, 함께. 아멘." 으로 끝
+5. 실천 가능한 한 가지 행동 제안
 6. 한국어로만 작성
-"""
+7. JSON만 반환"""
 
-    message = client.messages.create(
-        model="claude-sonnet-4-20250514",
-        max_tokens=4096,
-        messages=[{"role": "user", "content": prompt}]
-    )
-
-    raw = message.content[0].text.strip()
-    # JSON 펜스 제거
+    response = model.generate_content(prompt)
+    raw = response.text.strip()
     raw = re.sub(r'^```json\s*', '', raw)
+    raw = re.sub(r'^```\s*', '', raw)
     raw = re.sub(r'\s*```$', '', raw)
 
     data = json.loads(raw)
@@ -205,15 +186,13 @@ def generate_sermon_content(info):
 # ══════════════════════════════════════════════
 def build_html(info, sermon):
     prev_n = info['n'] - 1
-    next_n = info['n'] + 1
 
-    # 섹션 HTML 생성
     sections_html = ""
     for sec in sermon["sections"]:
-        label = sec.get("label", "")
+        label      = sec.get("label", "")
         paragraphs = sec.get("paragraphs", [])
-        verse_box = sec.get("verse_box")
-        emphasis = sec.get("emphasis")
+        verse_box  = sec.get("verse_box")
+        emphasis   = sec.get("emphasis")
 
         p_html = "\n".join(f"      <p>{p}</p>" for p in paragraphs)
 
@@ -240,12 +219,10 @@ def build_html(info, sermon):
 {em_html}
     </div>
   </div>
-
   <div class="h-rule"><div class="h-rule-line"></div><div class="h-rule-dot"></div><div class="h-rule-line"></div></div>
 """
 
-    # plain_text JS 이스케이프
-    plain_escaped = sermon["plain_text"].replace("\\", "\\\\").replace("`", "\\`").replace("${", "\\${")
+    plain_escaped = sermon["plain_text"].replace("\\","\\\\").replace("`","\\`").replace("${","\\${")
 
     html = f"""<!DOCTYPE html>
 <html lang="ko">
@@ -263,33 +240,30 @@ body::after{{content:'';position:fixed;inset:0;background-image:url("data:image/
 a{{color:inherit;text-decoration:none}}
 .nav{{position:sticky;top:0;z-index:200;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(11,22,34,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}}
 .nav-logo{{font-family:var(--font-s);font-size:17px;font-weight:700;letter-spacing:4px}}
-.nav-back{{font-family:var(--font-c);font-size:9px;letter-spacing:3px;color:var(--cream);opacity:.5;text-transform:uppercase;padding:8px 16px;border:1px solid var(--border);border-radius:2px;transition:all .3s}}
-.progress-bar{{position:fixed;top:64px;left:0;width:0%;height:3px;background:linear-gradient(90deg,var(--sage),var(--gold));z-index:199;transition:width .1s}}
+.nav-back{{font-family:var(--font-c);font-size:9px;letter-spacing:3px;color:var(--cream);opacity:.5;text-transform:uppercase;padding:8px 16px;border:1px solid var(--border);border-radius:2px}}
+.progress-bar{{position:fixed;top:64px;left:0;width:0%;height:3px;background:linear-gradient(90deg,var(--sage),var(--gold));z-index:199}}
 .hero{{padding:80px 32px 60px;max-width:720px;margin:0 auto;position:relative}}
 .hero::before{{content:'';position:absolute;top:0;left:0;right:0;height:300px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(201,168,76,.07) 0%,transparent 70%);pointer-events:none}}
 .sermon-series{{font-family:var(--font-c);font-size:9px;letter-spacing:5px;color:var(--gold);opacity:.6;text-transform:uppercase;margin-bottom:12px}}
 .sermon-title{{font-family:var(--font-s);font-size:clamp(24px,5vw,38px);font-weight:900;color:var(--cream);line-height:1.4;margin-bottom:16px}}
 .sermon-meta{{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px}}
-.meta-item{{font-family:var(--font-c);font-size:9px;letter-spacing:3px;color:var(--cream);opacity:.4;text-transform:uppercase;display:flex;align-items:center;gap:6px}}
+.meta-item{{font-family:var(--font-c);font-size:9px;letter-spacing:3px;color:var(--cream);opacity:.4;display:flex;align-items:center;gap:6px}}
 .sermon-verse-hero{{border-left:3px solid var(--gold);padding:16px 20px;background:rgba(201,168,76,.05);border-radius:0 6px 6px 0;margin-bottom:32px}}
 .verse-text{{font-style:italic;font-size:15px;color:var(--gold-p);line-height:2;margin-bottom:6px}}
 .verse-ref{{font-family:var(--font-c);font-size:9px;letter-spacing:3px;color:var(--gold);opacity:.55}}
 .tts-player{{background:linear-gradient(145deg,rgba(201,168,76,.08),rgba(15,29,46,.95));border:1px solid rgba(201,168,76,.25);border-radius:12px;padding:24px 28px;margin-bottom:40px;position:relative;overflow:hidden}}
 .tts-player::before{{content:'';position:absolute;top:-1px;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}}
 .tts-header{{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}}
-.tts-info .tts-title{{font-family:var(--font-s);font-size:13px;font-weight:700;color:var(--cream);letter-spacing:1px}}
+.tts-info .tts-title{{font-family:var(--font-s);font-size:13px;font-weight:700;color:var(--cream)}}
 .tts-info .tts-sub{{font-family:var(--font-c);font-size:8px;letter-spacing:3px;color:var(--gold);opacity:.55;text-transform:uppercase;margin-top:3px}}
 .tts-controls{{display:flex;align-items:center;gap:8px}}
-.tts-btn{{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .25s;border:1px solid rgba(201,168,76,.3);background:rgba(201,168,76,.08);color:var(--gold)}}
+.tts-btn{{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;border:1px solid rgba(201,168,76,.3);background:rgba(201,168,76,.08);color:var(--gold)}}
 .tts-btn.play{{width:52px;height:52px;font-size:20px;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;box-shadow:0 4px 20px rgba(201,168,76,.3)}}
-.tts-btn.play:hover{{transform:scale(1.08)}}
 .tts-progress-bar{{width:100%;height:3px;background:rgba(255,255,255,.08);border-radius:2px;cursor:pointer;margin-bottom:8px;overflow:hidden}}
-.tts-progress-fill{{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-l));border-radius:2px;width:0%;transition:width .3s}}
+.tts-progress-fill{{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-l));border-radius:2px;width:0%}}
 .tts-time-row{{display:flex;justify-content:space-between}}
 .tts-time{{font-family:var(--font-c);font-size:8px;letter-spacing:2px;color:var(--cream);opacity:.4}}
-.tts-settings{{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-top:14px;border-top:1px solid rgba(201,168,76,.1);margin-top:10px}}
-.tts-range{{-webkit-appearance:none;width:80px;height:3px;background:rgba(255,255,255,.1);border-radius:2px;outline:none;cursor:pointer}}
-.tts-range::-webkit-slider-thumb{{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--gold);cursor:pointer}}
+.tts-settings{{display:flex;align-items:center;gap:14px;padding-top:14px;border-top:1px solid rgba(201,168,76,.1);margin-top:10px}}
 .tts-status{{font-family:var(--font-c);font-size:8px;letter-spacing:3px;color:var(--gold);opacity:.7;text-transform:uppercase;margin-left:auto;display:flex;align-items:center;gap:5px}}
 .tts-dot{{width:6px;height:6px;border-radius:50%;background:var(--sage);display:none}}
 .tts-dot.on{{display:block;animation:blink 1.4s ease-in-out infinite}}
@@ -308,23 +282,18 @@ a{{color:inherit;text-decoration:none}}
 .h-rule-line{{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.2),transparent)}}
 .h-rule-dot{{width:5px;height:5px;background:var(--gold);transform:rotate(45deg);opacity:.45;flex-shrink:0}}
 .sermon-nav{{display:flex;justify-content:space-between;align-items:center;padding:24px 0;border-top:1px solid var(--border);margin-top:20px;flex-wrap:wrap;gap:12px}}
-.sn-btn{{font-family:var(--font-c);font-size:9px;letter-spacing:3px;color:var(--gold);opacity:.65;text-transform:uppercase;padding:10px 18px;border:1px solid rgba(201,168,76,.25);border-radius:4px;transition:all .3s}}
-.sn-btn:hover{{opacity:1;background:rgba(201,168,76,.08)}}
+.sn-btn{{font-family:var(--font-c);font-size:9px;letter-spacing:3px;color:var(--gold);opacity:.65;text-transform:uppercase;padding:10px 18px;border:1px solid rgba(201,168,76,.25);border-radius:4px}}
 .share-row{{display:flex;justify-content:flex-end;margin-top:20px}}
-.share-btn{{width:48px;height:48px;border-radius:50%;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:all .3s;backdrop-filter:blur(8px)}}
-.share-btn:hover{{background:rgba(201,168,76,.25);transform:scale(1.08)}}
+.share-btn{{width:48px;height:48px;border-radius:50%;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.25);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer}}
 @media(max-width:600px){{.nav{{padding:0 16px}}.content,.hero{{padding-left:20px;padding-right:20px}}}}
 </style>
 </head>
 <body>
-
 <div class="progress-bar" id="progressBar"></div>
-
 <nav class="nav">
   <div class="nav-logo">True Faith Church</div>
   <a href="/sermons.html" class="nav-back">← 말씀 목록</a>
 </nav>
-
 <div class="hero">
   <div class="sermon-series">{info['series_en']}</div>
   <h1 class="sermon-title">{sermon['title']}</h1>
@@ -337,7 +306,6 @@ a{{color:inherit;text-decoration:none}}
     <div class="verse-text">"{sermon['verse']}"</div>
     <div class="verse-ref">— {sermon['verse_ref']} —</div>
   </div>
-
   <div class="tts-player">
     <div class="tts-header">
       <div class="tts-info">
@@ -345,9 +313,9 @@ a{{color:inherit;text-decoration:none}}
         <div class="tts-sub">낮고 차분한 목소리 · 약 {sermon['reading_minutes']}분</div>
       </div>
       <div class="tts-controls">
-        <button class="tts-btn" onclick="ttsRestart()" title="처음부터">↺</button>
+        <button class="tts-btn" onclick="ttsRestart()">↺</button>
         <button class="tts-btn play" id="playBtn" onclick="ttsToggle()">▶</button>
-        <button class="tts-btn" onclick="ttsStop()" title="정지">■</button>
+        <button class="tts-btn" onclick="ttsStop()">■</button>
       </div>
     </div>
     <div class="tts-progress-bar" onclick="ttsSeek(event)">
@@ -358,117 +326,41 @@ a{{color:inherit;text-decoration:none}}
       <span class="tts-time">약 {sermon['reading_minutes']}:00</span>
     </div>
     <div class="tts-settings">
-      <span style="font-family:var(--font-c);font-size:8px;letter-spacing:2px;color:var(--gold);opacity:.6;text-transform:uppercase">속도</span>
-      <input class="tts-range" type="range" id="ttsRate" min="0.5" max="1.2" step="0.05" value="0.85" oninput="updateRate(this.value)">
-      <span class="tts-time" id="ttsRateVal">0.82x</span>
-      <div class="tts-status" id="ttsStatus">
+      <div class="tts-status">
         <div class="tts-dot" id="ttsDot"></div>
         <span id="ttsStatusText">재생 준비</span>
       </div>
     </div>
   </div>
 </div>
-
 <div class="content">
 {sections_html}
-
   <div class="sermon-nav">
     <a href="/sermon-{prev_n}.html" class="sn-btn">← 이전 말씀</a>
     <a href="/sermons.html" class="sn-btn">말씀 목록</a>
-    <a href="/sermon-{next_n}.html" class="sn-btn" id="nextBtn" style="display:none">다음 말씀 →</a>
   </div>
-
   <div class="share-row">
-    <button class="share-btn" onclick="window.scrollTo({{top:0,behavior:'smooth'}})" title="맨 위로">↑</button>
+    <button class="share-btn" onclick="window.scrollTo({{top:0,behavior:'smooth'}})">↑</button>
   </div>
 </div>
-
 <audio id="sermonAudio" src="sermon.mp3" preload="auto"></audio>
-
 <script>
-const SERMON_TEXT = `{plain_escaped}`;
-
-let sermonAudio, isPlaying = false, isPaused = false;
-let elapsedTime = 0, startTime = 0, timerInterval = null;
-
-window.addEventListener('scroll', () => {{
-  const st = document.documentElement.scrollTop;
-  const sh = document.documentElement.scrollHeight - window.innerHeight;
-  if(sh > 0) document.getElementById('progressBar').style.width = (st/sh*100)+'%';
-}});
-
-window.addEventListener('load', () => {{
-  sermonAudio = document.getElementById('sermonAudio');
-  document.getElementById('ttsStatusText').textContent = '재생 준비 ✅';
-  sermonAudio.addEventListener('timeupdate', () => {{
-    if(sermonAudio.duration){{
-      const pct = (sermonAudio.currentTime / sermonAudio.duration) * 100;
-      document.getElementById('ttsProgressFill').style.width = pct + '%';
-      const m = Math.floor(sermonAudio.currentTime/60);
-      const s = Math.floor(sermonAudio.currentTime%60);
-      document.getElementById('ttsCurrentTime').textContent = m+':'+String(s).padStart(2,'0');
-    }}
-  }});
-  sermonAudio.addEventListener('ended', () => {{
-    isPlaying = false; isPaused = false;
-    document.getElementById('playBtn').textContent = '▶';
-    document.getElementById('ttsDot').classList.remove('on');
-    document.getElementById('ttsStatusText').textContent = '낭독 완료 🙏';
-    document.getElementById('ttsProgressFill').style.width = '100%';
-    stopTimer();
-  }});
-}});
-
-function ttsToggle(){{if(!isPlaying&&!isPaused)ttsPlay();else if(isPlaying)ttsPause();else ttsResume();}}
-function ttsPlay(){{
-  sermonAudio.currentTime=0; sermonAudio.play().catch(e=>console.log(e));
-  isPlaying=true; isPaused=false;
-  document.getElementById('playBtn').textContent='⏸';
-  document.getElementById('ttsDot').classList.add('on');
-  document.getElementById('ttsStatusText').textContent='낭독 중 ✝';
-  startTimer();
-}}
-function ttsPause(){{
-  sermonAudio.pause(); isPlaying=false; isPaused=true;
-  document.getElementById('playBtn').textContent='▶';
-  document.getElementById('ttsDot').classList.remove('on');
-  document.getElementById('ttsStatusText').textContent='일시정지';
-  stopTimer();
-}}
-function ttsResume(){{
-  sermonAudio.play(); isPlaying=true; isPaused=false;
-  document.getElementById('playBtn').textContent='⏸';
-  document.getElementById('ttsDot').classList.add('on');
-  document.getElementById('ttsStatusText').textContent='낭독 중 ✝';
-  startTimer();
-}}
-function ttsStop(){{
-  sermonAudio.pause(); sermonAudio.currentTime=0;
-  isPlaying=false; isPaused=false; elapsedTime=0;
-  document.getElementById('playBtn').textContent='▶';
-  document.getElementById('ttsDot').classList.remove('on');
+let sermonAudio,isPlaying=false,isPaused=false,elapsedTime=0,startTime=0,timerInterval=null;
+window.addEventListener('scroll',()=>{{const st=document.documentElement.scrollTop,sh=document.documentElement.scrollHeight-window.innerHeight;if(sh>0)document.getElementById('progressBar').style.width=(st/sh*100)+'%';}});
+window.addEventListener('load',()=>{{
+  sermonAudio=document.getElementById('sermonAudio');
   document.getElementById('ttsStatusText').textContent='재생 준비 ✅';
-  document.getElementById('ttsProgressFill').style.width='0%';
-  document.getElementById('ttsCurrentTime').textContent='0:00';
-  stopTimer();
-}}
+  sermonAudio.addEventListener('timeupdate',()=>{{if(sermonAudio.duration){{document.getElementById('ttsProgressFill').style.width=(sermonAudio.currentTime/sermonAudio.duration*100)+'%';const m=Math.floor(sermonAudio.currentTime/60),s=Math.floor(sermonAudio.currentTime%60);document.getElementById('ttsCurrentTime').textContent=m+':'+String(s).padStart(2,'0');}}}});
+  sermonAudio.addEventListener('ended',()=>{{isPlaying=false;isPaused=false;document.getElementById('playBtn').textContent='▶';document.getElementById('ttsDot').classList.remove('on');document.getElementById('ttsStatusText').textContent='낭독 완료 🙏';document.getElementById('ttsProgressFill').style.width='100%';clearInterval(timerInterval);}});
+}});
+function ttsToggle(){{if(!isPlaying&&!isPaused)ttsPlay();else if(isPlaying)ttsPause();else ttsResume();}}
+function ttsPlay(){{sermonAudio.currentTime=0;sermonAudio.play();isPlaying=true;isPaused=false;document.getElementById('playBtn').textContent='⏸';document.getElementById('ttsDot').classList.add('on');document.getElementById('ttsStatusText').textContent='낭독 중 ✝';startTimer();}}
+function ttsPause(){{sermonAudio.pause();isPlaying=false;isPaused=true;document.getElementById('playBtn').textContent='▶';document.getElementById('ttsDot').classList.remove('on');document.getElementById('ttsStatusText').textContent='일시정지';clearInterval(timerInterval);}}
+function ttsResume(){{sermonAudio.play();isPlaying=true;isPaused=false;document.getElementById('playBtn').textContent='⏸';document.getElementById('ttsDot').classList.add('on');document.getElementById('ttsStatusText').textContent='낭독 중 ✝';startTimer();}}
+function ttsStop(){{sermonAudio.pause();sermonAudio.currentTime=0;isPlaying=false;isPaused=false;elapsedTime=0;document.getElementById('playBtn').textContent='▶';document.getElementById('ttsDot').classList.remove('on');document.getElementById('ttsStatusText').textContent='재생 준비 ✅';document.getElementById('ttsProgressFill').style.width='0%';document.getElementById('ttsCurrentTime').textContent='0:00';clearInterval(timerInterval);}}
 function ttsRestart(){{ttsStop();setTimeout(()=>ttsPlay(),300);}}
-function startTimer(){{
-  startTime = Date.now()-(elapsedTime*1000);
-  timerInterval = setInterval(()=>{{
-    elapsedTime=(Date.now()-startTime)/1000;
-    const m=Math.floor(elapsedTime/60), s=Math.floor(elapsedTime%60);
-    document.getElementById('ttsCurrentTime').textContent=m+':'+String(s).padStart(2,'0');
-  }},500);
-}}
-function stopTimer(){{clearInterval(timerInterval);}}
-function updateRate(val){{document.getElementById('ttsRateVal').textContent='1.00x';}}
-function ttsSeek(e){{
-  if(sermonAudio.duration){{
-    const pct=e.offsetX/e.currentTarget.offsetWidth;
-    sermonAudio.currentTime=pct*sermonAudio.duration;
-  }}
-}}
+function startTimer(){{startTime=Date.now()-(elapsedTime*1000);timerInterval=setInterval(()=>{{elapsedTime=(Date.now()-startTime)/1000;const m=Math.floor(elapsedTime/60),s=Math.floor(elapsedTime%60);document.getElementById('ttsCurrentTime').textContent=m+':'+String(s).padStart(2,'0');}},500);}}
+function ttsSeek(e){{if(sermonAudio.duration){{sermonAudio.currentTime=(e.offsetX/e.currentTarget.offsetWidth)*sermonAudio.duration;}}}}
 window.addEventListener('beforeunload',()=>{{if(sermonAudio)sermonAudio.pause();}});
 </script>
 </body>
@@ -481,45 +373,29 @@ window.addEventListener('beforeunload',()=>{{if(sermonAudio)sermonAudio.pause();
 # ══════════════════════════════════════════════
 def update_sermons_data(info, sermon):
     print(f"\n📝 {SERMONS_DATA_JS} 업데이트 중...")
-
-    entry = {
-        "n": info["n"],
-        "title": sermon["title"],
-        "verse": sermon["verse"],
-        "ref": sermon["verse_ref"],
-        "series": info["series"],
-        "date": info["date"],
-        "url": f"/sermon-{info['n']}.html",
-        "text": sermon["plain_text"]
-    }
-
     content = ""
     if Path(SERMONS_DATA_JS).exists():
         content = Path(SERMONS_DATA_JS).read_text(encoding="utf-8")
 
-    # 마지막 }] 앞에 새 항목 삽입
-    new_entry_js = f"""  {{
-    n: {entry['n']},
-    title: "{entry['title']}",
-    verse: "{entry['verse']}",
-    ref: "{entry['ref']}",
-    series: "{entry['series']}",
-    date: "{entry['date']}",
-    url: "{entry['url']}",
-    text: {json.dumps(entry['text'], ensure_ascii=False)}
+    new_entry = f"""  {{
+    n: {info['n']},
+    title: "{sermon['title']}",
+    verse: "{sermon['verse']}",
+    ref: "{sermon['verse_ref']}",
+    series: "{info['series']}",
+    date: "{info['date']}",
+    url: "/sermon-{info['n']}.html",
+    text: {json.dumps(sermon['plain_text'], ensure_ascii=False)}
   }}"""
 
-    if "];" in content:
-        content = content.replace(
-            "/* 최신 설교 = 마지막 항목 */",
-            ""
-        ).rstrip()
-        # 마지막 } 뒤에 쉼표+새항목 추가
-        idx = content.rfind("}")
-        content = content[:idx+1] + ",\n" + new_entry_js + "\n\n];\n\n/* 최신 설교 = 마지막 항목 */\nvar LATEST_SERMON = SERMONS_DATA[SERMONS_DATA.length - 1];\n"
+    content = re.sub(r'/\*\s*최신 설교.*?\*/', '', content, flags=re.DOTALL).rstrip()
+    idx = content.rfind("}")
+    if idx >= 0:
+        content = content[:idx+1] + ",\n" + new_entry + "\n\n];\n"
     else:
-        content = f"var SERMONS_DATA = [\n{new_entry_js}\n];\n\n/* 최신 설교 = 마지막 항목 */\nvar LATEST_SERMON = SERMONS_DATA[SERMONS_DATA.length - 1];\n"
+        content = f"var SERMONS_DATA = [\n{new_entry}\n];\n"
 
+    content += "\n/* 최신 설교 = 마지막 항목 */\nvar LATEST_SERMON = SERMONS_DATA[SERMONS_DATA.length - 1];\n"
     Path(SERMONS_DATA_JS).write_text(content, encoding="utf-8")
     print(f"  ✅ {SERMONS_DATA_JS} 업데이트 완료")
 
@@ -529,50 +405,23 @@ def update_sermons_data(info, sermon):
 # ══════════════════════════════════════════════
 def generate_sermon_tts(plain_text):
     print(f"\n🎙 설교 TTS 생성 중 (sermon.mp3)...")
-
     if not Path(GOOGLE_KEY_FILE).exists():
-        print(f"  ⚠️ 키 파일 없음: {GOOGLE_KEY_FILE} — TTS 건너뜀")
-        return False
-
+        print(f"  ⚠️ 키 파일 없음 — TTS 건너뜀"); return False
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = GOOGLE_KEY_FILE
-
     try:
         client = texttospeech.TextToSpeechClient()
         cfg = TTS_VOICES["sermon"]
-
         synthesis_input = texttospeech.SynthesisInput(text=plain_text)
-        voice = texttospeech.VoiceSelectionParams(
-            language_code="ko-KR",
-            name=cfg["name"],
-        )
+        voice = texttospeech.VoiceSelectionParams(language_code="ko-KR", name=cfg["name"])
         audio_config = texttospeech.AudioConfig(
-            audio_encoding=texttospeech.AudioEncoding.MP3,
-            speaking_rate=cfg["rate"],
-        )
-        response = client.synthesize_speech(
-            input=synthesis_input, voice=voice, audio_config=audio_config
-        )
+            audio_encoding=texttospeech.AudioEncoding.MP3, speaking_rate=cfg["rate"])
+        response = client.synthesize_speech(input=synthesis_input, voice=voice, audio_config=audio_config)
         with open("sermon.mp3", "wb") as f:
             f.write(response.audio_content)
-        print(f"  ✅ sermon.mp3 생성 완료 ({len(response.audio_content)//1024}KB)")
+        print(f"  ✅ sermon.mp3 완료 ({len(response.audio_content)//1024}KB)")
         return True
-
     except Exception as e:
-        print(f"  ❌ TTS 오류: {e}")
-        # fallback 시도
-        try:
-            cfg_fb = TTS_VOICES["fallback"]
-            voice2 = texttospeech.VoiceSelectionParams(
-                language_code="ko-KR", name=cfg_fb["name"])
-            response2 = client.synthesize_speech(
-                input=synthesis_input, voice=voice2, audio_config=audio_config)
-            with open("sermon.mp3", "wb") as f:
-                f.write(response2.audio_content)
-            print(f"  ✅ sermon.mp3 (fallback) 완료")
-            return True
-        except Exception as e2:
-            print(f"  ❌ fallback도 실패: {e2}")
-            return False
+        print(f"  ❌ TTS 오류: {e}"); return False
 
 
 # ══════════════════════════════════════════════
@@ -583,7 +432,6 @@ def git_commit_push(info):
     files = [info["filename"], SERMONS_DATA_JS]
     if Path("sermon.mp3").exists():
         files.append("sermon.mp3")
-
     try:
         subprocess.run(["git", "config", "user.email", "jinsiljoung@gmail.com"], check=True)
         subprocess.run(["git", "config", "user.name", "Daniel Joung"], check=True)
@@ -591,10 +439,9 @@ def git_commit_push(info):
         msg = f"✝ 설교 자동생성: sermon-{info['n']} ({info['date']})"
         subprocess.run(["git", "commit", "-m", msg], check=True)
         subprocess.run(["git", "push"], check=True)
-        print(f"  ✅ 푸시 완료: {', '.join(files)}")
+        print(f"  ✅ 푸시 완료!")
     except subprocess.CalledProcessError as e:
-        print(f"  ❌ Git 오류: {e}")
-        sys.exit(1)
+        print(f"  ❌ Git 오류: {e}"); sys.exit(1)
 
 
 # ══════════════════════════════════════════════
@@ -602,38 +449,27 @@ def git_commit_push(info):
 # ══════════════════════════════════════════════
 def main():
     print("=" * 55)
-    print("  ✝ 바른믿음교회 설교 자동생성")
+    print("  ✝ 바른믿음교회 설교 자동생성 (Gemini 무료)")
     print("=" * 55)
 
-    # 타입 인자 처리
     force_type = None
     if len(sys.argv) > 1:
         arg = sys.argv[1].lower()
-        if arg in ("wednesday", "wed", "수요"):
-            force_type = "wednesday"
-        elif arg in ("sunday", "sun", "주일"):
-            force_type = "sunday"
+        if arg in ("wednesday", "wed", "수요"): force_type = "wednesday"
+        elif arg in ("sunday", "sun", "주일"):  force_type = "sunday"
 
-    # 1) 정보 결정
-    info = get_next_sermon_info(force_type)
+    info   = get_next_sermon_info(force_type)
     print(f"\n📅 생성 대상: sermon-{info['n']}.html | {info['date']} | {info['worship']}")
 
-    # 2) 설교 내용 생성
     sermon = generate_sermon_content(info)
 
-    # 3) HTML 파일 생성
     print(f"\n🖊 HTML 생성 중: {info['filename']} ...")
     html = build_html(info, sermon)
     Path(info["filename"]).write_text(html, encoding="utf-8")
     print(f"  ✅ {info['filename']} 저장 완료")
 
-    # 4) sermons-data.js 업데이트
     update_sermons_data(info, sermon)
-
-    # 5) TTS 생성
     generate_sermon_tts(sermon["plain_text"])
-
-    # 6) GitHub 커밋
     git_commit_push(info)
 
     print("\n" + "=" * 55)
