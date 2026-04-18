@@ -12,9 +12,9 @@ def install(pkg):
     subprocess.check_call([sys.executable, "-m", "pip", "install", pkg, "-q"])
 
 try:
-    from google import genai
+    import google.generativeai as genai
 except ImportError:
-    install("google-genai"); from google import genai
+    install("google-generativeai"); import google.generativeai as genai
 
 try:
     from google.cloud import texttospeech
