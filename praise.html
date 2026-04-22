@@ -390,8 +390,62 @@ input{font-family:inherit}
     </div>
   </div>
 
+  <!-- Let it Go — 창작 찬송가 제7장 -->
+  <div class="audio-card" id="card-lg">
+    <div style="font-family:var(--font-c);font-size:8px;letter-spacing:3px;color:var(--gold);opacity:.5;margin-bottom:14px;text-transform:uppercase">✝ 바른믿음교회 창작 찬송가 제7장 · MZ세대 찬송</div>
+    <div class="audio-header">
+      <span style="font-size:30px">📱</span>
+      <div style="flex:1">
+        <div style="font-family:var(--font-s);font-size:15px;font-weight:700;margin-bottom:3px">Let it Go — 내려놓아요</div>
+        <div style="font-family:var(--font-c);font-size:9px;letter-spacing:2px;color:var(--gold);opacity:.55;text-transform:uppercase">바른믿음교회 창작 찬송가 · 디지털 세대를 위한 묵상</div>
+      </div>
+      <button class="audio-play-btn" id="btn-lg" onclick="toggleAudio('lg')">▶</button>
+    </div>
+    <div>
+      <div class="audio-progress-bar" id="pb-lg" onclick="seekAudio('lg',event)"><div class="audio-progress-fill" id="pf-lg"></div></div>
+      <div class="audio-time-row">
+        <span class="audio-time" id="tc-lg">0:00</span>
+        <div style="display:flex;align-items:center">
+          <span style="font-size:12px;opacity:.4">🔈</span>
+          <input type="range" class="audio-vol" min="0" max="1" step="0.05" value="0.85" oninput="setVol('lg',this.value)">
+          <span class="audio-time" id="td-lg">--:--</span>
+        </div>
+      </div>
+    </div>
+    <button class="lyrics-btn" id="lbtn-lg" onclick="toggleLyrics('lg')">♪ 가사 보기</button>
+    <div class="lyrics-wrap" id="lw-lg">
+      <div class="lyrics-text">손안의 화면에 끝없는 빛이 쏟아져요
+한계가 나를 정의하는 것
+오늘 하루도 최적화에 지친 어깨를 끌고
+멈출 수 없는 무한한 스크롤에 지쳐갑니다
+
+나다운 나라는 주파수 어디서 잡아야 할까
+모든 소음 꺼버려요
+잠시 모든 것을 내려놓아요
+
+<span class="lyrics-chorus">✝ 후렴 ✝
+주님 품속의 그 고요함이
+나를 다시 일으켜 세워
+쉼을 늘 없는 이 자리 가자
+진짜 신호가 오네요</span>
+
+쉴 새 없이 끝없이 돌던 세상의 라디오 주파수들
+잠시 멈추니 잡히던 건 낯설지만
+따뜻한 목소리 완벽하지 않아도 괜찮다고 속삭여주는
+
+<span class="lyrics-chorus">그 음성 그 목소리에 귀 기울일 때
+비로소 제자리를 찾습니다
+
+나다운 나라는 주님 품속에
+그 고요함이 나를 다시 일으켜 세워요
+바른믿음교회에서 가자
+진짜 신호가 오네요</span></div>
+    </div>
+  </div>
+
   <audio id="audio-d" preload="auto"><source src="돌아오라.mp3" type="audio/mpeg"></audio>
   <audio id="audio-n" preload="auto"><source src="내려_놓으라_.mp3" type="audio/mpeg"></audio>
+  <audio id="audio-lg" preload="auto"><source src="Let_it_Go_MZ세대찬송.mp3" type="audio/mpeg"></audio>
 </div>
 
 <!-- 🌿 자연 묵상 탭 -->
@@ -476,8 +530,8 @@ function switchTab(t,btn){
 }
 
 /* ✝ 오디오 플레이어 */
-const AF=document.getElementById('audio-f'), AM=document.getElementById('audio-m'), AM2=document.getElementById('audio-m2'), AD=document.getElementById('audio-d'), AN=document.getElementById('audio-n');
-const audios={f:AF,m:AM,m2:AM2,d:AD,n:AN};
+const AF=document.getElementById('audio-f'), AM=document.getElementById('audio-m'), AM2=document.getElementById('audio-m2'), AD=document.getElementById('audio-d'), AN=document.getElementById('audio-n'), ALG=document.getElementById('audio-lg');
+const audios={f:AF,m:AM,m2:AM2,d:AD,n:AN,lg:ALG};
 
 AF.addEventListener('loadedmetadata',()=>{ document.getElementById('td-f').textContent=fmt(AF.duration); });
 AM.addEventListener('loadedmetadata',()=>{ document.getElementById('td-m').textContent=fmt(AM.duration); });
@@ -493,6 +547,9 @@ AD.addEventListener('ended',()=>stopUI('d'));
 AN.addEventListener('loadedmetadata',()=>{ document.getElementById('td-n').textContent=fmt(AN.duration); });
 AN.addEventListener('timeupdate',()=>updProg('n'));
 AN.addEventListener('ended',()=>stopUI('n'));
+ALG.addEventListener('loadedmetadata',()=>{ document.getElementById('td-lg').textContent=fmt(ALG.duration); });
+ALG.addEventListener('timeupdate',()=>updProg('lg'));
+ALG.addEventListener('ended',()=>stopUI('lg'));
 
 /* 페이지 로드 시 여자 버전 자동 재생 */
 // 자동재생 제거 - 사용자 클릭 후 재생
@@ -503,6 +560,7 @@ window.addEventListener('load',()=>{
   audios.m2.load();
   audios.d.load();
   audios.n.load();
+  audios.lg.load();
 });
 
 function toggleAudio(k){
