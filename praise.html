@@ -445,7 +445,76 @@ input{font-family:inherit}
 
   <audio id="audio-d" preload="auto"><source src="돌아오라.mp3" type="audio/mpeg"></audio>
   <audio id="audio-n" preload="auto"><source src="내려_놓으라_.mp3" type="audio/mpeg"></audio>
+  <!-- 괜찮아, 일어나 — 창작 찬송가 제8장 -->
+  <div class="audio-card" id="card-gi">
+    <div style="font-family:var(--font-c);font-size:8px;letter-spacing:3px;color:var(--gold);opacity:.5;margin-bottom:14px;text-transform:uppercase">✝ 바른믿음교회 창작 찬송가 제8장 · 20대를 위한 위로 찬양</div>
+    <div class="audio-header">
+      <span style="font-size:30px">🤍</span>
+      <div style="flex:1">
+        <div style="font-family:var(--font-s);font-size:15px;font-weight:700;margin-bottom:3px">괜찮아, 일어나</div>
+        <div style="font-family:var(--font-c);font-size:9px;letter-spacing:2px;color:var(--gold);opacity:.55;text-transform:uppercase">취업·진로·고립으로 지친 20대에게 드리는 찬양</div>
+      </div>
+      <button class="audio-play-btn" id="btn-gi" onclick="toggleAudio('gi')">▶</button>
+    </div>
+    <div>
+      <div class="audio-progress-bar" id="pb-gi" onclick="seekAudio('gi',event)"><div class="audio-progress-fill" id="pf-gi"></div></div>
+      <div class="audio-time-row">
+        <span class="audio-time" id="tc-gi">0:00</span>
+        <div style="display:flex;align-items:center">
+          <span style="font-size:12px;opacity:.4">🔈</span>
+          <input type="range" class="audio-vol" min="0" max="1" step="0.05" value="0.85" oninput="setVol('gi',this.value)">
+          <span class="audio-time" id="td-gi">--:--</span>
+        </div>
+      </div>
+    </div>
+    <button class="lyrics-btn" id="lbtn-gi" onclick="toggleLyrics('gi')">♪ 가사 보기</button>
+    <div class="lyrics-wrap" id="lw-gi">
+      <div class="lyrics-text">몇 번을 지원해도 문은 닫혀있고
+스펙을 쌓아도 내 자리가 없어
+진로도 모르겠고 미래도 안 보여
+그냥 다 포기하고 싶은 날들이 있어
+
+비교하지 마라 해도 피드엔 넘쳐나고
+남들은 다 잘 사는 것 같은데
+나만 뒤처지는 것 같아 숨고 싶어
+방문 잠그고 혼자 울던 밤도 있어
+
+<span class="lyrics-chorus">✝ 후렴 ✝
+괜찮아 괜찮아 넘어져도 괜찮아
+주님은 네 이력서 보지 않으셔
+완벽하지 않아도 지금 이대로도
+하나님 눈엔 넌 이미 충분해
+
+일어나 일어나 혼자가 아니야
+포기한 그 꿈들도 주님은 아셔
+느리게 가도 돼 바르게 가면 돼
+바른믿음교회서 함께 걸어가</span>
+
+연애도 포기하고 결혼도 모르겠어
+이 세상이 나한테 너무 가혹해
+그래도 기다리는 아버지의 마음
+단 한 번도 널 놓은 적이 없으셔
+
+<span class="lyrics-chorus">✝ 후렴 반복 ✝
+괜찮아 괜찮아 넘어져도 괜찮아
+주님은 네 이력서 보지 않으셔
+완벽하지 않아도 지금 이대로도
+하나님 눈엔 넌 이미 충분해
+
+일어나 일어나 혼자가 아니야
+포기한 그 꿈들도 주님은 아셔
+느리게 가도 돼 바르게 가면 돼
+바른믿음교회서 함께 걸어가
+
+작은 목소리로 불러도 괜찮아
+아무 말 못 해도 눈물로도 괜찮아
+그 자리 그대로 주님 앞에 와
+바른믿음교회 문은 열려 있어</span></div>
+    </div>
+  </div>
+
   <audio id="audio-lg" preload="auto"><source src="Let_it_Go_MZ세대찬송.mp3" type="audio/mpeg"></audio>
+  <audio id="audio-gi" preload="auto"><source src="괜찮아_일어나.mp3" type="audio/mpeg"></audio>
 </div>
 
 <!-- 🌿 자연 묵상 탭 -->
@@ -530,8 +599,8 @@ function switchTab(t,btn){
 }
 
 /* ✝ 오디오 플레이어 */
-const AF=document.getElementById('audio-f'), AM=document.getElementById('audio-m'), AM2=document.getElementById('audio-m2'), AD=document.getElementById('audio-d'), AN=document.getElementById('audio-n'), ALG=document.getElementById('audio-lg');
-const audios={f:AF,m:AM,m2:AM2,d:AD,n:AN,lg:ALG};
+const AF=document.getElementById('audio-f'), AM=document.getElementById('audio-m'), AM2=document.getElementById('audio-m2'), AD=document.getElementById('audio-d'), AN=document.getElementById('audio-n'), ALG=document.getElementById('audio-lg'), AGI=document.getElementById('audio-gi');
+const audios={f:AF,m:AM,m2:AM2,d:AD,n:AN,lg:ALG,gi:AGI};
 
 AF.addEventListener('loadedmetadata',()=>{ document.getElementById('td-f').textContent=fmt(AF.duration); });
 AM.addEventListener('loadedmetadata',()=>{ document.getElementById('td-m').textContent=fmt(AM.duration); });
@@ -550,6 +619,9 @@ AN.addEventListener('ended',()=>stopUI('n'));
 ALG.addEventListener('loadedmetadata',()=>{ document.getElementById('td-lg').textContent=fmt(ALG.duration); });
 ALG.addEventListener('timeupdate',()=>updProg('lg'));
 ALG.addEventListener('ended',()=>stopUI('lg'));
+AGI.addEventListener('loadedmetadata',()=>{ document.getElementById('td-gi').textContent=fmt(AGI.duration); });
+AGI.addEventListener('timeupdate',()=>updProg('gi'));
+AGI.addEventListener('ended',()=>stopUI('gi'));
 
 /* 페이지 로드 시 여자 버전 자동 재생 */
 // 자동재생 제거 - 사용자 클릭 후 재생
@@ -561,6 +633,7 @@ window.addEventListener('load',()=>{
   audios.d.load();
   audios.n.load();
   audios.lg.load();
+  audios.gi.load();
 });
 
 function toggleAudio(k){
